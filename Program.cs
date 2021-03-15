@@ -6,7 +6,7 @@ namespace TheFatDuckRestaurant
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("This is the Sebastiaan Branch!");
         }
     }
 }
