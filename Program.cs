@@ -27,13 +27,66 @@ namespace TheFatDuckRestaurant
     {
         static void Main(string[] args)
         {
+            MenuGerechten("Voorgerechten");
+        }
+        public static void MenuGerechten(string typeGerechten)
+        {
+
             var jsonString = File.ReadAllText("menu.json");
             Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
-            
-            foreach(var typeGerecht in menu.Voorgerechten)
+
+            Console.Clear();
+            Console.WriteLine($"Dit zijn de {typeGerechten} van The Fat Duck.\x0A\x0A");
+            if(typeGerechten == "Voorgerechten")
             {
-                Console.WriteLine(typeGerecht.naam);
+                for (int i = 1; i < menu.Voorgerechten.Length + 1; i++)
+                {
+
+                    Console.WriteLine(menu.Voorgerechten[i - 1].naam);
+                    Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
+
+                }
+                Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
+                string a = Console.ReadLine();
+                int result = Int32.Parse(a);
+                showItem(result, typeGerechten);
             }
+            else if(typeGerechten == "Hoofdgerechten")
+            {
+                for (int i = 1; i < menu.Hoofdgerechten.Length + 1; i++)
+                {
+
+                    Console.WriteLine(menu.Hoofdgerechten[i - 1].naam);
+                    Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
+
+                }
+                Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
+                string a = Console.ReadLine();
+                int result = Int32.Parse(a);
+                showItem(result, typeGerechten);
+            }
+            else
+            {
+                for (int i = 1; i < menu.Nagerechten.Length + 1; i++)
+                {
+
+                    Console.WriteLine(menu.Nagerechten[i - 1].naam);
+                    Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
+
+                }
+                Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
+                string a = Console.ReadLine();
+                int result = Int32.Parse(a);
+                showItem(result, typeGerechten);
+            }
+        }
+        public static void showItem(int x, string y)
+        {
+            var jsonString = File.ReadAllText("menu.json");
+            Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
+        
+            Console.WriteLine(menu.Voorgerechten[x-1].prijs);
+            Console.ReadLine();
         }
     }
 }
