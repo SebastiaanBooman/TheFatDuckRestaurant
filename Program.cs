@@ -46,13 +46,14 @@ namespace TheFatDuckRestaurant
                 }
                 Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
         }
-        public static void showItem(int x, string y)
+        public static void showItem(int x, Gerechten[] typeGerecht)
         {
-            var jsonString = File.ReadAllText("menu.json");
-            Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
-        
-            Console.WriteLine(menu.Voorgerechten[x-1].prijs);
-            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A\x0A");
+            Console.WriteLine($"Prijs: " + typeGerecht[x-1].prijs);
+            Console.WriteLine($"Beschrijving: " + typeGerecht[x - 1].beschrijving);
+            Console.WriteLine($"Ingredienten: " + typeGerecht[x - 1].ingredienten);
+
         }
     }
 }
