@@ -27,18 +27,53 @@ namespace TheFatDuckRestaurant
         {
             var jsonString = File.ReadAllText("gebruikers.json");
             Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
-
-            MenuGerechten(gebruikers.Klanten, "Voorgerechten");
+            Inlogscherm(gebruikers.Klanten, false);
         }
-        public static void MenuGerechten(Inloggen[] klant, string typeGerechtNaam)
+        public static void Inlogscherm(Inloggen[] klant, bool Recursive)
         {
 
-            Console.Clear();
-            Console.WriteLine($"Voer uw gebruikersnaam in.\x0A");
+            if (!Recursive)
+            {
+                Console.Clear();
+                Console.WriteLine($"Voer uw gebruikersnaam in.");
+            }
+            bool NaamBestaat = Recursive;
+            string GegevenNaam = Console.ReadLine();
+            for (int i = 0; i < klant.Length && !NaamBestaat; i++)
+            {
+                if (GegevenNaam == klant[i].Gebruikersnaam) { NaamBestaat = true; }
+            }
+            if (NaamBestaat)
+            {
+                Console.WriteLine($"\x0AVoer uw wachtwoord in.");
+                bool WachtwoordBestaat = false;
+                string GegevenWachtwoord = Console.ReadLine();
+                for (int i = 0; i < klant.Length; i++)
+                {
+                    if (GegevenNaam == klant[i].Wachtwoord) { WachtwoordBestaat = true; }
+                }
+                if (WachtwoordBestaat)
+                {
+                    Console.WriteLine($"\x0AU bent ingelogd!");
+                }
+                else 
+                { 
+                    Console.WriteLine("Verkeerd wachtwoord. Druk op Enter om het opnieuw te proberen.");
+                    Console.ReadLine();
+                    Inlogscherm(klant, true);
+                }
+            }
+            else 
+            { 
+                Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen.");
+                Console.ReadLine();
+                Inlogscherm(klant, false);
+            }
+        }
+    }
+}
 
-            if(klant.ContainsValue(Console.ReadLine))
-
-            Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
+            /*Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
             var a = Console.ReadLine();
             int b = Int32.Parse(a);
             bool passed = false;
@@ -73,3 +108,4 @@ namespace TheFatDuckRestaurant
         }
     }
 }
+*/
