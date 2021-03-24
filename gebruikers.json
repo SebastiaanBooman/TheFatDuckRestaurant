@@ -2,11 +2,11 @@
   "Klanten": [
     {
       "Gebruikersnaam": "Rafael",
-      "Wachtwoord": "test"
+      "Wachtwoord": "rafael"
     },
     {
       "Gebruikersnaam": "Tom",
-      "Wachtwoord":  "test"
+      "Wachtwoord":  "tom"
     }
   ]
 }
