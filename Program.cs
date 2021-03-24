@@ -10,13 +10,13 @@ namespace TheFatDuckRestaurant
     public class Gebruikers
     {
         public Inloggen[] Klanten { get; set; }
-        public Inloggen[] Medewerkers { get; set; }
+        //public Inloggen[] Medewerkers { get; set; }
     }
 
     public class Inloggen
     {
         public string Gebruikersnaam { get; set; }
-        public double Wachtwoord { get; set; }
+        public string Wachtwoord { get; set; }
     }
 
 
@@ -30,12 +30,13 @@ namespace TheFatDuckRestaurant
 
             MenuGerechten(gebruikers.Klanten, "Voorgerechten");
         }
-        public static void MenuGerechten(Gebruikers[] klant, string typeGerechtNaam)
+        public static void MenuGerechten(Inloggen[] klant, string typeGerechtNaam)
         {
 
             Console.Clear();
-            Console.WriteLine($"Voer uw gebruikersnaam in.\x0A\x0A");
-            if(klant.Contains(Console.ReadLine()))
+            Console.WriteLine($"Voer uw gebruikersnaam in.\x0A");
+
+            if(klant.ContainsValue(Console.ReadLine))
 
             Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
             var a = Console.ReadLine();
