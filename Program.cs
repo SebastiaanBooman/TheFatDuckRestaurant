@@ -29,8 +29,23 @@ namespace TheFatDuckRestaurant
         {
             var jsonString = File.ReadAllText("menu.json");
             Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
+            KiesMenu(menu);
+        }
 
-            MenuGerechten(menu.Voorgerechten, "Voorgerechten");
+        //Deze functie zorgt ervoor dat het juiste menu wordt geladen. 
+        //Er moet nog wel functionaliteit komen voor als de input niet A, B of C is.
+        public static void KiesMenu(Menu menu)
+        {
+            Console.WriteLine("Voorgerechten\x0A Klik op A om de voorgerechten in te zien\x0A\x0A\x0A");
+            Console.WriteLine("Hoofdgerechten\x0A Klik op B om de hoofdgerechten in te zien\x0A\x0A\x0A");
+            Console.WriteLine("Nagerechten\x0A Klik op C om de nagerechten in te zien\x0A\x0A");
+            if (Console.ReadLine() == "A")
+                MenuGerechten(menu.Voorgerechten, "Voorgerechten");
+            if (Console.ReadLine() == "B")
+                MenuGerechten(menu.Voorgerechten, "Hoofdgerechten");
+            if (Console.ReadLine() == "C")
+                MenuGerechten(menu.Voorgerechten, "Nagerechten");
+
         }
         public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam)
         {
