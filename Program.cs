@@ -7,19 +7,16 @@ using System.Text.Json.Serialization;
 namespace TheFatDuckRestaurant
 {
 
-    public class Menu
+    public class Gebruikers
     {
-        public Gerechten[] Voorgerechten { get; set; }
-        public Gerechten[] Hoofdgerechten { get; set; }
-        public Gerechten[] Nagerechten { get; set; }
+        public Inloggen[] Klanten { get; set; }
+        public Inloggen[] Medewerkers { get; set; }
     }
 
-    public class Gerechten
+    public class Inloggen
     {
-        public string naam { get; set; }
-        public double prijs { get; set; }
-        public string beschrijving { get; set; }
-        public string[] ingredienten { get; set; }
+        public string Gebruikersnaam { get; set; }
+        public double Wachtwoord { get; set; }
     }
 
 
@@ -28,22 +25,18 @@ namespace TheFatDuckRestaurant
     {
         static void Main(string[] args)
         {
-            var jsonString = File.ReadAllText("menu.json");
-            Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
+            var jsonString = File.ReadAllText("gebruikers.json");
+            Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
 
-            MenuGerechten(menu.Voorgerechten, "Voorgerechten");
+            MenuGerechten(gebruikers.Klanten, "Voorgerechten");
         }
-        public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam)
+        public static void MenuGerechten(Gebruikers[] klant, string typeGerechtNaam)
         {
 
             Console.Clear();
-            Console.WriteLine($"Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A\x0A");
-            for (int i = 1; i < typeGerecht.Length + 1; i++)
-             {
+            Console.WriteLine($"Voer uw gebruikersnaam in.\x0A\x0A");
+            if(klant.Contains(Console.ReadLine()))
 
-                 Console.WriteLine(typeGerecht[i - 1].naam);
-                 Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
-             }
             Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
             var a = Console.ReadLine();
             int b = Int32.Parse(a);

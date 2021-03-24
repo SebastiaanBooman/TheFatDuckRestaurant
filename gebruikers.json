@@ -1,0 +1,12 @@
+﻿{
+  "Klanten": [
+    {
+      "Gebruikersnaam": "Rafael",
+      "Wachtwoord": "test"
+    },
+    {
+      "Gebruikersnaam": "Tom",
+      "Wachtwoord":  "test"
+    }
+  ]
+}
