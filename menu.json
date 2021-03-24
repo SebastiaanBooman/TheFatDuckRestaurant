@@ -1,0 +1,210 @@
+﻿{
+  "Voorgerechten": [
+    {
+      "naam": "Zalm salade",
+      "prijs": 9.5,
+      "beschrijving": "Ideaal op een warme zomerdag: snelle en frisse salade met zalm en bieslook",
+      "ingredienten": [
+        "zalm",
+        "bieslook",
+        "sla",
+        "geitenkaas",
+        "komkommer"
+      ]
+    },
+    {
+      "naam": "Vegetarische salade",
+      "prijs": 8,
+      "beschrijving": "Heerlijke regenboogsalade met yoghurtdressing",
+      "ingredienten": [
+        "cherrytomaten",
+        "wortel",
+        "avocado",
+        "kwark",
+        "mango",
+        "citroensap"
+      ]
+    },
+    {
+      "naam": "Sushi en Sashimi",
+      "prijs": 12,
+      "beschrijving": "Een mix van 4 sushi en 2 sashimi",
+      "ingredienten": [
+        "rijst",
+        "zalm",
+        "avocado"
+      ]
+    },
+    {
+      "naam": "Oesters",
+      "prijs": 5.0,
+      "beschrijving": "3 gestoomde oesters",
+      "ingredienten": [
+        "knoflook",
+        "oesters"
+      ]
+    },
+    {
+      "naam": "Ha kau",
+      "prijs": 9.0,
+      "beschrijving": "Een rond deegvelletje gevuld met gestoomde garnalen",
+      "ingredienten": [
+        "garnalen",
+        "gember",
+        "soja saus"
+      ]
+    }
+  ],
+  "Hoofdgerechten": [
+    {
+      "naam": "Sapporo Miso ramen",
+      "prijs": 15,
+      "beschrijving": "Heerlijke Japanse noedels ",
+      "ingredienten": [
+        "tofu",
+        "zeewier",
+        "eieren",
+        "rode miso (pasta)"
+      ]
+    },
+    {
+      "naam": "Sushi: dragon rolls",
+      "prijs": 16.5,
+      "beschrijving": "Een heerlijke vegetarische salade",
+      "ingredienten": [
+        "rijst",
+        "nori",
+        "tempura garnalen",
+        "avocado",
+        "komkommer"
+      ]
+    },
+    {
+      "naam": "Indische rijsttafel",
+      "prijs": 17.5,
+      "beschrijving": "Een heerlijke rijsttafel met mini loempia's, babi pangang, gebakke garnalen en saté!",
+      "ingredienten": [
+        "rijst"
+      ]
+    },
+    {
+      "naam": "Nasi goreng",
+      "prijs": 17.5,
+      "beschrijving": "Een favoriet uit de Indonesische keuken, verrukkelijke gebakke rijst",
+      "ingredienten": [
+        "prei",
+        "wortel",
+        "gebakke uitjes",
+        "knoflook",
+        "gebakke rijst"
+      ]
+    },
+    {
+      "naam": "Ayam kerrie",
+      "prijs": 7.5,
+      "beschrijving": "Kipfilet in kerriesaus",
+      "ingredienten": [
+        "kipdijfilet",
+        "kerriesaus",
+        "kokosmelk",
+        "ananasblokjes"
+      ]
+    },
+    {
+      "naam": "Nasi kuning",
+      "prijs": 5.5,
+      "beschrijving": "Een Indonesisch geurig (gele)rijstgerecht gekookt met kokosmelk en kurkuma",
+      "ingredienten": [
+        "gele rijst",
+        "kokosmelk",
+        "pandanblad",
+        "jeruk purut"
+      ]
+    },
+    {
+      "naam": "Gefileerde kip met pikante saus",
+      "prijs": 13.5,
+      "beschrijving": "Een favoriet uit de Indonesische keuken, verrukkelijke gebakke rijst",
+      "ingredienten": [
+        "kipdijfilet",
+        "rode paprika",
+        "knoflook",
+        "hoisinsaus",
+        "sambal"
+      ]
+    },
+    {
+      "naam": "Tjap Tjoy compleet",
+      "prijs": 14.9,
+      "beschrijving": "Een favoriet uit de Indonesische keuken, verrukkelijke gebakke rijst",
+      "ingredienten": [
+        "varkenshaas",
+        "kipfilet",
+        "runderhaas",
+        "(glutenvrij)"
+      ]
+    }
+  ],
+  "Nagerechten": [
+    {
+      "naam": "Mango sorbet",
+      "prijs": 7.5,
+      "beschrijving": "Mango sorbetijs met slagroom",
+      "ingredienten": [
+        "mango",
+        "water",
+        "suiker"
+      ]
+    },
+    {
+      "naam": "Vers fruit met slagroom",
+      "prijs": 6.5,
+      "beschrijving": "Een heerlijke vegetarische salade",
+      "ingredienten": [
+        "bananen",
+        "verse ananas",
+        "appels",
+        "kiwi's",
+        "peren",
+        "blauwe zoete druiven",
+        "slagroom"
+      ]
+    },
+    {
+      "naam": "Brownie",
+      "prijs": 8.5,
+      "beschrijving": "Brownie met noten: knapperig van buiten en smeuïg van binnen",
+      "ingredienten": [
+        "margarine",
+        "choco poeder",
+        "water",
+        "noten"
+      ]
+    },
+    {
+      "naam": "Crème brûlée",
+      "prijs": 10,
+      "beschrijving": "Een custardachtig nagerecht, met daaroverheen een gekaramelliseerde laag suiker.",
+      "ingredienten": [
+        "slagroom",
+        "vanille",
+        "eieren",
+        "rietsuiker"
+      ]
+    },
+    {
+      "naam": "Vanille ijs met fruit",
+      "prijs": 8,
+      "beschrijving": "Een coupe met vanille ijs, een assortiment aan vers fruit, slagroom en aardbeiensaus.",
+      "ingredienten": [
+        "vanille",
+        "melk",
+        "eidooiers",
+        "slagroom",
+        "aardbeiensaus",
+        "aarbei",
+        "ananas"
+      ]
+    }
+  ]
+}
