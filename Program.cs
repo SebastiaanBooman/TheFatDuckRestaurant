@@ -29,42 +29,42 @@ namespace TheFatDuckRestaurant
             Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
             while (true)
             {
-                Inlogscherm(gebruikers.Klanten, false);
+                Inlogscherm(gebruikers.Klanten);
             }
         }
 
-        public static bool CheckWachtwoord(int index, Inloggen[] klant)
+        public static bool CheckWachtwoord(int index, Inloggen[] klant) //Checkt of het wachtwoord en de gebruikersnaam bij elkaar horen
         {
             string GegevenWachtwoord = Console.ReadLine();
             return GegevenWachtwoord == klant[index].Wachtwoord;
         }
-        public static void Inlogscherm(Inloggen[] klant, bool Recursive)
+        public static void Inlogscherm(Inloggen[] klant)
         {
 
-            bool NaamBestaat = Recursive;
+            bool NaamBestaat = false;
             Console.Clear();
             Console.WriteLine($"Voer uw gebruikersnaam in.");
             string GegevenNaam = Console.ReadLine();
             int index = 0;
-            for (int i = 0; i < klant.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam al bestaat
+            for (int i = 0; i < klant.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
             {
                 if (GegevenNaam == klant[i].Gebruikersnaam) { NaamBestaat = true; index = i; }
             }
-            if (NaamBestaat || Recursive)
+            if (NaamBestaat)
             {
                 Console.WriteLine($"\x0AVoer uw wachtwoord in.");
-                while (!CheckWachtwoord(index, klant))
+                while (!CheckWachtwoord(index, klant)) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven
                 {
                     Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw.");
                 }
                 Console.WriteLine($"\x0AU bent ingelogd! Druk op Enter om verder te gaan.");
                 Console.ReadLine();
             }
-            else 
+            else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven
             { 
                 Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen.");
                 Console.ReadLine();
-                Inlogscherm(klant, false);
+                Inlogscherm(klant);
             }
         }
     }
