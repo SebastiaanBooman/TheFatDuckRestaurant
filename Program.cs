@@ -34,7 +34,8 @@ namespace TheFatDuckRestaurant
         }
         public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam)
         {
-
+            string userInput = null;
+            int userInputConverted = 0;
             Console.Clear();
             Console.WriteLine($"Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A\x0A");
             for (int i = 1; i < typeGerecht.Length + 1; i++)
@@ -44,23 +45,33 @@ namespace TheFatDuckRestaurant
                  Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
              }
             Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
-            var a = Console.ReadLine();
-            int b = Int32.Parse(a);
+
             bool passed = false;
             while (!passed) // checkt of de user input wel op het menu staat of Q is, anders vraagt het om een nieuwe input.
+            {
+                try
                 {
-                    if (b > typeGerecht.Length || b <= 0 || a != "Q") //TODO: System crashes als de input een string als "Q" is omdat hij een cijver verwacht bij line 48.
-                        {
+                    userInput = Console.ReadLine();
+                    userInputConverted = Int32.Parse(userInput);
+                }
+                catch (System.FormatException)
+                {
+                    if(userInput == "Q")
+                    {
+                        passed = true;
+                        // call het vorige scherm functie /
+                    }
+                }
+
+                if(userInputConverted > typeGerecht.Length || userInputConverted <= 0){
                         Console.WriteLine("Dit gerecht bestaat niet! Probeer een ander gerecht");
-                        a = Console.ReadLine();
-                        b = Int32.Parse(a);
                 }
                     else
                         {
                     passed = true;
-                        }
+                    showItem(userInputConverted, typeGerecht);
+                }
             }
-            showItem(b, typeGerecht);
         }
         public static void showItem(int x, Gerechten[] typeGerecht)
         {
@@ -76,5 +87,14 @@ namespace TheFatDuckRestaurant
 
             Console.WriteLine($"\x0a\x0aToets Q om terug te gaan");
         }
+      /*  public static bool menuGerechtenError()
+        {
+            bool passed = false;
+            while (!passed)
+            {
+
+            }
+            return true;
+        } */
     }
 }
