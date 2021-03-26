@@ -39,12 +39,15 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("Voorgerechten\x0A Klik op A om de voorgerechten in te zien\x0A\x0A\x0A");
             Console.WriteLine("Hoofdgerechten\x0A Klik op B om de hoofdgerechten in te zien\x0A\x0A\x0A");
             Console.WriteLine("Nagerechten\x0A Klik op C om de nagerechten in te zien\x0A\x0A");
-            if (Console.ReadLine() == "A")
+            var toetsUser = Console.ReadLine();
+            if (toetsUser == "A")
                 MenuGerechten(menu.Voorgerechten, "Voorgerechten");
-            if (Console.ReadLine() == "B")
-                MenuGerechten(menu.Voorgerechten, "Hoofdgerechten");
-            if (Console.ReadLine() == "C")
-                MenuGerechten(menu.Voorgerechten, "Nagerechten");
+
+            if (toetsUser == "B")
+                MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten");
+
+            if (toetsUser == "C")
+                MenuGerechten(menu.Nagerechten, "Nagerechten");
 
         }
         public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam)
