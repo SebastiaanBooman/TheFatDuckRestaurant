@@ -23,7 +23,7 @@ namespace TheFatDuckRestaurant
 
 
 
-    public class Program
+    public class Menucode
     {
         static void Main(string[] args)
         {
@@ -31,48 +31,65 @@ namespace TheFatDuckRestaurant
             Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
             KiesMenu(menu);
         }
-
-        //Deze functie zorgt ervoor dat het juiste menu wordt geladen. 
-        //Er moet nog wel functionaliteit komen voor als de input niet A, B of C is.
         public static void KiesMenu(Menu menu)
         {
-            Console.Clear();
-            Console.WriteLine("Voorgerechten\x0A Klik op A om de voorgerechten in te zien\x0A\x0A\x0A");
-            Console.WriteLine("Hoofdgerechten\x0A Klik op B om de hoofdgerechten in te zien\x0A\x0A\x0A");
-            Console.WriteLine("Nagerechten\x0A Klik op C om de nagerechten in te zien\x0A\x0A");
-            var toetsUser = Console.ReadLine();
-            if (toetsUser == "A")
-                MenuGerechten(menu.Voorgerechten, "Voorgerechten", menu);
+            bool verkeerdeInput = false;
+            bool passed = false;
 
-            else if (toetsUser == "B")
-                MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten", menu);
-
-            else if (toetsUser == "C")
-                MenuGerechten(menu.Nagerechten, "Nagerechten",menu);
-            else
+            while (!passed)
             {
-                Console.WriteLine("Verkeerde input, probeer A, B of C", menu);
-                KiesMenu(menu);
-            }
+                Console.Clear();
+                Console.WriteLine("Voorgerechten\x0A Klik op A om de voorgerechten in te zien\x0A\x0A\x0A");
+                Console.WriteLine("Hoofdgerechten\x0A Klik op B om de hoofdgerechten in te zien\x0A\x0A\x0A");
+                Console.WriteLine("Nagerechten\x0A Klik op C om de nagerechten in te zien\x0A\x0A");
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("Verkeerde input, probeer A, B, C of Q");
+                }
+                var toetsUser = Console.ReadLine();
+                if (toetsUser == "A" || toetsUser == "a")
+                {
+                    passed = true;
+                    MenuGerechten(menu.Voorgerechten, "Voorgerechten", menu);
+                }
+                else if (toetsUser == "B" || toetsUser == "b")
+                {
+                    passed = true;
+                    MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten", menu);
+                }
+                else if (toetsUser == "C" || toetsUser == "c")
+                {
+                    passed = true;
+                    MenuGerechten(menu.Nagerechten, "Nagerechten", menu);
 
+                }
+                else
+                {
+                    verkeerdeInput = true;
+                }
+            }
         }
         public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam, Menu menu)
         {
             string userInput = null;
             int userInputConverted = 0;
-            Console.Clear();
-            Console.WriteLine($"Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A\x0A");
-            for (int i = 1; i < typeGerecht.Length + 1; i++)
-            {
-
-                Console.WriteLine(typeGerecht[i - 1].naam);
-                Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
-            }
-            Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
-
             bool passed = false;
+            bool verkeerdeInput = false;
             while (!passed) // checkt of de user input wel op het menu staat of Q is, anders vraagt het om een nieuwe input.
             {
+                Console.Clear();
+                Console.WriteLine($"Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A\x0A");
+                for (int i = 1; i < typeGerecht.Length + 1; i++)
+                {
+
+                    Console.WriteLine(typeGerecht[i - 1].naam);
+                    Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
+                }
+                Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("Verkeerde input, probeer Q");
+                }
                 try
                 {
                     userInput = Console.ReadLine();
@@ -80,7 +97,11 @@ namespace TheFatDuckRestaurant
                 }
                 catch (System.FormatException)
                 {
-                    if (userInput == "Q")
+                    if (userInput != "Q")
+                    {
+                        verkeerdeInput = true;
+                    }
+                    else
                     {
                         passed = true;
                         KiesMenu(menu);
@@ -94,23 +115,43 @@ namespace TheFatDuckRestaurant
                 else
                 {
                     passed = true;
-                    showItem(userInputConverted, typeGerecht);
+                    showItem(userInputConverted, typeGerecht, typeGerechtNaam, menu);
                 }
             }
         }
-        public static void showItem(int x, Gerechten[] typeGerecht)
+        public static void showItem(int x, Gerechten[] typeGerecht, string typeGerechtNaam, Menu menu)
         {
-            Console.Clear();
-            Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A\x0A");
-            Console.WriteLine($"Prijs: " + typeGerecht[x - 1].prijs + "\x0a");
-            Console.WriteLine($"Beschrijving: " + typeGerecht[x - 1].beschrijving + "\x0a");
-            Console.WriteLine($"Ingredienten: ");
-            for (int i = 0; i < typeGerecht[x - 1].ingredienten.Length; i++)
+            bool passed = false;
+            bool verkeerdeInput = false;
+            while (!passed)
             {
-                Console.WriteLine(typeGerecht[x - 1].ingredienten[i]);
-            }
+                Console.Clear();
+                Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A\x0A");
+                Console.WriteLine($"Prijs: " + typeGerecht[x - 1].prijs + "\x0a");
+                Console.WriteLine($"Beschrijving: " + typeGerecht[x - 1].beschrijving + "\x0a");
+                Console.WriteLine($"Ingredienten: ");
+                for (int i = 0; i < typeGerecht[x - 1].ingredienten.Length; i++)
+                {
+                    Console.WriteLine(typeGerecht[x - 1].ingredienten[i]);
+                }
+                Console.WriteLine($"\x0a\x0aToets Q om terug te gaan");
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("Vekeerde input, probeer Q");
+                    verkeerdeInput = false;
+                }
+                string userInput = Console.ReadLine();
+                if (userInput == "Q")
+                {
+                    passed = true;
+                    MenuGerechten(typeGerecht, typeGerechtNaam, menu);
+                }
+                else
+                {
+                    verkeerdeInput = true;
+                }
 
-            Console.WriteLine($"\x0a\x0aToets Q om terug te gaan");
+            }
         }
     }
 }
