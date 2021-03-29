@@ -36,21 +36,27 @@ namespace TheFatDuckRestaurant
         //Er moet nog wel functionaliteit komen voor als de input niet A, B of C is.
         public static void KiesMenu(Menu menu)
         {
+            Console.Clear();
             Console.WriteLine("Voorgerechten\x0A Klik op A om de voorgerechten in te zien\x0A\x0A\x0A");
             Console.WriteLine("Hoofdgerechten\x0A Klik op B om de hoofdgerechten in te zien\x0A\x0A\x0A");
             Console.WriteLine("Nagerechten\x0A Klik op C om de nagerechten in te zien\x0A\x0A");
             var toetsUser = Console.ReadLine();
             if (toetsUser == "A")
-                MenuGerechten(menu.Voorgerechten, "Voorgerechten");
+                MenuGerechten(menu.Voorgerechten, "Voorgerechten", menu);
 
-            if (toetsUser == "B")
-                MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten");
+            else if (toetsUser == "B")
+                MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten", menu);
 
-            if (toetsUser == "C")
-                MenuGerechten(menu.Nagerechten, "Nagerechten");
+            else if (toetsUser == "C")
+                MenuGerechten(menu.Nagerechten, "Nagerechten",menu);
+            else
+            {
+                Console.WriteLine("Verkeerde input, probeer A, B of C", menu);
+                KiesMenu(menu);
+            }
 
         }
-        public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam)
+        public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam, Menu menu)
         {
             string userInput = null;
             int userInputConverted = 0;
@@ -77,7 +83,7 @@ namespace TheFatDuckRestaurant
                     if (userInput == "Q")
                     {
                         passed = true;
-                        // call het vorige scherm functie /
+                        KiesMenu(menu);
                     }
                 }
 
@@ -106,14 +112,5 @@ namespace TheFatDuckRestaurant
 
             Console.WriteLine($"\x0a\x0aToets Q om terug te gaan");
         }
-        /*  public static bool menuGerechtenError()
-          {
-              bool passed = false;
-              while (!passed)
-              {
-
-              }
-              return true;
-          } */
     }
 }
