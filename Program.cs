@@ -10,7 +10,7 @@ namespace TheFatDuckRestaurant
     public class Gebruikers
     {
         public Inloggen[] Klanten { get; set; }
-        //public Inloggen[] Medewerkers { get; set; }
+        public Inloggen[] Medewerkers { get; set; }
     }
 
     public class Inloggen
@@ -29,31 +29,37 @@ namespace TheFatDuckRestaurant
             Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
             while (true)
             {
-                Inlogscherm(gebruikers.Klanten);
+                Console.Clear();
+                Console.WriteLine("Wilt u als klant ('a') of als medewerker ('b') inloggen?");
+                string Choice = Console.ReadLine();
+                if(Choice == "a")
+                {
+                    Inlogscherm(gebruikers.Klanten);
+                }
+                else if(Choice == "b")
+                {
+                    Inlogscherm(gebruikers.Medewerkers);
+                }
             }
         }
+        
 
-        public static bool CheckWachtwoord(int index, Inloggen[] klant) //Checkt of het wachtwoord en de gebruikersnaam bij elkaar horen
+        public static void Inlogscherm(Inloggen[] gebruiker)
         {
-            string GegevenWachtwoord = Console.ReadLine();
-            return GegevenWachtwoord == klant[index].Wachtwoord;
-        }
-        public static void Inlogscherm(Inloggen[] klant)
-        {
-
+            Func<int, Inloggen[], bool> CheckWachtwoord = (index, gebruiker) => Console.ReadLine() == gebruiker[index].Wachtwoord;
             bool NaamBestaat = false;
             Console.Clear();
             Console.WriteLine($"Voer uw gebruikersnaam in.");
             string GegevenNaam = Console.ReadLine();
             int index = 0;
-            for (int i = 0; i < klant.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
+            for (int i = 0; i < gebruiker.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
             {
-                if (GegevenNaam == klant[i].Gebruikersnaam) { NaamBestaat = true; index = i; }
+                if (GegevenNaam == gebruiker[i].Gebruikersnaam) { NaamBestaat = true; index = i; }
             }
             if (NaamBestaat)
             {
                 Console.WriteLine($"\x0AVoer uw wachtwoord in.");
-                while (!CheckWachtwoord(index, klant)) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven
+                while (!CheckWachtwoord(index, gebruiker)) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven
                 {
                     Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw.");
                 }
@@ -64,7 +70,7 @@ namespace TheFatDuckRestaurant
             { 
                 Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen.");
                 Console.ReadLine();
-                Inlogscherm(klant);
+                Inlogscherm(gebruiker);
             }
         }
     }

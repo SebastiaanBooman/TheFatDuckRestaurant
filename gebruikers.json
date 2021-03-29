@@ -6,7 +6,21 @@
     },
     {
       "Gebruikersnaam": "Tom",
-      "Wachtwoord":  "tom"
+      "Wachtwoord": "tom"
+    }
+  ],
+  "Medewerkers": [
+    {
+      "Gebruikersnaam": "Jake",
+      "Wachtwoord": "Darcy"
+    },
+    {
+      "Gebruikersnaam": "Art",
+      "Wachtwoord": "Brown"
+    },
+    {
+      "Gebruikersnaam": "Sally",
+      "Wachtwoord":  "Buns"
     }
   ]
 }
