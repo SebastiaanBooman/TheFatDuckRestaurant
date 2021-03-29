@@ -46,7 +46,7 @@ namespace TheFatDuckRestaurant
 
         public static void Inlogscherm(Inloggen[] gebruiker)
         {
-            Func<int, Inloggen[], bool> CheckWachtwoord = (index, gebruiker) => Console.ReadLine() == gebruiker[index].Wachtwoord;
+            Func<int, Inloggen[], Tuple<bool, string>> CheckWachtwoord = (index, gebruiker) => { string Input = Console.ReadLine(); return Tuple.Create(Input == gebruiker[index].Wachtwoord || Input == "terug", Input); };
             bool NaamBestaat = false;
             Console.Clear();
             Console.WriteLine($"Voer uw gebruikersnaam in.");
@@ -59,18 +59,25 @@ namespace TheFatDuckRestaurant
             if (NaamBestaat)
             {
                 Console.WriteLine($"\x0AVoer uw wachtwoord in.");
-                while (!CheckWachtwoord(index, gebruiker)) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven
+                Tuple<bool, string> Password = CheckWachtwoord(index, gebruiker);
+                while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven
                 {
-                    Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw.");
+                    Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw of type 'terug' om terug te gaan.");
+                    Password = CheckWachtwoord(index, gebruiker);
                 }
-                Console.WriteLine($"\x0AU bent ingelogd! Druk op Enter om verder te gaan.");
-                Console.ReadLine();
+                if (Password.Item2 != "terug")
+                {
+                    Console.WriteLine($"\x0AU bent ingelogd! Druk op Enter om verder te gaan.");
+                    Console.ReadLine();
+                }
             }
             else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven
             { 
-                Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen.");
-                Console.ReadLine();
-                Inlogscherm(gebruiker);
+                Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen of type 'terug' om terug te gaan.");
+                if (Console.ReadLine() != "terug")
+                {
+                    Inlogscherm(gebruiker);
+                }
             }
         }
     }
