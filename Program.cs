@@ -150,8 +150,28 @@ namespace TheFatDuckRestaurant
                 {
                     verkeerdeInput = true;
                 }
-
             }
+        }
+
+        public static void addItemMenu(Menu menu)
+        {
+            var newGerecht = new Gerechten { 
+                naam = "Kaas",
+                prijs = 10,
+                beschrijving = "Cheese",
+                ingredienten = new[] {"zuivel", "Kase" }
+            };
+         //   menu.Voorgerechten = null;
+
+            Menu newMenu = new Menu
+            {
+                Voorgerechten = new[] {menu.Voorgerechten[0] }, //Hier moet de code weten hoeveel items moeten worden toegevoegd aan de juiste array. +1 voor de array waar het nieuwe item in komt.
+                Hoofdgerechten = new[] {menu.Hoofdgerechten[0},
+                Nagerechten = new [] {menu.Nagerechten[0}
+            };
+
+
+
         }
     }
 }
