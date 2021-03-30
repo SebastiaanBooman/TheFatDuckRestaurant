@@ -27,8 +27,8 @@ namespace TheFatDuckRestaurant
     {
         static void Main(string[] args)
         {
-            var jsonString = File.ReadAllText("menu.json");
-            Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
+            Menu menu = instantiateMenu();
+          //  addItemMenu(menu.Voorgerechten);
             KiesMenu(menu);
         }
         public static void KiesMenu(Menu menu)
@@ -153,25 +153,39 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public static void addItemMenu(Menu menu)
+        public static Menu addItemMenu(Gerechten[] typeGerecht)
         {
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
             var newGerecht = new Gerechten { 
                 naam = "Kaas",
                 prijs = 10,
                 beschrijving = "Cheese",
                 ingredienten = new[] {"zuivel", "Kase" }
             };
-         //   menu.Voorgerechten = null;
+            Menu menu = instantiateMenu();
 
-            Menu newMenu = new Menu
+            var newGerechten = new Gerechten[typeGerecht.Length +1];
+            for(int i = 0; i < typeGerecht.Length; i++)
             {
-                Voorgerechten = new[] {menu.Voorgerechten[0] }, //Hier moet de code weten hoeveel items moeten worden toegevoegd aan de juiste array. +1 voor de array waar het nieuwe item in komt.
-                Hoofdgerechten = new[] {menu.Hoofdgerechten[0},
-                Nagerechten = new [] {menu.Nagerechten[0}
-            };
+                newGerechten[i] = typeGerecht[i];
+            }
+            newGerechten[typeGerecht.Length] = newGerecht;
 
+            menu.Voorgerechten = newGerechten;
+            var jsonString = JsonSerializer.Serialize(menu, JSONoptions);
+            File.WriteAllText("menu.json", jsonString);
+            menu = instantiateMenu();
+            return menu;
 
-
+        }
+        public static Menu instantiateMenu()
+        {
+            var jsonString = File.ReadAllText("menu.json");
+            Menu menu = JsonSerializer.Deserialize<Menu>(jsonString);
+            return menu;
         }
     }
 }
