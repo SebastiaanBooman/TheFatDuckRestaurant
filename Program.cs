@@ -31,11 +31,11 @@ namespace TheFatDuckRestaurant
             addItemMenu(menu.Voorgerechten);
             //KiesMenu(menu);
         }
-        public static void KiesMenu(Menu menu)
+        public static void KiesMenu()
         {
             bool verkeerdeInput = false;
             bool passed = false;
-
+            var menu = instantiateMenu();
             while (!passed)
             {
                 Console.Clear();
@@ -104,7 +104,7 @@ namespace TheFatDuckRestaurant
                     else
                     {
                         passed = true;
-                        KiesMenu(menu);
+                        KiesMenu();
                     }
                 }
 
@@ -175,6 +175,31 @@ namespace TheFatDuckRestaurant
             menu = instantiateMenu();
             return menu;
 
+        }
+
+        public static void removeItemMenu(Gerechten[] typeGerecht, int removeIndex)
+        {
+
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+
+            Gerechten[] newGerechten = new Gerechten[typeGerecht.Length - 1];
+            int j = 0;
+            for(int i = 0; i < typeGerecht.Length; i++)
+            {
+                if(i != removeIndex-1)
+                {
+                    newGerechten[j] = typeGerecht[i];
+                    j++;
+                }
+            }
+            var menu = instantiateMenu();
+            menu.Voorgerechten = newGerechten;
+            var jsonString = JsonSerializer.Serialize(menu, JSONoptions);
+            File.WriteAllText("menu.json", jsonString);
+            menu = instantiateMenu();
         }
         public static Gerechten createItemMenu()
         {
