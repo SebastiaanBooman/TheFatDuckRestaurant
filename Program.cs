@@ -25,10 +25,10 @@ namespace TheFatDuckRestaurant
     {
         static void Main(string[] args)
         {
-            var jsonString = File.ReadAllText("gebruikers.json");
-            Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
             while (true)
             {
+                var jsonString = File.ReadAllText("gebruikers.json");
+                Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
                 Console.Clear();
                 Console.WriteLine("Wilt u als klant ('a') of als medewerker ('b') inloggen?");
                 string Choice = Console.ReadLine();
