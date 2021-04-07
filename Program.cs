@@ -1,6 +1,27 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using TheFatDuckRestaurant;
+using Newtonsoft.Json;
 
-using System;
+namespace TheFatDuckRestaurant
+{
+    public class Werknemers
+    {
+        public string Naam { get; set; }
+        public string Wachtwoord { get; set; }
+        public Werknemers(string naam, string wachtwoord)
+        {
+            Naam = naam;
+            Wachtwoord = wachtwoord;
+        }
+
+    }
+
+}
+
 class Program
 {
     static void Main(string[] args)
@@ -44,18 +65,53 @@ class Program
         void register()
         {
             Console.WriteLine("Enter your username:");
-            var username = Console.ReadLine();
+            string username = Console.ReadLine();
 
             Console.WriteLine("Enter your password:");
-            var password = Console.ReadLine();
+            string password = Console.ReadLine();
             Console.Clear();
 
+            var user = File.ReadAllText(@"C:\Users\User\source\repos\SebastiaanBooman\TheFatDuckRestaurant\credentials.json");
+            //Werknemers Tempor = JsonConvert.DeserializeObject<Werknemers>(user);
+            //string test = JsonConvert.SerializeObject(Tempor, Formatting.Indented);
+            //Console.WriteLine(Tempor.Naam);
 
 
 
-            Array.Resize(ref arrUsers, arrUsers.Length + 1);
-            arrUsers[arrUsers.Length - 1] = new Users(username, password);
-            successfull = false;
+
+            var list = JsonConvert.DeserializeObject<List<Werknemers>>(user);
+            //var list = JsonSerializer.Deserialize<TheFatDuckRestaurant.Werknemers>(user);
+            list.Add(new Werknemers(username, password));
+            var convertedJson = JsonConvert.SerializeObject(list, Formatting.Indented);
+
+
+            Console.WriteLine(convertedJson);
+            File.WriteAllText(@"C:\Users\User\source\repos\SebastiaanBooman\TheFatDuckRestaurant\credentials.json", convertedJson);
+
+            //string tempor = JsonConvert.SerializeObject(newuser, Formatting.Indented);
+            //
+            //Console.WriteLine(tempor);
+
+
+
+
+
+            //Werknemers werknemer1 = new Werknemers(username, password);
+            //werknemer1 = JsonConvert.DeserializeObject<Werknemers>(user);
+            //string jsonString = JsonConvert.SerializeObject(werknemer1);
+
+
+
+
+
+
+
+
+
+
+
+            //Console.WriteLine(werknemers);
+
 
         }
 
