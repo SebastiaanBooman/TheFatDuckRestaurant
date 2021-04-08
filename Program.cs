@@ -50,34 +50,37 @@ namespace TheFatDuckRestaurant
             //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
             bool NaamBestaat = false;
             Console.Clear();
-            Console.WriteLine($"Voer uw gebruikersnaam in.");
+            Console.WriteLine($"Voer uw gebruikersnaam in of type 'terug' om terug te gaan.");
             string GegevenNaam = Console.ReadLine();
-            int index = 0;
-            for (int i = 0; i < gebruiker.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
+            if (GegevenNaam != "terug")
             {
-                if (GegevenNaam == gebruiker[i].Gebruikersnaam) { NaamBestaat = true; index = i; }
-            }
-            if (NaamBestaat)
-            {
-                Console.WriteLine($"\x0AVoer uw wachtwoord in.");
-                Tuple<bool, string> Password = CheckWachtwoord(index, gebruiker);
-                while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
+                int index = 0;
+                for (int i = 0; i < gebruiker.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
                 {
-                    Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw of type 'terug' om terug te gaan.");
-                    Password = CheckWachtwoord(index, gebruiker);
+                    if (GegevenNaam == gebruiker[i].Gebruikersnaam) { NaamBestaat = true; index = i; }
                 }
-                if (Password.Item2 != "terug") //sluit het inlogscherm af wanneer 'terug' was getypt
+                if (NaamBestaat)
                 {
-                    Console.WriteLine($"\x0AU bent ingelogd! Druk op Enter om verder te gaan.");
-                    Console.ReadLine();
+                    Console.WriteLine($"\x0AVoer uw wachtwoord in.");
+                    Tuple<bool, string> Password = CheckWachtwoord(index, gebruiker);
+                    while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
+                    {
+                        Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw of type 'terug' om terug te gaan.");
+                        Password = CheckWachtwoord(index, gebruiker);
+                    }
+                    if (Password.Item2 != "terug") //sluit het inlogscherm af wanneer 'terug' was getypt
+                    {
+                        Console.WriteLine($"\x0AU bent ingelogd! Druk op Enter om verder te gaan.");
+                        Console.ReadLine();
+                    }
                 }
-            }
-            else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer 'terug' is getypt
-            { 
-                Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen of type 'terug' om terug te gaan.");
-                if (Console.ReadLine() != "terug")
+                else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer 'terug' is getypt
                 {
-                    Inlogscherm(gebruiker);
+                    Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen of type 'terug' om terug te gaan.");
+                    if (Console.ReadLine() != "terug")
+                    {
+                        Inlogscherm(gebruiker);
+                    }
                 }
             }
         }
