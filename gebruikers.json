@@ -6,7 +6,13 @@
     },
     {
       "Gebruikersnaam": "Tom",
-      "Wachtwoord": "tom"
+      "Wachtwoord": "tom",
+      "Reservatie": {
+        "Tijd" : 1830,
+        "Dag": 25,
+        "Maand": "Januari",
+        "Personen" :  4
+      }
     }
   ],
   "Medewerkers": [
