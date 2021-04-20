@@ -1,31 +1,34 @@
 ﻿{
   "Klanten": [
     {
-      "Gebruikersnaam": "Rafael",
+      "Naam": "Rafael",
       "Wachtwoord": "rafael"
     },
     {
-      "Gebruikersnaam": "Tom",
+      "Naam": "Tom",
       "Wachtwoord": "tom",
-      "Reservatie": {
-        "Tijd" : 1830,
-        "Dag": 25,
-        "Maand": "Januari",
-        "Personen" :  4
-      }
+      "Reservaties": [
+        {
+          "Tijd": 1830,
+          "Dag": 20,
+          "Maand": 4,
+          "Jaar": 2021,
+          "Personen": 4
+        }
+      ]
     }
   ],
   "Medewerkers": [
     {
-      "Gebruikersnaam": "Jake",
+      "Naam": "Jake",
       "Wachtwoord": "Darcy"
     },
     {
-      "Gebruikersnaam": "Art",
+      "Naam": "Art",
       "Wachtwoord": "Brown"
     },
     {
-      "Gebruikersnaam": "Sally",
+      "Naam": "Sally",
       "Wachtwoord":  "Buns"
     }
   ]
