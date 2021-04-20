@@ -15,9 +15,9 @@ namespace TheFatDuckRestaurant
 
     public class Inloggen
     {
-        public string Gebruikersnaam { get; set; }
+        public string Naam { get; set; }
         public string Wachtwoord { get; set; }
-        public Reservatie Reservatie { get; set; }
+        public Reservatie[] Reservaties { get; set; }
     }
     public class Reservatie
     {
@@ -72,7 +72,7 @@ namespace TheFatDuckRestaurant
                 int index = 0;
                 for (int i = 0; i < gebruiker.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
                 {
-                    if (GegevenNaam == gebruiker[i].Gebruikersnaam) { NaamBestaat = true; index = i; }
+                    if (GegevenNaam == gebruiker[i].Naam) { NaamBestaat = true; index = i; }
                 }
                 if (NaamBestaat)
                 {
@@ -107,7 +107,8 @@ namespace TheFatDuckRestaurant
         }
         public static void Reserveren(Inloggen klant)
         {
-            klant.Reservatie.Maand = "Februari";
+            Console.WriteLine("");
+            klant.Reservaties[0].Maand = "Februari";
         }
     }
 }
