@@ -25,7 +25,7 @@ namespace TheFatDuckRestaurant
         public int Dag { get; set; }
         public int Maand { get; set; }
         public int Jaar { get; set; }
-        public int Personenen { get; set; }
+        public int Personen { get; set; }
     }
 
 
