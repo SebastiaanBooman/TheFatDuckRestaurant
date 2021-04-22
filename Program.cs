@@ -36,25 +36,53 @@ namespace TheFatDuckRestaurant
             var jsonString = File.ReadAllText("gebruikers.json");
             Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
             Dictionary<string,dynamic> HuidigeGebruiker = null;
-            while (true)
+            bool Run = true;
+            while (Run)
             {
                 Console.Clear();
-                if (HuidigeGebruiker != null) 
-                { 
-                    Console.WriteLine(HuidigeGebruiker["Medewerker"]);
-                    Reserveren(HuidigeGebruiker["Gebruiker"]);
-                }
-                Console.WriteLine("Toets '1' om als klant in te loggen.\x0AToets '2' om als medewerker in te loggen.");
-                ConsoleKeyInfo Choice = Console.ReadKey();
-                char ChoiceChar = Choice.KeyChar;
-                switch (ChoiceChar)
+                if (HuidigeGebruiker != null)
                 {
-                    case '1':
-                        HuidigeGebruiker = Inlogscherm(gebruikers.Klanten, gebruikers);
-                        break;
-                    case '2':
-                        HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers, gebruikers);
-                        break;
+                    if (!HuidigeGebruiker["Medewerker"])
+                    {
+                        Console.WriteLine("Toets '1' om te reserveren.\x0AToets '2' om uit te loggen.\x0AToets 'Q' om de applicatie te sluiten.");
+                        ConsoleKeyInfo Choice = Console.ReadKey();
+                        char ChoiceChar = Choice.KeyChar;
+                        switch (ChoiceChar)
+                        {
+                            case '1':
+                                Reserveren(HuidigeGebruiker["Gebruiker"]);
+                                Console.WriteLine("\x0AU heeft gereserveerd." + "\x0A" + "Druk op Enter om verder te gaan.");
+                                Console.ReadLine();
+                                break;
+                            case '2':
+                                HuidigeGebruiker = null;
+                                Console.WriteLine("\x0AU bent uitgelogd." + "\x0A" + "Druk op Enter om verder te gaan.");
+                                Console.ReadLine();
+                                break;
+                            case 'Q':
+                                Run = false;
+                                break;
+                        }
+                            
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Toets '1' om als klant in te loggen.\x0AToets '2' om als medewerker in te loggen.\x0AToets 'Q' om de applicatie te sluiten.");
+                    ConsoleKeyInfo Choice = Console.ReadKey();
+                    char ChoiceChar = Choice.KeyChar;
+                    switch (ChoiceChar)
+                    {
+                        case '1':
+                            HuidigeGebruiker = Inlogscherm(gebruikers.Klanten, gebruikers);
+                            break;
+                        case '2':
+                            HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers, gebruikers);
+                            break;
+                        case 'Q':
+                            Run = false;
+                            break;
+                    }
                 }
             }
         }
