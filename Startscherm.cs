@@ -58,7 +58,8 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine("Informatie over Fat Duck restaurant");
+                Console.WriteLine("Informatie over Fat Duck restaurant\n\n");
+                Console.WriteLine("<Informatie over the Fat Duck>\n\n");
                 Console.WriteLine("\x0aKlik op 1 om terug naar het startscherm te gaan");
                 if (verkeerdeInput)
                     Console.WriteLine("VerkeerdeInput, probeer q");
