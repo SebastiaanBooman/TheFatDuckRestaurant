@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static TheFatDuckRestaurant.Startscherm;
+
 namespace TheFatDuckRestaurant
 {
-
     public class Menu
     {
         public Gerechten[] Voorgerechten { get; set; }
@@ -25,12 +26,12 @@ namespace TheFatDuckRestaurant
 
     public class Menucode
     {
-        static void Main(string[] args)
+        /* static void Main(string[] args)
         {
             Menu menu = instantiateMenu();
             addItemMenu(menu.Voorgerechten);
             //KiesMenu(menu);
-        }
+        } */
         public static void KiesMenu()
         {
             bool verkeerdeInput = false;
@@ -39,33 +40,35 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine("Voorgerechten\x0A Klik op A om de voorgerechten in te zien\x0A\x0A\x0A");
-                Console.WriteLine("Hoofdgerechten\x0A Klik op B om de hoofdgerechten in te zien\x0A\x0A\x0A");
-                Console.WriteLine("Nagerechten\x0A Klik op C om de nagerechten in te zien\x0A\x0A");
+                Console.WriteLine("Menu bekijken\x0a");
+                Console.WriteLine("Voorgerechten\x0AKlik op 1 om de voorgerechten in te zien\x0A\x0A\x0A");
+                Console.WriteLine("Hoofdgerechten\x0AKlik op 2 om de hoofdgerechten in te zien\x0A\x0A\x0A");
+                Console.WriteLine("Nagerechten\x0AKlik op 3 om de nagerechten in te zien\x0A\x0A");
+                Console.WriteLine("Klik op Q om terug naar het startscherm te gaan");
                 if (verkeerdeInput)
                 {
-                    Console.WriteLine("Verkeerde input, probeer A, B, C of Q");
+                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of Q");
                 }
-                var toetsUser = Console.ReadLine();
-                if (toetsUser == "A" || toetsUser == "a")
-                {
-                    passed = true;
-                    MenuGerechten(menu.Voorgerechten, "Voorgerechten", menu);
-                }
-                else if (toetsUser == "B" || toetsUser == "b")
-                {
-                    passed = true;
-                    MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten", menu);
-                }
-                else if (toetsUser == "C" || toetsUser == "c")
-                {
-                    passed = true;
-                    MenuGerechten(menu.Nagerechten, "Nagerechten", menu);
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
 
-                }
-                else
+                switch (toetsUserChar)
                 {
-                    verkeerdeInput = true;
+                    case '1':
+                        MenuGerechten(menu.Voorgerechten, "Voorgerechten", menu);
+                        break;
+                    case '2':
+                        MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten", menu);
+                        break;
+                    case '3':
+                        MenuGerechten(menu.Nagerechten, "Nagerechten", menu);
+                        break;
+                    case 'Q':
+                        return;
+                        //break;
+                    default:
+                        verkeerdeInput = true;
+                        break;
                 }
             }
         }
@@ -75,6 +78,7 @@ namespace TheFatDuckRestaurant
             int userInputConverted = 0;
             bool passed = false;
             bool verkeerdeInput = false;
+            bool verkeerdeInputRange = false;
             while (!passed) // checkt of de user input wel op het menu staat of Q is, anders vraagt het om een nieuwe input.
             {
                 Console.Clear();
@@ -89,6 +93,12 @@ namespace TheFatDuckRestaurant
                 if (verkeerdeInput)
                 {
                     Console.WriteLine("Verkeerde input, probeer Q");
+                    verkeerdeInput = false;
+                }
+                else if (verkeerdeInputRange)
+                {
+                    Console.WriteLine("Dit gerecht bestaat niet! Probeer een ander gerecht.");
+                    verkeerdeInputRange = false;
                 }
                 try
                 {
@@ -110,7 +120,7 @@ namespace TheFatDuckRestaurant
 
                 if (userInputConverted > typeGerecht.Length || userInputConverted <= 0)
                 {
-                    Console.WriteLine("Dit gerecht bestaat niet! Probeer een ander gerecht");
+                    verkeerdeInputRange = true;
                 }
                 else
                 {
