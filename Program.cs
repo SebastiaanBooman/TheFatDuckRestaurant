@@ -44,15 +44,17 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine(HuidigeGebruiker["Medewerker"]);
                     Reserveren(HuidigeGebruiker["Gebruiker"]);
                 }
-                Console.WriteLine("Wilt u als klant ('a') of als medewerker ('b') inloggen?");
-                string Choice = Console.ReadLine();
-                if(Choice == "a")
+                Console.WriteLine("Toets '1' om als klant in te loggen.\x0AToets '2' om als medewerker in te loggen.");
+                ConsoleKeyInfo Choice = Console.ReadKey();
+                char ChoiceChar = Choice.KeyChar;
+                switch (ChoiceChar)
                 {
-                    HuidigeGebruiker = Inlogscherm(gebruikers.Klanten,gebruikers);
-                }
-                else if(Choice == "b")
-                {
-                    HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers,gebruikers);
+                    case '1':
+                        HuidigeGebruiker = Inlogscherm(gebruikers.Klanten, gebruikers);
+                        break;
+                    case '2':
+                        HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers, gebruikers);
+                        break;
                 }
             }
         }
@@ -60,13 +62,13 @@ namespace TheFatDuckRestaurant
 
         public static Dictionary<string,dynamic> Inlogscherm(Inloggen[] gebruiker, Gebruikers gebruikers)
         {
-            Func<int, Inloggen[], Tuple<bool, string>> CheckWachtwoord = (index, gebruiker) => { string Input = Console.ReadLine(); return Tuple.Create(Input == gebruiker[index].Wachtwoord || Input == "terug", Input); };
+            Func<int, Inloggen[], Tuple<bool, string>> CheckWachtwoord = (index, gebruiker) => { string Input = Console.ReadLine(); return Tuple.Create(Input == gebruiker[index].Wachtwoord || Input == "Q", Input); };
             //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
             bool NaamBestaat = false;
             Console.Clear();
-            Console.WriteLine($"Voer uw gebruikersnaam in of type 'terug' om terug te gaan.");
+            Console.WriteLine($"Voer uw gebruikersnaam in of type 'Q' om terug te gaan.");
             string GegevenNaam = Console.ReadLine();
-            if (GegevenNaam != "terug")
+            if (GegevenNaam != "Q")
             {
                 int index = 0;
                 for (int i = 0; i < gebruiker.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
@@ -79,10 +81,10 @@ namespace TheFatDuckRestaurant
                     Tuple<bool, string> Password = CheckWachtwoord(index, gebruiker);
                     while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
                     {
-                        Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw of type 'terug' om terug te gaan.");
+                        Console.WriteLine("Verkeerd wachtwoord. Probeer het opnieuw of type 'Q' om terug te gaan.");
                         Password = CheckWachtwoord(index, gebruiker);
                     }
-                    if (Password.Item2 != "terug") //sluit het inlogscherm af wanneer 'terug' was getypt
+                    if (Password.Item2 != "Q") //sluit het inlogscherm af wanneer 'terug' was getypt
                     {
                         Console.WriteLine($"\x0AU bent ingelogd! Druk op Enter om verder te gaan.");
                         Console.ReadLine();
@@ -95,8 +97,8 @@ namespace TheFatDuckRestaurant
                 }
                 else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer 'terug' is getypt
                 {
-                    Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen of type 'terug' om terug te gaan.");
-                    if (Console.ReadLine() != "terug")
+                    Console.WriteLine("Verkeerde gebruikersnaam. Druk op Enter om het opnieuw te proberen of type 'Q' om terug te gaan.");
+                    if (Console.ReadLine() != "Q")
                     {
                         return Inlogscherm(gebruiker, gebruikers);
                     }
