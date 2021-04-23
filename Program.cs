@@ -9,11 +9,11 @@ namespace TheFatDuckRestaurant
     {
         static void Main(string[] args)
         {
-            StartschermInloggen(args);
+            StartschermInloggen();
         }
-        public static void StartschermInloggen(string[] args)
+        public static void StartschermInloggen()
         {
-            Run(args);
+            Run();
         }
     }
 }
