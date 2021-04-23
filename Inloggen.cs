@@ -6,8 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 namespace TheFatDuckRestaurant
 {
-    class Inloggen
-    {
         public class Gebruikers
         {
             public Gebruiker[] Klanten { get; set; }
@@ -30,7 +28,7 @@ namespace TheFatDuckRestaurant
         }
 
 
-        public class Program
+        public class Inloggen
         {
             public static void Run()
             {
@@ -226,5 +224,4 @@ namespace TheFatDuckRestaurant
                 return tarr;
             }
         }
-    }
 }
