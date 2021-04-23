@@ -30,12 +30,13 @@ namespace TheFatDuckRestaurant
 
         public class Inloggen
         {
-            public static void Login()
+        public static void Login()
             {
                 var jsonString = File.ReadAllText("gebruikers.json");
                 Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
-                Dictionary<string, dynamic> HuidigeGebruiker = null;
+                //Dictionary<string, dynamic> HuidigeGebruiker = null;
                 bool Run = true;
+                Dictionary<string, dynamic> HuidigeGebruiker = null;
                 while (Run)
                 {
                     Console.Clear();
