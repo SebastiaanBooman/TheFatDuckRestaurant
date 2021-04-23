@@ -5,7 +5,11 @@ using static TheFatDuckRestaurant.Inloggen;
 
 namespace TheFatDuckRestaurant
 {
-    class Class1
+    class Start
     {
+        static void Main(string[] args)
+        {
+            StartschermFunctie();
+        }
     }
 }
