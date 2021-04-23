@@ -1,0 +1,35 @@
+﻿{
+  "Klanten": [
+    {
+      "Naam": "Rafael",
+      "Wachtwoord": "rafael"
+    },
+    {
+      "Naam": "Tom",
+      "Wachtwoord": "tom",
+      "Reservaties": [
+        {
+          "Tijd": 1830,
+          "Dag": 20,
+          "Maand": 4,
+          "Jaar": 2021,
+          "Personen": 4
+        }
+      ]
+    }
+  ],
+  "Medewerkers": [
+    {
+      "Naam": "Jake",
+      "Wachtwoord": "Darcy"
+    },
+    {
+      "Naam": "Art",
+      "Wachtwoord": "Brown"
+    },
+    {
+      "Naam": "Sally",
+      "Wachtwoord":  "Buns"
+    }
+  ]
+}
