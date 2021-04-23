@@ -30,7 +30,7 @@ namespace TheFatDuckRestaurant
 
         public class Inloggen
         {
-            public static void Run()
+            public static void Login()
             {
                 var jsonString = File.ReadAllText("gebruikers.json");
                 Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);

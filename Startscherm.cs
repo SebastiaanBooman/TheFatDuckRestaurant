@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using static TheFatDuckRestaurant.Menucode;
+using static TheFatDuckRestaurant.Inloggen;
 
 namespace TheFatDuckRestaurant
 {
@@ -38,7 +39,7 @@ namespace TheFatDuckRestaurant
                         Console.WriteLine("Test");
                         break;
                     case '2':
-                        //Call naar inlog method;
+                        Login();
                         break;
                     case '3':
                         KiesMenu();
