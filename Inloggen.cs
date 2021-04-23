@@ -44,7 +44,7 @@ namespace TheFatDuckRestaurant
                 {
                     if (!HuidigeGebruiker["Medewerker"])
                     {
-                        Console.WriteLine("Toets '1' om te reserveren.\x0AToets '2' om uit te loggen.\x0AToets 'Q' om de applicatie te sluiten.");
+                        Console.WriteLine("1 - Reserveren"+"\x0A"+"2 - Uitloggen"+"\x0A"+"Q Sluit de applicatie");
                         ConsoleKeyInfo Choice = Console.ReadKey();
                         char ChoiceChar = Choice.KeyChar;
                         switch (ChoiceChar)
@@ -71,7 +71,7 @@ namespace TheFatDuckRestaurant
                     }
                     else
                     {
-                        Console.WriteLine("Toets '1' om uit te loggen.\x0AToets 'Q' om de applicatie te sluiten.");
+                        Console.WriteLine("1 - Uitloggen\x0AQ - Sluit de applicatie");
                         ConsoleKeyInfo Choice = Console.ReadKey();
                         char ChoiceChar = Choice.KeyChar;
                         switch (ChoiceChar)
@@ -93,7 +93,7 @@ namespace TheFatDuckRestaurant
                 }
                 else
                 {
-                    Console.WriteLine("Toets '1' om als klant in te loggen.\x0AToets '2' om als medewerker in te loggen.\x0AToets 'Q' om de applicatie te sluiten.");
+                    Console.WriteLine("1 - Inloggen als klant"+"\x0A"+"2 - Inloggen als medewerker\x0AQ - Sluit de applicatie");
                     ConsoleKeyInfo Choice = Console.ReadKey();
                     char ChoiceChar = Choice.KeyChar;
                     switch (ChoiceChar)
