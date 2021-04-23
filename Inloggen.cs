@@ -30,7 +30,7 @@ namespace TheFatDuckRestaurant
 
         public class Inloggen
         {
-        public static void Login()
+        public static Dictionary<string, dynamic> Login()
             {
                 var jsonString = File.ReadAllText("gebruikers.json");
                 Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
@@ -100,6 +100,7 @@ namespace TheFatDuckRestaurant
                         {
                             case '1':
                                 HuidigeGebruiker = Inlogscherm(gebruikers.Klanten, gebruikers);
+                                return HuidigeGebruiker;
                                 break;
                             case '2':
                                 HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers, gebruikers);
@@ -114,6 +115,7 @@ namespace TheFatDuckRestaurant
                         }
                     }
                 }
+            return null;
             }
 
 
