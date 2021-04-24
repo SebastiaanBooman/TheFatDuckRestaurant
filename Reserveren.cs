@@ -6,6 +6,14 @@ namespace TheFatDuckRestaurant
 {
     class Class1
     {
+        public class Reservatie
+        {
+            public int Tijd { get; set; }
+            public int Dag { get; set; }
+            public int Maand { get; set; }
+            public int Jaar { get; set; }
+            public int Personen { get; set; }
+        }
         public static void Reserveren(Gebruiker klant)
         {
             Tuple<int, int, int>[] test = Data(DateTime.Now);

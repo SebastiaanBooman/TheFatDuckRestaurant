@@ -6,16 +6,7 @@
     },
     {
       "Naam": "Tom",
-      "Wachtwoord": "tom",
-      "Reservaties": [
-        {
-          "Tijd": 1830,
-          "Dag": 20,
-          "Maand": 4,
-          "Jaar": 2021,
-          "Personen": 4
-        }
-      ]
+      "Wachtwoord": "tom"
     }
   ],
   "Medewerkers": [

@@ -40,13 +40,12 @@ namespace TheFatDuckRestaurant
                         break;
                     case '2':
                         var HuidigeGebruiker = Login();
-                        Console.WriteLine(HuidigeGebruiker["Gebruiker"].Naam);
-                        Console.ReadLine();
                         break;
                     case '3':
                         KiesMenu();
                         break;
                     case '4':
+                        passed = true;
                         break;
                     default:
                         verkeerdeInput = true;
