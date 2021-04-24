@@ -32,6 +32,7 @@ namespace TheFatDuckRestaurant
             addItemMenu(menu.Voorgerechten);
             //KiesMenu(menu);
         } */
+
         public static void KiesMenu()
         {
             bool verkeerdeInput = false;
