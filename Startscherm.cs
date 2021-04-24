@@ -39,8 +39,8 @@ namespace TheFatDuckRestaurant
                         Console.WriteLine("Test");
                         break;
                     case '2':
-                        var test = Login();
-                        Console.WriteLine(test["Gebruiker"].Naam);
+                        var HuidigeGebruiker = Login();
+                        Console.WriteLine(HuidigeGebruiker["Gebruiker"].Naam);
                         Console.ReadLine();
                         break;
                     case '3':
