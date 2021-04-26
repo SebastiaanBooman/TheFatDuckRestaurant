@@ -15,6 +15,18 @@ namespace TheFatDuckRestaurant
         public static void Reserveer()
         {
             Console.Clear();
+            Console.WriteLine("Datum");
+            Tuple<bool,string> Datum = CheckDatum(Console.ReadLine());
+            if (Datum.Item1)
+            {
+                Console.WriteLine(Datum.Item2);
+            }
+            else
+            {
+                Console.WriteLine("Deze datum bestaat niet");
+            }
+            Console.ReadKey();
+            /*
             Console.WriteLine("Reserveren\x0a");
             string[] Dagen = Datums(DateTime.Now);
             for (int i = 0; i < Dagen.Length; i++)
@@ -52,9 +64,63 @@ namespace TheFatDuckRestaurant
             {
                 Console.WriteLine("Verkeerde input\x0a"+"Enter: Ga terug naar het beginscherm");
             }
-            Console.ReadKey();
+            Console.ReadKey();*/
         }
 
+        public static Tuple<bool,string> CheckDatum(string Datum)
+        {
+            string Dag = "";
+            string Maand = "";
+            foreach(char sym in Datum)
+            {
+                if (Char.IsDigit(sym))
+                {
+                    Dag += sym;
+                }
+                else if(Char.IsLetter(sym))
+                {
+                    Maand += sym;
+                }
+            }
+            int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
+            if (CheckMaand(Maand) && DagInt > 0 && DagInt < 32)
+            {
+                if(CheckDag(DagInt, Maand.ToLower(),DateTime.Now.Year))
+                {
+                    return Tuple.Create(true,$"{Dag} {Maand}");
+                }
+            }
+            return Tuple.Create(false,"");
+        }
+
+        public static bool CheckMaand(string Maand)
+        {
+            string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
+            for(int i = 0; i < Maanden.Length; i++)
+            {
+                if(Maand.ToLower() == Maanden[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static bool CheckDag(int Dag, string Maand, int Jaar)
+        {
+            if(Maand == "januari" || Maand == "maart" || Maand == "mei" || Maand == "juli" || Maand == "augustus" || Maand == "oktober" || Maand == "november")
+            {
+                return true;
+            }
+            if(Maand == "februari")
+            {
+                if(Jaar % 4 == 0 && (Jaar % 100 != 0 || Jaar % 400 == 0))
+                {
+                    return Dag < 30 ? true : false;
+                }
+                return Dag < 29 ? true : false;
+            }
+            return Dag < 31 ? true : false;
+        }
         public static int Plaatsen(string Datum, string Tijd)
         {
             return 100;
