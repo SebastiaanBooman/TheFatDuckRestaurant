@@ -38,6 +38,14 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine($"U heeft gereserveerd voor {Dagen[Keuze]} om {Beschikbaar[Keuze2]} voor {Personen}" + (Personen == 1 ? " persoon" : " personen") + "\x0a\x0a" + "Enter: Ga terug naar het beginscherm");
                     }
+                    else
+                    {
+                        Console.WriteLine("Verkeerde input\x0a" + "Enter: Ga terug naar het beginscherm");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Verkeerde input\x0a"+"Enter: Ga terug naar het beginscherm");
                 }
             }
             else
