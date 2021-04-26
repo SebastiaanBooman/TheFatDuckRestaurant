@@ -6,7 +6,7 @@ namespace TheFatDuckRestaurant
 {
     class Reserveren
     {
-        public class Reservatie
+        public class Reservering
         {
             public string Tijd { get; set; }
             public string Datum { get; set; }
