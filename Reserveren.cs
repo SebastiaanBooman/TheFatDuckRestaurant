@@ -8,10 +8,8 @@ namespace TheFatDuckRestaurant
     {
         public class Reservatie
         {
-            public int Tijd { get; set; }
-            public int Dag { get; set; }
-            public int Maand { get; set; }
-            public int Jaar { get; set; }
+            public string Tijd { get; set; }
+            public string Datum { get; set; }
             public int Personen { get; set; }
         }
         public static void Reserveer()
@@ -34,7 +32,12 @@ namespace TheFatDuckRestaurant
                 if (int.TryParse(Console.ReadLine(), out int Keuze2))
                 {
                     Console.Clear();
-                    Console.WriteLine($"U heeft gereserveerd voor {Dagen[Keuze]} om {Beschikbaar[Keuze2]}\x0a\x0a"+"Enter: Ga terug naar het beginscherm");
+                    Console.WriteLine($"{Dagen[Keuze]} om {Beschikbaar[Keuze2]}\x0a\x0aMet hoeveel personen bent u?");
+                    if (int.TryParse(Console.ReadLine(), out int Personen) && Personen > 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"U heeft gereserveerd voor {Dagen[Keuze]} om {Beschikbaar[Keuze2]} voor {Personen}" + (Personen == 1 ? " persoon" : " personen") + "\x0a\x0a" + "Enter: Ga terug naar het beginscherm");
+                    }
                 }
             }
             else
