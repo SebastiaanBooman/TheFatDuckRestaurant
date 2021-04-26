@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheFatDuckRestaurant
 {
-    class Class1
+    class Reserveren
     {
         public class Reservatie
         {
@@ -14,16 +14,18 @@ namespace TheFatDuckRestaurant
             public int Jaar { get; set; }
             public int Personen { get; set; }
         }
-        public static void Reserveren(Gebruiker klant)
+        public static void Reserveer()
         {
-            Tuple<int, int, int>[] test = Data(DateTime.Now);
-            for (int i = 0; i < test.Length; i++)
+            Console.Clear();
+            Tuple<int, int, int>[] Dagen = Datums(DateTime.Now);
+            for (int i = 0; i < Dagen.Length; i++)
             {
-                Console.WriteLine($"{test[i].Item1}/{test[i].Item2}/{test[i].Item3}");
+                Console.WriteLine($"{i}: {Dagen[i].Item1}/{Dagen[i].Item2}/{Dagen[i].Item3}");
             }
+            Console.ReadKey();
         }
 
-        public static Tuple<int, int, int>[] Data(DateTime Date)
+        public static Tuple<int, int, int>[] Datums(DateTime Date)
         {
             int Day = Date.Day, Month = Date.Month, Year = Date.Year;
             Tuple<int, int, int>[] tarr = new Tuple<int, int, int>[14];

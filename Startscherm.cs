@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using static TheFatDuckRestaurant.Menucode;
 using static TheFatDuckRestaurant.Inloggen;
+using static TheFatDuckRestaurant.Reserveren;
 
 namespace TheFatDuckRestaurant
 {
@@ -52,7 +53,8 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("1: Informatie over The Fat Duck\x0a");
                 Console.WriteLine("2: Login bij The Fat Duck\x0a");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
-                Console.WriteLine("4: Applicatie afsluiten");
+                Console.WriteLine("4: Applicatie afsluiten\x0a");
+                Console.WriteLine("5: Reserveren");
 
                 if (verkeerdeInput)
                     Console.WriteLine("Verkeerde input, probeer 1,2,3 of 4");
@@ -73,6 +75,9 @@ namespace TheFatDuckRestaurant
                         break;
                     case '4':
                         passed = true;
+                        break;
+                    case '5':
+                        Reserveer();
                         break;
                     default:
                         verkeerdeInput = true;
