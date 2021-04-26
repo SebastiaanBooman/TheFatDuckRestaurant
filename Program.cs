@@ -41,10 +41,12 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine("Menu bekijken\x0a");
-                Console.WriteLine("Voorgerechten\x0AKlik op 1 om de voorgerechten in te zien\x0A\x0A\x0A");
-                Console.WriteLine("Hoofdgerechten\x0AKlik op 2 om de hoofdgerechten in te zien\x0A\x0A\x0A");
-                Console.WriteLine("Nagerechten\x0AKlik op 3 om de nagerechten in te zien\x0A\x0A");
+                ASCIIART();
+                Console.WriteLine("\x0aMenu bekijken:");
+                Console.WriteLine("Toets op het getal naast het type gerecht om het menu daarvan te openen\x0A\x0A");
+                Console.WriteLine("1: Voorgerechten\x0A\x0A");
+                Console.WriteLine("2: Hoofdgerechten\x0A\x0A");
+                Console.WriteLine("3: Nagerechten\x0A\x0A");
                 Console.WriteLine("Klik op Q om terug naar het startscherm te gaan");
                 if (verkeerdeInput)
                 {
@@ -83,14 +85,15 @@ namespace TheFatDuckRestaurant
             while (!passed) // checkt of de user input wel op het menu staat of Q is, anders vraagt het om een nieuwe input.
             {
                 Console.Clear();
-                Console.WriteLine($"Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A\x0A");
+                ASCIIART();
+                Console.WriteLine($"\x0A Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A Toets op het getal naast het menu item om er meer informatie over te lezen\x0A\x0A");
                 for (int i = 1; i < typeGerecht.Length + 1; i++)
                 {
 
-                    Console.WriteLine(typeGerecht[i - 1].naam);
-                    Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
+                    Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A");
+                   // Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
                 }
-                Console.WriteLine($"Toets Q om terug te gaan \x0A\x0A");
+                Console.WriteLine($"\x0AToets Q om terug te gaan");
                 if (verkeerdeInput)
                 {
                     Console.WriteLine("Verkeerde input, probeer Q");
@@ -137,7 +140,8 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A\x0A");
+                ASCIIART();
+                Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A");
                 Console.WriteLine($"Prijs: " + typeGerecht[x - 1].prijs + "\x0a");
                 Console.WriteLine($"Beschrijving: " + typeGerecht[x - 1].beschrijving + "\x0a");
                 Console.WriteLine($"Ingredienten: ");

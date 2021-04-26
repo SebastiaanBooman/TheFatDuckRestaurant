@@ -49,6 +49,7 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 ASCIIART();
+                Console.WriteLine("Toets op het getal wat naast uw gewenste optie staat om naar dit scherm te gaan");
                 Console.WriteLine("1: Informatie over The Fat Duck\x0a");
                 Console.WriteLine("2: Login bij The Fat Duck\x0a");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
@@ -67,8 +68,6 @@ namespace TheFatDuckRestaurant
                         break;
                     case '2':
                         var HuidigeGebruiker = Login();
-                        Console.WriteLine(HuidigeGebruiker["Gebruiker"].Naam);
-                        Console.ReadLine();
                         break;
                     case '3':
                         KiesMenu();

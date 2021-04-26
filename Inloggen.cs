@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static TheFatDuckRestaurant.Startscherm;
 namespace TheFatDuckRestaurant
 {
         public class Gebruikers
@@ -40,11 +41,12 @@ namespace TheFatDuckRestaurant
                 while (Run)
                 {
                     Console.Clear();
-                    if (HuidigeGebruiker != null)
+                    ASCIIART();
+                if (HuidigeGebruiker != null)
                     {
                         if (!HuidigeGebruiker["Medewerker"])
                         {
-                            Console.WriteLine("1 - Reserveren" + "\x0A" + "2 - Uitloggen" + "\x0A" + "Q Sluit de applicatie");
+                            Console.WriteLine("1: Reserveren" + "\x0A\x0A" + "2: Uitloggen" + "\x0A\x0A" + "Q: Sluit de applicatie");
                             ConsoleKeyInfo Choice = Console.ReadKey();
                             char ChoiceChar = Choice.KeyChar;
                             switch (ChoiceChar)
@@ -93,14 +95,13 @@ namespace TheFatDuckRestaurant
                     }
                     else
                     {
-                        Console.WriteLine("1 - Inloggen als klant" + "\x0A" + "2 - Inloggen als medewerker\x0AQ - Sluit de applicatie");
+                        Console.WriteLine("1: Inloggen als klant" + "\x0A\x0A" + "2: Inloggen als medewerker\x0A\x0AQ: Sluit de applicatie");
                         ConsoleKeyInfo Choice = Console.ReadKey();
                         char ChoiceChar = Choice.KeyChar;
                         switch (ChoiceChar)
                         {
                             case '1':
                                 HuidigeGebruiker = Inlogscherm(gebruikers.Klanten, gebruikers);
-                                return HuidigeGebruiker;
                                 break;
                             case '2':
                                 HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers, gebruikers);
@@ -167,11 +168,13 @@ namespace TheFatDuckRestaurant
             }
             public static void Reserveren(Gebruiker klant)
             {
+                Console.Clear();
                 Tuple<int, int, int>[] test = Data(DateTime.Now);
                 for (int i = 0; i < test.Length; i++)
                 {
                     Console.WriteLine($"{test[i].Item1}/{test[i].Item2}/{test[i].Item3}");
                 }
+                Console.ReadLine();
             }
 
             public static Tuple<int, int, int>[] Data(DateTime Date)
