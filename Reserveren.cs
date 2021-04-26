@@ -17,10 +17,11 @@ namespace TheFatDuckRestaurant
         public static void Reserveer()
         {
             Console.Clear();
+            Console.WriteLine("Reserveren\x0a");
             Tuple<int, int, int>[] Dagen = Datums(DateTime.Now);
             for (int i = 0; i < Dagen.Length; i++)
             {
-                Console.WriteLine($"{i}: {Dagen[i].Item1}/{Dagen[i].Item2}/{Dagen[i].Item3}");
+                Console.WriteLine($"{i}: Reserveer voor {Dagen[i].Item1}/{Dagen[i].Item2}/{Dagen[i].Item3}\x0a");
             }
             Console.ReadKey();
         }
