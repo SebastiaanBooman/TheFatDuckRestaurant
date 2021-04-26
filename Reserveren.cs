@@ -19,7 +19,15 @@ namespace TheFatDuckRestaurant
             Tuple<bool,string> Datum = CheckDatum(Console.ReadLine());
             if (Datum.Item1)
             {
-                Console.WriteLine(Datum.Item2);
+                Console.Clear();
+                Console.WriteLine(Datum.Item2 + "\x0aHoe laat wilt u reserveren? (11:00 - 21:00)");
+                Tuple<bool,string> Tijd = CheckTijd(Console.ReadLine());
+                if (Tijd.Item1)
+                {
+                    Console.Clear();
+                    Console.WriteLine(Tijd.Item2 + "\x0a"+"Er zijn 100 plaatsen vrij\x0aMet hoeveel personen bent u?");
+                    Console.ReadLine();
+                }
             }
             else
             {
@@ -67,6 +75,28 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();*/
         }
 
+        public static Tuple<bool,string> CheckTijd(string T)
+        {
+            string Tijd = "";
+            foreach(char sym in T)
+            {
+                if (Char.IsDigit(sym))
+                {
+                    Tijd += sym;
+                }
+            }
+            int TijdInt = Tijd != "" ? Int32.Parse(Tijd): 0;
+            TijdInt *= TijdInt < 100 ? 100 : 1;
+            if(TijdInt <= 2100 && TijdInt >= 1100)
+            {
+                return Tuple.Create(true, $"{TijdInt / 100}:{TijdInt % 100}");
+            }
+            else
+            {
+                Console.WriteLine("Deze tijd is ongeldig");
+                return Tuple.Create(false, "");
+            }
+        }
         public static Tuple<bool,string> CheckDatum(string Datum)
         {
             string Dag = "";
