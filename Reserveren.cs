@@ -15,7 +15,7 @@ namespace TheFatDuckRestaurant
         public static void Reserveer()
         {
             Console.Clear();
-            Console.WriteLine("Datum");
+            Console.WriteLine("Welke datum wilt u reserveren? (20 juli)");
             Tuple<bool,string> Datum = CheckDatum(Console.ReadLine());
             if (Datum.Item1)
             {
@@ -26,13 +26,53 @@ namespace TheFatDuckRestaurant
                 {
                     Console.Clear();
                     Console.WriteLine(Tijd.Item2 + "\x0a"+"Er zijn 100 plaatsen vrij\x0aMet hoeveel personen bent u?");
-                    Console.ReadLine();
+                    Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine());
+                    if (Personen.Item1)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("1: Bekijk de reservering\x0a" + "2: Bevestig de reservering\x0a" + "3: Annuleer de reservering");
+                        ConsoleKeyInfo userInput = Console.ReadKey();
+                        char userInputChar = userInput.KeyChar;
+                        Console.Clear();
+                        switch (userInputChar)
+                        {
+                            case '1':
+                                Console.WriteLine($"{Datum.Item2}\x0a{Tijd.Item2}\x0a{Personen.Item2}\x0a<Menu items en rekening>\x0a\x0a" + "1: Pas de reservering aan\x0a" +"2: Ga terug naar het vorige scherm");
+                                userInput = Console.ReadKey();
+                                userInputChar = userInput.KeyChar;
+                                switch (userInputChar)
+                                {
+                                    case '1':
+                                        Console.WriteLine("<Reservering aanpassen>");
+                                        break;
+                                    case '2':
+                                        Console.WriteLine("<Terug naar het vorige scherm");
+                                        break;
+                                }
+                                break;
+                            case '2':
+                                Console.WriteLine("U heeft gereserveerd\x0a" );
+                                break;
+                            case '3':
+                                Console.WriteLine("De reservering is geannuleerd\x0a");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Er zijn niet genoeg plaatsen beschikbaar om deze tijd");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Deze tijd valt niet binnen de openingsuren");
                 }
             }
             else
             {
                 Console.WriteLine("Deze datum bestaat niet");
             }
+            Console.WriteLine("Enter: Ga terug naar het startscherm");
             Console.ReadKey();
             /*
             Console.WriteLine("Reserveren\x0a");
@@ -74,6 +114,25 @@ namespace TheFatDuckRestaurant
             }
             Console.ReadKey();*/
         }
+        
+        public static Tuple<bool,int> CheckPersonen(string P)
+        {
+            string Personen = "";
+            foreach(char sym in P)
+            {
+                if (Char.IsDigit(sym))
+                {
+                    Personen += sym;
+                }
+            }
+            int PersInt = Personen != "" ? Int32.Parse(Personen) : 101;
+            if(PersInt <= 100)
+            {
+                return Tuple.Create(true, PersInt);
+            }
+            Console.WriteLine("Er zijn niet genoeg plaatsen beschikbaar om deze tijd");
+            return Tuple.Create(false, 0);
+        }
 
         public static Tuple<bool,string> CheckTijd(string T)
         {
@@ -89,13 +148,11 @@ namespace TheFatDuckRestaurant
             TijdInt *= TijdInt < 100 ? 100 : 1;
             if(TijdInt <= 2100 && TijdInt >= 1100)
             {
-                return Tuple.Create(true, $"{TijdInt / 100}:{TijdInt % 100}");
+                string Minuten = TijdInt % 100 == 0 ? "00" : $"{TijdInt % 100}";
+                return Tuple.Create(true, $"{TijdInt / 100}:{Minuten}");
             }
-            else
-            {
-                Console.WriteLine("Deze tijd is ongeldig");
-                return Tuple.Create(false, "");
-            }
+            Console.WriteLine("Deze tijd is ongeldig");
+            return Tuple.Create(false, "");
         }
         public static Tuple<bool,string> CheckDatum(string Datum)
         {
