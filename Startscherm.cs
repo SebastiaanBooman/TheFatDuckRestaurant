@@ -53,8 +53,8 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("1: Informatie over The Fat Duck\x0a");
                 Console.WriteLine("2: Login bij The Fat Duck\x0a");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
-                Console.WriteLine("4: Applicatie afsluiten\x0a");
-                Console.WriteLine("5: Reserveren");
+                Console.WriteLine("4: Reserveren\x0a");
+                Console.WriteLine("0: Applicatie afsluiten\x0a");
 
                 if (verkeerdeInput)
                     Console.WriteLine("Verkeerde input, probeer 1,2,3 of 4");
@@ -74,10 +74,10 @@ namespace TheFatDuckRestaurant
                         KiesMenu();
                         break;
                     case '4':
-                        passed = true;
-                        break;
-                    case '5':
                         Reserveer();
+                        break;
+                    case '0':
+                        passed = true;
                         break;
                     default:
                         verkeerdeInput = true;
