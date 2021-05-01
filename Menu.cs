@@ -43,14 +43,14 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 ASCIIART();
                 Console.WriteLine("\x0aMenu bekijken:");
-                Console.WriteLine("Toets op het getal naast het type gerecht om het menu daarvan te openen\x0A\x0A");
+                Console.WriteLine("KIES HET TYPE GERECHT:\x0A\x0A");
                 Console.WriteLine("1: Voorgerechten\x0A\x0A");
                 Console.WriteLine("2: Hoofdgerechten\x0A\x0A");
                 Console.WriteLine("3: Nagerechten\x0A\x0A");
-                Console.WriteLine("Klik op Q om terug naar het startscherm te gaan");
+                Console.WriteLine("0: Terug");
                 if (verkeerdeInput)
                 {
-                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of Q");
+                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of 0");
                 }
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
@@ -66,7 +66,7 @@ namespace TheFatDuckRestaurant
                     case '3':
                         MenuGerechten(menu.Nagerechten, "Nagerechten", menu);
                         break;
-                    case 'Q':
+                    case '0':
                         return;
                     //break;
                     default:
