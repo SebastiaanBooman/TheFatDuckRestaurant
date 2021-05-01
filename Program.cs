@@ -56,13 +56,13 @@ namespace TheFatDuckRestaurant
                 switch (toetsUserChar)
                 {
                     case '1':
-                        MenuGerechten(menu.Voorgerechten, "Voorgerechten", menu);
+                        ShowMenuGerechten(menu.Voorgerechten, "Voorgerechten", menu);
                         break;
                     case '2':
-                        MenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten", menu);
+                        ShowMenuGerechten(menu.Hoofdgerechten, "Hoofdgerechten", menu);
                         break;
                     case '3':
-                        MenuGerechten(menu.Nagerechten, "Nagerechten", menu);
+                        ShowMenuGerechten(menu.Nagerechten, "Nagerechten", menu);
                         break;
                     case 'Q':
                         return;
@@ -73,7 +73,7 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam, Menu menu)
+        public static void ShowMenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam, Menu menu)
         {
             string userInput = null;
             int userInputConverted = 0;
@@ -155,7 +155,7 @@ namespace TheFatDuckRestaurant
                 if (userInput == "Q")
                 {
                     passed = true;
-                    MenuGerechten(typeGerecht, typeGerechtNaam, menu);
+                    ShowMenuGerechten(typeGerecht, typeGerechtNaam, menu);
                 }
                 else
                 {
