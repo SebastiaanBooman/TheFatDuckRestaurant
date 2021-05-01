@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.Startscherm;
+using static TheFatDuckRestaurant.ASCIIART;
 
 namespace TheFatDuckRestaurant
 {
@@ -41,8 +42,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                ASCIIART();
-                Console.WriteLine("\x0aMenu bekijken:");
+                Console.WriteLine(ASCIIART.MenuArt());
                 Console.WriteLine("KIES HET TYPE GERECHT:\x0A\x0A");
                 Console.WriteLine("1: Voorgerechten\x0A\x0A");
                 Console.WriteLine("2: Hoofdgerechten\x0A\x0A");
@@ -85,7 +85,7 @@ namespace TheFatDuckRestaurant
             while (!passed) // checkt of de user input wel op het menu staat of Q is, anders vraagt het om een nieuwe input.
             {
                 Console.Clear();
-                ASCIIART();
+                //ASCIIART();
                 Console.WriteLine($"\x0A Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A Toets op het getal naast het menu item om er meer informatie over te lezen\x0A\x0A");
                 for (int i = 1; i < typeGerecht.Length + 1; i++)
                 {
@@ -140,7 +140,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                ASCIIART();
+                //ASCIIART();
                 Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A");
                 Console.WriteLine($"Prijs: " + typeGerecht[x - 1].prijs + "\x0a");
                 Console.WriteLine($"Beschrijving: " + typeGerecht[x - 1].beschrijving + "\x0a");
