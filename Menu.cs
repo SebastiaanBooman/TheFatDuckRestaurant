@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.Startscherm;
+using static TheFatDuckRestaurant.ASCIIART;
 
 namespace TheFatDuckRestaurant
 {
@@ -41,16 +42,15 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                ASCIIART();
-                Console.WriteLine("\x0aMenu bekijken:");
-                Console.WriteLine("Toets op het getal naast het type gerecht om het menu daarvan te openen\x0A\x0A");
+                Console.WriteLine(ASCIIART.MenuArt());
+                Console.WriteLine("KIES HET TYPE GERECHT:\x0A\x0A");
                 Console.WriteLine("1: Voorgerechten\x0A\x0A");
                 Console.WriteLine("2: Hoofdgerechten\x0A\x0A");
                 Console.WriteLine("3: Nagerechten\x0A\x0A");
-                Console.WriteLine("Klik op Q om terug naar het startscherm te gaan");
+                Console.WriteLine("0: Terug");
                 if (verkeerdeInput)
                 {
-                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of Q");
+                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of 0");
                 }
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
@@ -66,9 +66,9 @@ namespace TheFatDuckRestaurant
                     case '3':
                         MenuGerechten(menu.Nagerechten, "Nagerechten", menu);
                         break;
-                    case 'Q':
+                    case '0':
                         return;
-                        //break;
+                    //break;
                     default:
                         verkeerdeInput = true;
                         break;
@@ -85,13 +85,13 @@ namespace TheFatDuckRestaurant
             while (!passed) // checkt of de user input wel op het menu staat of Q is, anders vraagt het om een nieuwe input.
             {
                 Console.Clear();
-                ASCIIART();
+                //ASCIIART();
                 Console.WriteLine($"\x0A Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A Toets op het getal naast het menu item om er meer informatie over te lezen\x0A\x0A");
                 for (int i = 1; i < typeGerecht.Length + 1; i++)
                 {
 
                     Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A");
-                   // Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
+                    // Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
                 }
                 Console.WriteLine($"\x0AToets Q om terug te gaan");
                 if (verkeerdeInput)
@@ -140,7 +140,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                ASCIIART();
+                //ASCIIART();
                 Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A");
                 Console.WriteLine($"Prijs: " + typeGerecht[x - 1].prijs + "\x0a");
                 Console.WriteLine($"Beschrijving: " + typeGerecht[x - 1].beschrijving + "\x0a");
@@ -177,8 +177,8 @@ namespace TheFatDuckRestaurant
             var newGerecht = createItemMenu();
             Menu menu = instantiateMenu();
 
-            var newGerechten = new Gerechten[typeGerecht.Length +1];
-            for(int i = 0; i < typeGerecht.Length; i++)
+            var newGerechten = new Gerechten[typeGerecht.Length + 1];
+            for (int i = 0; i < typeGerecht.Length; i++)
             {
                 newGerechten[i] = typeGerecht[i];
             }
@@ -202,9 +202,9 @@ namespace TheFatDuckRestaurant
 
             Gerechten[] newGerechten = new Gerechten[typeGerecht.Length - 1];
             int j = 0;
-            for(int i = 0; i < typeGerecht.Length; i++)
+            for (int i = 0; i < typeGerecht.Length; i++)
             {
-                if(i != removeIndex-1)
+                if (i != removeIndex - 1)
                 {
                     newGerechten[j] = typeGerecht[i];
                     j++;
@@ -234,7 +234,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine($"\nDit is de prijs van het nieuwe item: \x0A{prijs_} \x0AOm de prijs aan te passen toets 2 en klik op enter");
                 Console.WriteLine($"\nDit is de beschrijving van het nieuwe item: \x0A{beschrijving_} \x0AOm de bescrhijving aan te passen toets 3 en klik op enter");
                 Console.WriteLine($"\nDit zijn de ingredienten van het nieuwe item: ");
-                if(ingredienten_ != null)
+                if (ingredienten_ != null)
                 {
                     for (int i = 0; i < ingredienten_.Length; i++)
                     {
@@ -255,7 +255,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine($"Naam aanpassen\nDit is de oude naam: {naam_}\x0A\x0AToets de nieuwe naam in en klik op enter\x0AOm terug te gaan toets Q in en klik op enter");
                         var userInputNaam = Console.ReadLine();
-                        if(userInputNaam == "Q" || userInputNaam == "q") {}
+                        if (userInputNaam == "Q" || userInputNaam == "q") { }
                         else
                         {
                             naam_ = userInputNaam;
@@ -263,10 +263,11 @@ namespace TheFatDuckRestaurant
                         break;
                     case "2":
                         Console.Clear();
-                        while(!passedSpecifiek){
+                        while (!passedSpecifiek)
+                        {
                             Console.WriteLine($"Prijs aanpassen\x0A Dit is de huidige prijs: {prijs_}\x0AToets de nieuwe prijs in en klik op enter\x0A Om terug te gaan toets Q in en klik op enter");
                             var userInputPrijs = Console.ReadLine();
-                            if (userInputPrijs == "Q" || userInputPrijs == "q") 
+                            if (userInputPrijs == "Q" || userInputPrijs == "q")
                             {
                                 passedSpecifiek = true;
                             }
@@ -292,7 +293,7 @@ namespace TheFatDuckRestaurant
                                     {
                                         Console.WriteLine("Verkeerde input, voer een int in.");
                                     }
-                                    
+
                                 }
                             }
                         }
@@ -302,7 +303,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine($"Beschrijving aanpassen\x0A Dit is de huidige beschrijving: {beschrijving_}\x0AToets de nieuwe beschrijving in en klik op enter\x0A Om terug te gaan toets Q in en klik op enter.");
                         var userInputBeschrijving = Console.ReadLine();
-                        if(userInputBeschrijving == "Q" || userInputBeschrijving == "q") {}
+                        if (userInputBeschrijving == "Q" || userInputBeschrijving == "q") { }
                         else
                         {
                             beschrijving_ = userInputBeschrijving;
@@ -314,9 +315,9 @@ namespace TheFatDuckRestaurant
                         {
                             Console.Clear();
                             Console.WriteLine($"Ingredienten aanpassen\x0A Dit zijn de huidige ingredienten:");
-                            if(ingredienten_ != null)
+                            if (ingredienten_ != null)
                             {
-                                for(int i = 0; i < ingredienten_.Length; i++)
+                                for (int i = 0; i < ingredienten_.Length; i++)
                                 {
                                     Console.WriteLine(ingredienten_[i]);
                                 }
@@ -327,16 +328,16 @@ namespace TheFatDuckRestaurant
                             }
                             Console.WriteLine("\x0AToets een nieuw ingredient in en klik op enter\x0A Om terug te gaan toets Q en klik op enter.");
                             var userInputIngredienten = Console.ReadLine();
-                            if (userInputIngredienten == "Q" || userInputIngredienten == "q") 
+                            if (userInputIngredienten == "Q" || userInputIngredienten == "q")
                             {
                                 passedSpecifiek = true;
                             }
                             else
                             {
-                                if(ingredienten_ != null)
+                                if (ingredienten_ != null)
                                 {
-                                    var tempIngredienten = new string[ingredienten_.Length +1];
-                                    for(int i = 0; i < ingredienten_.Length; i++)
+                                    var tempIngredienten = new string[ingredienten_.Length + 1];
+                                    for (int i = 0; i < ingredienten_.Length; i++)
                                     {
                                         tempIngredienten[i] = ingredienten_[i];
                                     }
@@ -355,7 +356,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine("Het item wordt toegevoegd aan het voorgerechten menu, weet u dit zeker? \x0AToets A in en klik op enter om het menu toe te voegen. \x0AToets Q in en klik op enter om het te annuleren.");
                         var userInputConfirmatie = Console.ReadLine();
-                        if(userInputConfirmatie == "A" || userInputConfirmatie == "a")
+                        if (userInputConfirmatie == "A" || userInputConfirmatie == "a")
                         {
                             passed = true;
                         }
@@ -364,7 +365,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine("U gaat terug naar het algemene menu en er worden verder geen gerechten toegevoegd aan het menu, weet u dit zeker? \x0AToets A in en klik op enter om terug te gaan\x0A Toets Q in en klik op enter om verder te werken aan een menu item toevoegen. ");
                         var userInputFinale = Console.ReadLine();
-                        if(userInputFinale == "A" || userInputFinale == "a")
+                        if (userInputFinale == "A" || userInputFinale == "a")
                         {
                             //Call naar menu bekijken voor Werknemer scherm.
                         }
