@@ -95,13 +95,13 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine(ASCIIART.GeneralArt());
                 Console.WriteLine("Informatie over Fat Duck restaurant\n\n");
                 Console.WriteLine("<Informatie over the Fat Duck>\n\n");
-                Console.WriteLine("1: Terug naar startscherm");
+                Console.WriteLine("0: Terug naar startscherm");
                 if (verkeerdeInput)
-                    Console.WriteLine("VerkeerdeInput, probeer 1");
+                    Console.WriteLine("VerkeerdeInput, probeer 0");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
-                if(userInputChar == '1')
+                if(userInputChar == '0')
                 {
                     passed = true;
                     return;

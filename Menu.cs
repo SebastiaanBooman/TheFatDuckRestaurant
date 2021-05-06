@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.Startscherm;
 using static TheFatDuckRestaurant.ASCIIART;
+using System.Linq;
 
 namespace TheFatDuckRestaurant
 {
@@ -23,17 +24,8 @@ namespace TheFatDuckRestaurant
         public string[] ingredienten { get; set; }
     }
 
-
-
     public class Menucode
     {
-        /* static void Main(string[] args)
-        {
-            Menu menu = instantiateMenu();
-            addItemMenu(menu.Voorgerechten);
-            //KiesMenu(menu);
-        } */
-
         public static void KiesMenu()
         {
             bool verkeerdeInput = false;
@@ -75,7 +67,7 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam, Menu menu)
+        public static void MenuGerechten(Gerechten[] typeGerecht, string typeGerechtNaam, Menu menu) //MenuGerechten laat het algemene menu zien, Met de parameter typeGerechtNaam weet het programma of de voor, hoofd of na gerechten moeten worden getoont.
         {
             string userInput = null;
             int userInputConverted = 0;
@@ -86,12 +78,10 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.MenuArt());
-                Console.WriteLine($"\x0A Dit zijn de {typeGerechtNaam} van The Fat Duck.\x0A Toets op het getal naast het menu item om er meer informatie over te lezen\x0A\x0A");
+                Console.WriteLine($"\n{typeGerechtNaam}\n");
                 for (int i = 1; i < typeGerecht.Length + 1; i++)
                 {
-
-                    Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A");
-                    // Console.WriteLine($"Toets {i} voor meer informatie over dit gerecht \x0A\x0A");
+                    Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A"); //1 : "GerechtNaam" (etc)
                 }
                 Console.WriteLine($"\x0AToets A om het menu aan te passen\x0AToets Q om terug te gaan");
                 if (verkeerdeInput)
@@ -148,21 +138,23 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 Console.WriteLine(ASCIIART.MenuArt());
                 Console.WriteLine($"Gerecht: " + typeGerecht[x - 1].naam + "\x0A");
-                Console.WriteLine($"Prijs: " + typeGerecht[x - 1].prijs + "\x0a");
+                Console.WriteLine($"Prijs: {typeGerecht[x - 1].prijs} Euro\x0a");
                 Console.WriteLine($"Beschrijving: " + typeGerecht[x - 1].beschrijving + "\x0a");
                 Console.WriteLine($"Ingredienten: ");
                 for (int i = 0; i < typeGerecht[x - 1].ingredienten.Length; i++)
                 {
-                    Console.WriteLine(typeGerecht[x - 1].ingredienten[i]);
+                    Console.WriteLine($"- {typeGerecht[x - 1].ingredienten[i]}");
                 }
-                Console.WriteLine($"\x0a\x0aToets Q om terug te gaan");
+                Console.WriteLine($"\n\n0 : Terug");
                 if (verkeerdeInput)
                 {
-                    Console.WriteLine("Vekeerde input, probeer Q");
+                    Console.WriteLine("Vekeerde input, probeer 0");
                     verkeerdeInput = false;
                 }
-                string userInput = Console.ReadLine();
-                if (userInput == "Q")
+                //string userInput = Console.ReadLine();
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
+                if (toetsUserChar == '0')
                 {
                     passed = true;
                     return;
@@ -232,7 +224,6 @@ namespace TheFatDuckRestaurant
             var jsonString = JsonSerializer.Serialize(menu, JSONoptions);
             File.WriteAllText("menu.json", jsonString);
             return typeGerecht;
-
         }
 
         public static Gerechten[] removeItemScreen(Gerechten[] typeGerecht, string typeGerechtNaam)
@@ -340,64 +331,15 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case "1":
-                        Console.Clear();
-                        Console.WriteLine($"Naam aanpassen\nDit is de oude naam: {naam_}\x0A\x0AToets de nieuwe naam in en klik op enter\x0AOm terug te gaan toets Q in en klik op enter");
-                        var userInputNaam = Console.ReadLine();
-                        if (userInputNaam == "Q" || userInputNaam == "q") { }
-                        else
-                        {
-                            naam_ = userInputNaam;
-                        }
+                        naam_ = ChangeItemName(naam_); //Input "1" roept de functie die een gerecht's naam laat veranderen.
                         break;
                     case "2":
-                        Console.Clear();
-                        while (!passedSpecifiek)
-                        {
-                            Console.WriteLine($"Prijs aanpassen\x0A Dit is de huidige prijs: {prijs_}\x0AToets de nieuwe prijs in en klik op enter\x0A Om terug te gaan toets Q in en klik op enter");
-                            var userInputPrijs = Console.ReadLine();
-                            if (userInputPrijs == "Q" || userInputPrijs == "q")
-                            {
-                                passedSpecifiek = true;
-                            }
-                            else
-                            {
-
-                                try
-                                {
-                                    var userInputPrijsConverted = Int32.Parse(userInputPrijs);
-
-                                    prijs_ = userInputPrijsConverted;
-                                    passedSpecifiek = true;
-                                }
-                                catch (System.FormatException)
-                                {
-                                    try
-                                    {
-                                        var userInputPrijsConverted = float.Parse(userInputPrijs);
-                                        prijs_ = userInputPrijsConverted;
-                                        passedSpecifiek = true;
-                                    }
-                                    catch (System.FormatException)
-                                    {
-                                        Console.WriteLine("Verkeerde input, voer een int in.");
-                                    }
-
-                                }
-                            }
-                        }
-                        passedSpecifiek = true;
+                        prijs_ = ChangeItemPrice(prijs_); //Input "2" roept de functie die een gerecht's prijs laat veranderen.
                         break;
                     case "3":
-                        Console.Clear();
-                        Console.WriteLine($"Beschrijving aanpassen\x0A Dit is de huidige beschrijving: {beschrijving_}\x0AToets de nieuwe beschrijving in en klik op enter\x0A Om terug te gaan toets Q in en klik op enter.");
-                        var userInputBeschrijving = Console.ReadLine();
-                        if (userInputBeschrijving == "Q" || userInputBeschrijving == "q") { }
-                        else
-                        {
-                            beschrijving_ = userInputBeschrijving;
-                        }
+                        beschrijving_ = ChangeItemDescription(beschrijving_); //Input "3" roept de functie die een gerecht's beschrijving laat veranderen.
                         break;
-                    case "4":
+                    case "4": //TODO: Ingredienten aanpassen moet ook in een aparte functie komen. Momenteel moeilijk te implementeren omdat de ingredienten niet een field of property van een class is en je kan het dus moeilijk callen.
                         Console.Clear();
                         while (!passedSpecifiek)
                         {
@@ -468,8 +410,86 @@ namespace TheFatDuckRestaurant
                 beschrijving = beschrijving_,
                 ingredienten = ingredienten_
             };
-
             return newGerecht;
+        }
+
+        private static string ChangeItemName(string OldName) //Functie die gecalled kan worden om een specifiek menu item's naam te veranderen
+        {
+            bool passed = false;
+            bool wrongInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine($"Naam aanpassen\nDit is de oude naam: {OldName}\x0A\x0AToets de nieuwe naam in en klik op enter\n0: Terug");
+                if (wrongInput)
+                {
+                    Console.WriteLine("Foutieve input!\nZorg ervoor dat de naam alleen letters bevat.");
+                    wrongInput = false;
+                }
+                string userInputNaam = Console.ReadLine();
+                if (userInputNaam == "0") //Als de input "0" is , return de oude naam (veranderd niets), anders loopt de code door een paar checks.
+                    return OldName;
+                else if (userInputNaam.Any(char.IsDigit)) //Checkt of er een getal tussen de letters staat.
+                    wrongInput = true;
+                else
+                {
+                    return userInputNaam;
+                }
+            }
+            return OldName; //Onnodige return kwa design, alleen alle mogelijke paden moeten een return value hebben.
+        }
+
+        private static double ChangeItemPrice(double OldPrice)
+        {
+            bool passed = false;
+            bool wrongInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine($"Prijs aanpassen\x0A Dit is de huidige prijs: {OldPrice}\x0AToets de nieuwe prijs in en klik op enter\n0: Terug");
+                if (wrongInput)
+                {
+                    Console.WriteLine("Verkeerde Input! Voer een int (1) of double (1.x) in.");
+                    wrongInput = false;
+                }
+                var userInputPrijs = Console.ReadLine();
+                if (userInputPrijs == "0")
+                    return OldPrice;
+                else
+                {
+                    try
+                    {
+                        var userInputPrijsConverted = double.Parse(userInputPrijs);
+                        return  userInputPrijsConverted;
+                    }
+                    catch (System.FormatException)
+                    {
+                        wrongInput = true;
+                    }
+                }
+            }
+            return OldPrice; //Onnodige return kwa design, alleen alle mogelijke paden moeten een return value hebben.
+        }
+
+        private static string ChangeItemDescription(string oldDescription)
+        {
+            bool passed = false;
+            //bool wrongInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine($"Beschrijving aanpassen\x0A Dit is de huidige beschrijving: {oldDescription}\x0AToets de nieuwe beschrijving in en klik op enter\n0: Terug");
+                var userInputBeschrijving = Console.ReadLine();
+                if (userInputBeschrijving == "0")
+                {
+                    return oldDescription;
+                }
+                else
+                {
+                    return userInputBeschrijving;
+                }
+            }
+            return oldDescription; //Onnodige return kwa design, alleen alle mogelijke paden moeten een return value hebben.
         }
 
         public static Menu instantiateMenu()
