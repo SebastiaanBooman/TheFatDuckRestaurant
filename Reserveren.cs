@@ -8,9 +8,15 @@ namespace TheFatDuckRestaurant
     {
         public class Reservering
         {
-            public string Tijd { get; set; }
+            public int Tijd { get; set; }
             public string Datum { get; set; }
             public int Personen { get; set; }
+            public Reservering(int tijd, string datum, int personen)
+            {
+                this.Tijd = tijd;
+                this.Datum = datum;
+                this.Personen = personen;
+            }
         }
         public static void Reserveer()
         {
@@ -21,41 +27,40 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(Datum.Item2 + "\x0aHoe laat wilt u reserveren? (11:00 - 21:00)");
-                Tuple<bool,string> Tijd = CheckTijd(Console.ReadLine());
+                Tuple<bool,int> Tijd = CheckTijd(Console.ReadLine());
                 if (Tijd.Item1)
                 {
+                    int MaxPersonen = VrijePlaatsen(Datum.Item2,Tijd.Item2);
+                    string TijdString = $"{Tijd.Item2 / 100 }:{Tijd.Item2 % 100}";
+                    TijdString += TijdString.Length < 5 ? "0" : "";
                     Console.Clear();
-                    Console.WriteLine(Tijd.Item2 + "\x0a"+"Er zijn 100 plaatsen vrij\x0aMet hoeveel personen bent u?");
-                    Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine());
+                    Console.WriteLine(TijdString + "\x0a"+$"Er zijn {MaxPersonen} plaatsen vrij\x0aMet hoeveel personen bent u?");
+                    //Check met json hoeveel plaatsen er vrij zijn mbv datum en tijd
+                    Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine(),MaxPersonen);
                     if (Personen.Item1)
                     {
-                        Console.Clear();
-                        Console.WriteLine("1: Bekijk de reservering\x0a" + "2: Bevestig de reservering\x0a" + "3: Annuleer de reservering");
-                        ConsoleKeyInfo userInput = Console.ReadKey();
-                        char userInputChar = userInput.KeyChar;
-                        Console.Clear();
-                        switch (userInputChar)
+                        Reservering NieuweReservering = new Reservering(Tijd.Item2,Datum.Item2,Personen.Item2);
+                        char userInput = '1';
+                        while (userInput != '2')
                         {
-                            case '1':
-                                Console.WriteLine($"{Datum.Item2}\x0a{Tijd.Item2}\x0a{Personen.Item2}\x0a<Menu items en rekening>\x0a\x0a" + "1: Pas de reservering aan\x0a" +"2: Ga terug naar het vorige scherm");
-                                userInput = Console.ReadKey();
-                                userInputChar = userInput.KeyChar;
-                                switch (userInputChar)
-                                {
-                                    case '1':
-                                        Console.WriteLine("<Reservering aanpassen>");
-                                        break;
-                                    case '2':
-                                        Console.WriteLine("<Terug naar het vorige scherm");
-                                        break;
-                                }
-                                break;
-                            case '2':
-                                Console.WriteLine("U heeft gereserveerd\x0a" );
-                                break;
-                            case '3':
-                                Console.WriteLine("De reservering is geannuleerd\x0a");
-                                break;
+                            Console.Clear();
+                            Console.WriteLine("1: Bekijk de reservering of pas deze aan\x0a" + "2: Bevestig de reservering\x0a" + "3: Annuleer de reservering");
+                            userInput = Console.ReadKey().KeyChar;
+                            Console.Clear();
+                            switch (userInput)
+                            {
+                                case '1':
+                                    NieuweReservering = Aanpassen(NieuweReservering);
+                                    break;
+                                case '2':
+                                    Console.WriteLine("U heeft gereserveerd\x0a");
+                                    break;
+                                case '3':
+                                    Console.WriteLine("De reservering is geannuleerd\x0a");
+                                    Console.WriteLine("Enter: Ga terug naar het startscherm");
+                                    Console.ReadKey();
+                                    return;
+                            }
                         }
                     }
                     else
@@ -74,49 +79,102 @@ namespace TheFatDuckRestaurant
             }
             Console.WriteLine("Enter: Ga terug naar het startscherm");
             Console.ReadKey();
-            /*
-            Console.WriteLine("Reserveren\x0a");
-            string[] Dagen = Datums(DateTime.Now);
-            for (int i = 0; i < Dagen.Length; i++)
-            {
-                Console.WriteLine($"{i}: Reserveer voor {Dagen[i]}\x0a");
-            }
-            if (int.TryParse(Console.ReadLine(), out int Keuze)){
-                Console.Clear();
-                Console.WriteLine($"{Dagen[Keuze]}\x0a");
-                string[] Beschikbaar = Tijden(Dagen[Keuze]);
-                for(int i = 0; i < Beschikbaar.Length; i++)
-                {
-                    Console.WriteLine($"{i}: Reserveer voor {Beschikbaar[i]} ({Plaatsen(Dagen[Keuze],Beschikbaar[i])} vrije plekken)\x0a");
-                }
-                if (int.TryParse(Console.ReadLine(), out int Keuze2))
-                {
-                    Console.Clear();
-                    Console.WriteLine($"{Dagen[Keuze]} om {Beschikbaar[Keuze2]}\x0a\x0aMet hoeveel personen bent u?");
-                    if (int.TryParse(Console.ReadLine(), out int Personen) && Personen > 0)
-                    {
-                        Console.Clear();
-                        Console.WriteLine($"U heeft gereserveerd voor {Dagen[Keuze]} om {Beschikbaar[Keuze2]} voor {Personen}" + (Personen == 1 ? " persoon" : " personen") + "\x0a\x0a" + "Enter: Ga terug naar het beginscherm");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Verkeerde input\x0a" + "Enter: Ga terug naar het beginscherm");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Verkeerde input\x0a"+"Enter: Ga terug naar het beginscherm");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Verkeerde input\x0a"+"Enter: Ga terug naar het beginscherm");
-            }
-            Console.ReadKey();*/
         }
         
-        public static Tuple<bool,int> CheckPersonen(string P)
+        public static int VrijePlaatsen(string Datum, int Tijd)
         {
+            return 100;
+        }
+        public static Reservering Aanpassen(Reservering reservering)
+        {
+            char userInput = '0';
+            while (userInput != '3')
+            {
+                char secondInput = '0';
+                Console.Clear();
+                Console.WriteLine("1: Bekijk de reserveringsdetails\x0a" + "2: Bekijk de gekozen gerechten\x0a" + "3: Ga terug naar het vorige scherm");
+                userInput = Console.ReadKey().KeyChar;
+                switch (userInput)
+                {
+                    case '1':
+                        while(secondInput != '4')
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"Datum: {reservering.Datum}\x0aTijd: {reservering.Tijd}\x0a" + $"Aantal personen: {reservering.Personen}\x0a\x0a" + "1: Pas de datum aan\x0a" + "2: Pas de tijd aan\x0a" + "3: Pas het aantal personen aan\x0a" + "4: Ga terug naar het vorige scherm");
+                            secondInput = Console.ReadKey().KeyChar;
+                            Console.Clear();
+                            switch (secondInput)
+                            {
+                                case '1':
+                                    Console.WriteLine($"Welke datum wilt u reserveren? ({reservering.Datum})");
+                                    Tuple<bool, string> Datum = CheckDatum(Console.ReadLine());
+                                    //Check ook of er genoeg plaatsen zijn op deze datum en tijd
+                                    Console.Clear();
+                                    if (Datum.Item1)
+                                    {
+                                        reservering.Datum = Datum.Item2;
+                                        Console.WriteLine($"De datum is verzet naar:\x0a{Datum.Item2}\x0a\x0a" +"Enter: Ga terug naar het voirge scherm");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"{Datum.Item2} is geen beschikbare datum\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                    }
+                                    Console.ReadKey();
+                                    break;
+                                case '2':
+                                    Console.WriteLine("Hoe laat wilt u reserveren? (11:00 - 21:00)");
+                                    Tuple<bool, int> Tijd = CheckTijd(Console.ReadLine());
+                                    //Check ook of er genoeg plaatsen zijn op deze datum en tijd
+                                    Console.Clear();
+                                    if (Tijd.Item1)
+                                    {
+                                        reservering.Tijd = Tijd.Item2;
+                                        string TijdString = $"{Tijd.Item2 / 100 }:{Tijd.Item2 % 100}";
+                                        TijdString += TijdString.Length < 5 ? "0" : ""; 
+                                        Console.WriteLine($"De tijd is verzet naar:\x0a{TijdString}\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"De gekozen tijd valt niet binnen de openingsuren\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                    }
+                                    Console.ReadKey();
+                                    break;
+                                case '3':
+                                    int MaxPersonen = VrijePlaatsen(reservering.Datum,reservering.Tijd);
+                                    Console.WriteLine($"Er zijn {MaxPersonen} plaatsen vrij\x0aMet hoeveel personen bent u?");
+                                    //Aantal vrije plaatsen via json
+                                    Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine(), MaxPersonen);
+                                    Console.Clear();
+                                    if (Personen.Item1)
+                                    {
+                                        reservering.Personen = Personen.Item2;
+                                        Console.WriteLine($"Het aantal personen is aangepast naar {Personen.Item2}\x0a\x0a" + "1: Bekijk de gekozen gerechten\x0a"+"Enter: Ga terug naar het vorige scherm");
+                                        if(Console.ReadKey().KeyChar == '1')
+                                        {
+                                            Console.WriteLine("<Gerechten laten zien en optie om aan te passen>\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Er zijn niet genoeg plaatsen vrij\x0a\x0a" + "Enter: Ga terug naar het vorig scherm");
+                                    }
+                                    Console.ReadKey();
+                                    break;
+                            }
+                        }
+                        break;
+                    case '2':
+                        Console.WriteLine("<Gerechten laten zien en optie om aan te passen>");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+            return reservering;
+        }
+        public static Tuple<bool,int> CheckPersonen(string P, int Max)
+        {
+            //Check met json mbv datum en tijd
             string Personen = "";
             foreach(char sym in P)
             {
@@ -126,7 +184,7 @@ namespace TheFatDuckRestaurant
                 }
             }
             int PersInt = Personen != "" ? Int32.Parse(Personen) : 101;
-            if(PersInt <= 100)
+            if(PersInt <= Max && PersInt > 0)
             {
                 return Tuple.Create(true, PersInt);
             }
@@ -134,7 +192,7 @@ namespace TheFatDuckRestaurant
             return Tuple.Create(false, 0);
         }
 
-        public static Tuple<bool,string> CheckTijd(string T)
+        public static Tuple<bool,int> CheckTijd(string T)
         {
             string Tijd = "";
             foreach(char sym in T)
@@ -146,13 +204,16 @@ namespace TheFatDuckRestaurant
             }
             int TijdInt = Tijd != "" ? Int32.Parse(Tijd): 0;
             TijdInt *= TijdInt < 100 ? 100 : 1;
+            if(TijdInt <= 900 && TijdInt >= 0)
+            {
+                TijdInt += 1200;
+            }
             if(TijdInt <= 2100 && TijdInt >= 1100)
             {
-                string Minuten = TijdInt % 100 == 0 ? "00" : $"{TijdInt % 100}";
-                return Tuple.Create(true, $"{TijdInt / 100}:{Minuten}");
+                return Tuple.Create(true, TijdInt);
             }
             Console.WriteLine("Deze tijd is ongeldig");
-            return Tuple.Create(false, "");
+            return Tuple.Create(false, 0);
         }
         public static Tuple<bool,string> CheckDatum(string Datum)
         {
