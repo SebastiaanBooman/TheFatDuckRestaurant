@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TheFatDuckRestaurant
 {
     class Reserveren
     {
+        public class ReserveerLijst
+        {
+            public Reservering[] Reserveringen { get; set; }
+        }
         public class Reservering
         {
             public int Tijd { get; set; }
@@ -20,6 +26,8 @@ namespace TheFatDuckRestaurant
         }
         public static void Reserveer()
         {
+            var jsonString = File.ReadAllText("reserveringen.json");
+            ReserveerLijst Reserveringen = JsonSerializer.Deserialize<ReserveerLijst>(jsonString);
             Console.Clear();
             Console.WriteLine("Welke datum wilt u reserveren? (20 juli)");
             Tuple<bool,string> Datum = CheckDatum(Console.ReadLine());
@@ -41,7 +49,7 @@ namespace TheFatDuckRestaurant
                     {
                         Reservering NieuweReservering = new Reservering(Tijd.Item2,Datum.Item2,Personen.Item2);
                         char userInput = '1';
-                        while (userInput != '2')
+                        while (userInput != '2' && userInput != '3')
                         {
                             Console.Clear();
                             Console.WriteLine("1: Bekijk de reservering of pas deze aan\x0a" + "2: Bevestig de reservering\x0a" + "3: Annuleer de reservering");
@@ -53,13 +61,12 @@ namespace TheFatDuckRestaurant
                                     NieuweReservering = Aanpassen(NieuweReservering);
                                     break;
                                 case '2':
+                                    AddReservering(NieuweReservering, Reserveringen.Reserveringen);
                                     Console.WriteLine("U heeft gereserveerd\x0a");
                                     break;
                                 case '3':
                                     Console.WriteLine("De reservering is geannuleerd\x0a");
-                                    Console.WriteLine("Enter: Ga terug naar het startscherm");
-                                    Console.ReadKey();
-                                    return;
+                                    break;
                             }
                         }
                     }
@@ -80,7 +87,23 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("Enter: Ga terug naar het startscherm");
             Console.ReadKey();
         }
-        
+
+        public static void AddReservering(Reservering reservering, Reservering[] Reserveringen)
+        {
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            var newReserveringen = new Reservering[Reserveringen.Length + 1];
+            for (int i = 0; i < Reserveringen.Length; i++)
+            {
+                newReserveringen[i] = Reserveringen[i];
+            }
+            newReserveringen[Reserveringen.Length] = reservering;
+
+            var jsonString = JsonSerializer.Serialize(reservering, JSONoptions);
+            File.WriteAllText("reserveringen.json", jsonString);
+        }
         public static int VrijePlaatsen(string Datum, int Tijd)
         {
             return 100;
