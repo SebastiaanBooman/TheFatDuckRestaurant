@@ -26,8 +26,7 @@ namespace TheFatDuckRestaurant
         }
         public static void Reserveer()
         {
-            var jsonString = File.ReadAllText("reserveringen.json");
-            ReserveerLijst Reserveringen = JsonSerializer.Deserialize<ReserveerLijst>(jsonString);
+            ReserveerLijst Reserveringen = JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json"));
             Console.Clear();
             Console.WriteLine("Welke datum wilt u reserveren? (20 juli)");
             Tuple<bool,string> Datum = CheckDatum(Console.ReadLine());
@@ -38,7 +37,7 @@ namespace TheFatDuckRestaurant
                 Tuple<bool,int> Tijd = CheckTijd(Console.ReadLine());
                 if (Tijd.Item1)
                 {
-                    int MaxPersonen = VrijePlaatsen(Datum.Item2,Tijd.Item2);
+                    int MaxPersonen = VrijePlaatsen(Datum.Item2,Tijd.Item2,Reserveringen.Reserveringen);
                     string TijdString = $"{Tijd.Item2 / 100 }:{Tijd.Item2 % 100}";
                     TijdString += TijdString.Length < 5 ? "0" : "";
                     Console.Clear();
@@ -104,9 +103,17 @@ namespace TheFatDuckRestaurant
             var jsonString = JsonSerializer.Serialize(reservering, JSONoptions);
             File.WriteAllText("reserveringen.json", jsonString);
         }
-        public static int VrijePlaatsen(string Datum, int Tijd)
+        public static int VrijePlaatsen(string Datum, int Tijd, Reservering[] Reserveringen)
         {
-            return 100;
+            int MaxPersonen = 100;
+            foreach(Reservering reservering in Reserveringen)
+            {
+                if(reservering.Datum == Datum && reservering.Tijd >= Tijd && reservering.Tijd <= Tijd + 200)
+                {
+                    MaxPersonen -= reservering.Personen;
+                }
+            }
+            return MaxPersonen;
         }
         public static Reservering Aanpassen(Reservering reservering)
         {
@@ -163,7 +170,7 @@ namespace TheFatDuckRestaurant
                                     Console.ReadKey();
                                     break;
                                 case '3':
-                                    int MaxPersonen = VrijePlaatsen(reservering.Datum,reservering.Tijd);
+                                    int MaxPersonen = VrijePlaatsen(reservering.Datum,reservering.Tijd, JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json")).Reserveringen);
                                     Console.WriteLine($"Er zijn {MaxPersonen} plaatsen vrij\x0aMet hoeveel personen bent u?");
                                     //Aantal vrije plaatsen via json
                                     Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine(), MaxPersonen);
