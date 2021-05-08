@@ -17,12 +17,6 @@ namespace TheFatDuckRestaurant
             public int Tijd { get; set; }
             public string Datum { get; set; }
             public int Personen { get; set; }
-            public Reservering(int tijd, string datum, int personen)
-            {
-                this.Tijd = tijd;
-                this.Datum = datum;
-                this.Personen = personen;
-            }
         }
         public static void Reserveer()
         {
@@ -35,43 +29,55 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 Console.WriteLine(Datum.Item2 + "\x0aHoe laat wilt u reserveren? (11:00 - 21:00)");
                 Tuple<bool,int> Tijd = CheckTijd(Console.ReadLine());
+                //Check of er meer dan 0 plaatsen vrij zijn
                 if (Tijd.Item1)
                 {
                     int MaxPersonen = VrijePlaatsen(Datum.Item2,Tijd.Item2,Reserveringen.Reserveringen);
-                    string TijdString = $"{Tijd.Item2 / 100 }:{Tijd.Item2 % 100}";
-                    TijdString += TijdString.Length < 5 ? "0" : "";
                     Console.Clear();
-                    Console.WriteLine(TijdString + "\x0a"+$"Er zijn {MaxPersonen} plaatsen vrij\x0aMet hoeveel personen bent u?");
-                    //Check met json hoeveel plaatsen er vrij zijn mbv datum en tijd
-                    Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine(),MaxPersonen);
-                    if (Personen.Item1)
+                    if (MaxPersonen > 0)
                     {
-                        Reservering NieuweReservering = new Reservering(Tijd.Item2,Datum.Item2,Personen.Item2);
-                        char userInput = '1';
-                        while (userInput != '2' && userInput != '3')
+                        string TijdString = $"{Tijd.Item2 / 100 }:{Tijd.Item2 % 100}";
+                        TijdString += TijdString.Length < 5 ? "0" : "";
+                        Console.WriteLine(TijdString + "\x0a" + $"Er zijn {MaxPersonen} plaatsen vrij\x0aMet hoeveel personen bent u?");
+                        Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine(), MaxPersonen);
+                        if (Personen.Item1)
                         {
-                            Console.Clear();
-                            Console.WriteLine("1: Bekijk de reservering of pas deze aan\x0a" + "2: Bevestig de reservering\x0a" + "3: Annuleer de reservering");
-                            userInput = Console.ReadKey().KeyChar;
-                            Console.Clear();
-                            switch (userInput)
+                            Reservering NieuweReservering = new Reservering
                             {
-                                case '1':
-                                    NieuweReservering = Aanpassen(NieuweReservering);
-                                    break;
-                                case '2':
-                                    AddReservering(NieuweReservering, Reserveringen.Reserveringen);
-                                    Console.WriteLine("U heeft gereserveerd\x0a");
-                                    break;
-                                case '3':
-                                    Console.WriteLine("De reservering is geannuleerd\x0a");
-                                    break;
+                                Tijd = Tijd.Item2,
+                                Datum = Datum.Item2,
+                                Personen = Personen.Item2
+                            };
+                            char userInput = '1';
+                            while (userInput != '2' && userInput != '3')
+                            {
+                                Console.Clear();
+                                Console.WriteLine("1: Bekijk de reservering of pas deze aan\x0a" + "2: Bevestig de reservering\x0a" + "3: Annuleer de reservering");
+                                userInput = Console.ReadKey().KeyChar;
+                                Console.Clear();
+                                switch (userInput)
+                                {
+                                    case '1':
+                                        NieuweReservering = Aanpassen(NieuweReservering);
+                                        break;
+                                    case '2':
+                                        Reserveringen = AddReservering(NieuweReservering, Reserveringen);
+                                        Console.WriteLine("U heeft gereserveerd");
+                                        break;
+                                    case '3':
+                                        Console.WriteLine("De reservering is geannuleerd");
+                                        break;
+                                }
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Er zijn niet genoeg plaatsen beschikbaar om deze tijd");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Er zijn niet genoeg plaatsen beschikbaar om deze tijd");
+                        Console.WriteLine("Er zijn geen plaatsen beschikbaar om deze tijd");
                     }
                 }
                 else
@@ -83,34 +89,49 @@ namespace TheFatDuckRestaurant
             {
                 Console.WriteLine("Deze datum bestaat niet");
             }
-            Console.WriteLine("Enter: Ga terug naar het startscherm");
+            Console.WriteLine("\x0a" + "Enter: Ga terug naar het startscherm");
             Console.ReadKey();
         }
 
-        public static void AddReservering(Reservering reservering, Reservering[] Reserveringen)
+        public static ReserveerLijst AddReservering(Reservering reservering, ReserveerLijst ReserveerLijst)
         {
+            Reservering[] Reserveringen = ReserveerLijst.Reserveringen; 
             var JSONoptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
-            var newReserveringen = new Reservering[Reserveringen.Length + 1];
-            for (int i = 0; i < Reserveringen.Length; i++)
+            Reservering[] newReserveringen;
+            if (Reserveringen != null)
             {
-                newReserveringen[i] = Reserveringen[i];
+                newReserveringen = new Reservering[Reserveringen.Length + 1];
+                for (int i = 0; i < Reserveringen.Length; i++)
+                {
+                    newReserveringen[i] = Reserveringen[i];
+                }
+                newReserveringen[Reserveringen.Length] = reservering;
             }
-            newReserveringen[Reserveringen.Length] = reservering;
+            else
+            {
+                newReserveringen = new Reservering[] {reservering};
+            }
 
-            var jsonString = JsonSerializer.Serialize(reservering, JSONoptions);
+            ReserveerLijst.Reserveringen = newReserveringen;
+            var jsonString = JsonSerializer.Serialize(ReserveerLijst, JSONoptions);
             File.WriteAllText("reserveringen.json", jsonString);
+            ReserveerLijst = JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json"));
+            return ReserveerLijst;
         }
         public static int VrijePlaatsen(string Datum, int Tijd, Reservering[] Reserveringen)
         {
             int MaxPersonen = 100;
-            foreach(Reservering reservering in Reserveringen)
+            if (Reserveringen != null)
             {
-                if(reservering.Datum == Datum && reservering.Tijd >= Tijd && reservering.Tijd <= Tijd + 200)
+                for (int i = 0; i < Reserveringen.Length; i++)
                 {
-                    MaxPersonen -= reservering.Personen;
+                    if (Reserveringen[i].Datum == Datum && Reserveringen[i].Tijd > Tijd - 200 && Reserveringen[i].Tijd < Tijd + 200)
+                    {
+                        MaxPersonen -= Reserveringen[i].Personen;
+                    }
                 }
             }
             return MaxPersonen;
@@ -172,7 +193,6 @@ namespace TheFatDuckRestaurant
                                 case '3':
                                     int MaxPersonen = VrijePlaatsen(reservering.Datum,reservering.Tijd, JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json")).Reserveringen);
                                     Console.WriteLine($"Er zijn {MaxPersonen} plaatsen vrij\x0aMet hoeveel personen bent u?");
-                                    //Aantal vrije plaatsen via json
                                     Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine(), MaxPersonen);
                                     Console.Clear();
                                     if (Personen.Item1)
@@ -204,7 +224,6 @@ namespace TheFatDuckRestaurant
         }
         public static Tuple<bool,int> CheckPersonen(string P, int Max)
         {
-            //Check met json mbv datum en tijd
             string Personen = "";
             foreach(char sym in P)
             {
