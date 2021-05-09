@@ -7,7 +7,8 @@ using TheFatDuckRestaurant;
 
 namespace TheFatDuckRestaurant
 {
-    public class Klanten
+}
+ /*   public class Klanten
     {
         public string Naam { get; set; }
         public string Wachtwoord { get; set; }
@@ -23,23 +24,11 @@ namespace TheFatDuckRestaurant
     {
         public List<Klanten> Klanten { get; set; }
         public List<Medewerker> Medewerkers { get; set; }
-    }
+    } 
 
-
-
-    class Program
+    class Registreren
     {
-        static void Main(string[] args)
-        {
-            var arrUsers = new Users[]
-            {
-            new Users("Tom","test"),
-            new Users("Sebastian","test"),
-            };
-            bool successfull = false;
-
-
-            void login()
+         /*   void login()
             {
                 Console.WriteLine("Enter your username:");
                 var username = Console.ReadLine();
@@ -59,21 +48,18 @@ namespace TheFatDuckRestaurant
                         break;
                     }
                 }
-
                 if (!successfull)
                 {
                     Console.WriteLine("Your username or password is incorect, try again");
-                }
-
-
-            }
+                } 
+            } 
             void register()
             {
                 var jsonOptions = new JsonSerializerOptions
                 {
                     WriteIndented = true,
                 };
-                    var user = File.ReadAllText(@"C:\Users\User\source\repos\SebastiaanBooman\TheFatDuckRestaurant\credentials.json");
+                    var user = File.ReadAllText("credentials.json");
                     Gebruikers jsonDes = JsonSerializer.Deserialize<Gebruikers>(user);
 
 
@@ -81,7 +67,7 @@ namespace TheFatDuckRestaurant
                     var input = Console.ReadLine();
                     Console.Clear();
 
-                    if (input == "1")
+                 /*   if (input == "1")
                     {
                         Console.WriteLine("Enter your username:");
                         string username = Console.ReadLine();
@@ -133,14 +119,12 @@ namespace TheFatDuckRestaurant
                                 Wachtwoord = password
                             });
                             var toSerializeMedewerker = JsonSerializer.Serialize(jsonDes, jsonOptions);
-                            File.WriteAllText(@"C:\Users\User\source\repos\SebastiaanBooman\TheFatDuckRestaurant\credentials.json", toSerializeMedewerker);
+                            File.WriteAllText(@"C:\Users\User\source\repos\SebastiaanBooman\TheFatDuckRestaurant\credentials.json", toSerializeMedewerker); 
                 }
             }
 
 
-
-
-
+                /*
                 while (!successfull)
                 {
                     Console.WriteLine("Welcome to The Fat Duck! \x0APress 1 to login with your credentials \x0APress 2 to register \x0APress 3 for more informations \x0APress 4 for menu");
@@ -172,15 +156,13 @@ namespace TheFatDuckRestaurant
                     else
                     {
                         Console.WriteLine("Try again!");
-
-
                     }
 
-                }
+                } 
 
         }
 
-        public class Users
+   /*     public class Users
         {
             public string username;
             public string password;
@@ -191,7 +173,5 @@ namespace TheFatDuckRestaurant
                 this.username = username;
                 this.password = password;
 
-            }
-        }
-    }
-}
+            } 
+        } */

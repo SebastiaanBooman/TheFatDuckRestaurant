@@ -202,7 +202,6 @@ namespace TheFatDuckRestaurant
             var newGerecht = createItemMenu(typeGerechtNaam);
             Menu menu = instantiateMenu();
 
-
             if(newGerecht != null)
             {
                 var newGerechten = new Gerechten[typeGerecht.Length + 1];
