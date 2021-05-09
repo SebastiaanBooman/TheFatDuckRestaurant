@@ -72,9 +72,10 @@ namespace TheFatDuckRestaurant
             //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
             bool NaamBestaat = false;
             Console.Clear();
-            Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "1: Ga terug naar het vorige scherm");
+            Console.WriteLine(ASCIIART.LoginArt());
+            Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
             string GegevenNaam = Console.ReadLine();
-            if (GegevenNaam != "1")
+            if (GegevenNaam != "0")
             {
                 int index = 0;
                 for (int i = 0; i < gebruiker.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
@@ -87,6 +88,7 @@ namespace TheFatDuckRestaurant
                 if (NaamBestaat)
                 {
                     Console.Clear();
+                    Console.WriteLine(ASCIIART.LoginArt());
                     Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in");
                     Tuple<bool, string> Password = CheckWachtwoord(index, gebruiker);
                     while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
@@ -97,6 +99,7 @@ namespace TheFatDuckRestaurant
                     if (Password.Item2 != "1") //sluit het inlogscherm af wanneer 'terug' was getypt
                     {
                         Console.Clear();
+                        Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("U bent ingelogd!\x0A\x0A" + "Enter: Ga terug naar het sartscherm");
                         Dictionary<string, dynamic> dic = new Dictionary<string, dynamic>();
                         dic.Add("Gebruiker", gebruiker[index]);
@@ -108,8 +111,8 @@ namespace TheFatDuckRestaurant
                 }
                 else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer 'terug' is getypt
                 {
-                    Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "1: Ga terug naar het startscherm");
-                    if (Console.ReadKey().KeyChar != '1')
+                    Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
+                    if (Console.ReadKey().KeyChar != '0')
                     {
                         return Inlogscherm(gebruiker, gebruikers);
                     }
