@@ -15,21 +15,25 @@ namespace TheFatDuckRestaurant
         public static void Reserveer()
         {
             Console.Clear();
+            Console.WriteLine(ASCIIART.ReserverenArt());
             Console.WriteLine("Welke datum wilt u reserveren? (20 juli)");
             Tuple<bool,string> Datum = CheckDatum(Console.ReadLine());
             if (Datum.Item1)
             {
                 Console.Clear();
+                Console.WriteLine(ASCIIART.ReserverenArt());
                 Console.WriteLine(Datum.Item2 + "\x0aHoe laat wilt u reserveren? (11:00 - 21:00)");
                 Tuple<bool,string> Tijd = CheckTijd(Console.ReadLine());
                 if (Tijd.Item1)
                 {
                     Console.Clear();
+                    Console.WriteLine(ASCIIART.ReserverenArt());
                     Console.WriteLine(Tijd.Item2 + "\x0a"+"Er zijn 100 plaatsen vrij\x0aMet hoeveel personen bent u?");
                     Tuple<bool, int> Personen = CheckPersonen(Console.ReadLine());
                     if (Personen.Item1)
                     {
                         Console.Clear();
+                        Console.WriteLine(ASCIIART.ReserverenArt());
                         Console.WriteLine("1: Bekijk de reservering\x0a" + "2: Bevestig de reservering\x0a" + "3: Annuleer de reservering");
                         ConsoleKeyInfo userInput = Console.ReadKey();
                         char userInputChar = userInput.KeyChar;

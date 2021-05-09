@@ -24,12 +24,19 @@ namespace TheFatDuckRestaurant
         {
             var jsonString = File.ReadAllText("gebruikers.json");
             Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
-            bool Run = true;
+            bool passed = false;
+            bool wrongInput = false;
             Dictionary<string, dynamic> HuidigeGebruiker = null;
-            while (Run)
+            while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine("Inloggen\n\n1: Login als klant\n\n\n\n2: Registreer als klant\n\n3: Login als medewerker\n\n0: Ga terug naar het startscherm");
+                Console.WriteLine(ASCIIART.LoginArt());
+                Console.WriteLine("1: Login als klant\n\n2: Registreer als klant\n\n3: Login als medewerker\n\n0: Ga terug naar het startscherm");
+                if (wrongInput)
+                {
+                    Console.WriteLine("Verkeerde input! Probeer 1, 2, 3 of 0");
+                    wrongInput = false;
+                }
                 ConsoleKeyInfo Choice = Console.ReadKey();
                 char ChoiceChar = Choice.KeyChar;
                 switch (ChoiceChar)
@@ -44,14 +51,10 @@ namespace TheFatDuckRestaurant
                         HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers, gebruikers);
                         return HuidigeGebruiker;
                     case '0':
-                        Run = false;
+                        return null;
                         break;
                     default:
-                        Console.WriteLine("\x0AOngeldige input" + "\x0A\x0A" + "Enter: Probeer het opnieuw\x0A\x0A" + "1: Ga terug naar het startscherm");
-                        if (Console.ReadLine() == "1")
-                        {
-                            Run = false;
-                        }
+                        wrongInput = true;
                         break;
                 }
             }
@@ -129,7 +132,8 @@ namespace TheFatDuckRestaurant
             Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
 
             Console.Clear();
-            Console.WriteLine("Registreer als klant\n\nVoer uw gebruikers naam in\n0: Terug");
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
             var naamInput = Console.ReadLine();
             Console.Clear();
 
@@ -140,14 +144,15 @@ namespace TheFatDuckRestaurant
                     while (gebruiker.Naam == naamInput)
                     {
                         Console.Clear();
-                        Console.WriteLine("Deze naam bestaat al! Probeer een andere");
-                        string username = Console.ReadLine();
+                        Console.WriteLine(ASCIIART.RegistrerenArt());
+                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
+                        naamInput = Console.ReadLine();
                     }
                 }
                 Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
                 Console.WriteLine("Voer uw wachtwoord in:");
-                string password = Console.ReadLine();
-                Console.Clear();
+                string password = Console.ReadLine(); //TODO: Check voor password met requirements
 
                 Gebruiker[] nieuweGebruikerLijst = new Gebruiker[gebruikers.Klanten.Length + 1];
 
@@ -159,6 +164,12 @@ namespace TheFatDuckRestaurant
                 gebruikers.Klanten = nieuweGebruikerLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
                 var toSerializeKlant = JsonSerializer.Serialize(gebruikers, jsonOptions);
                 File.WriteAllText("gebruikers.json", toSerializeKlant);
+
+
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine($"Welkom nieuwe gebruiker: {naamInput}!\n0: Enter");
+                Console.ReadKey();
                 return null;
             }
 
