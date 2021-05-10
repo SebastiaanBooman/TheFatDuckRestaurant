@@ -10,12 +10,30 @@ namespace TheFatDuckRestaurant
     {
         public Gebruiker[] Klanten { get; set; }
         public Gebruiker[] Medewerkers { get; set; }
+
+        public Gebruikers() //Empty constructor for json deserialisen.
+        {
+
+        }
+        public Gebruikers(Gebruiker[] klanten, Gebruiker[] medewerkers)
+        {
+            this.Klanten = klanten;
+            this.Medewerkers = medewerkers;
+        }
+ 
     }
 
     public class Gebruiker
     {
         public string Naam { get; set; }
         public string Wachtwoord { get; set; }
+
+        public Gebruiker(string naam, string wachtwoord)
+        {
+            this.Naam = naam;
+            this.Wachtwoord = wachtwoord;
+        }
+        public Gebruiker() { }
     }
 
     public class Inloggen
@@ -163,7 +181,7 @@ namespace TheFatDuckRestaurant
                 {
                     nieuweGebruikerLijst[i] = gebruikers.Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
                 }
-                nieuweGebruikerLijst[nieuweGebruikerLijst.Length - 1] = new Gebruiker { Naam = naamInput, Wachtwoord = password }; //voegt nieuwe gebruiker toe aan lijst
+                nieuweGebruikerLijst[nieuweGebruikerLijst.Length - 1] = new Gebruiker(naamInput,  password); //voegt nieuwe gebruiker toe aan lijst
                 gebruikers.Klanten = nieuweGebruikerLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
                 var toSerializeKlant = JsonSerializer.Serialize(gebruikers, jsonOptions);
                 File.WriteAllText("gebruikers.json", toSerializeKlant);
