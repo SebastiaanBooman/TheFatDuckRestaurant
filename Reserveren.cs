@@ -64,12 +64,6 @@ namespace TheFatDuckRestaurant
                             TijdString += TijdString.Length < 5 ? "0" : "";
                             Console.WriteLine($"De tijd is aangepast naar {Tijd}\x0a\x0a");
                         }
-                        else
-                        {
-                            Console.WriteLine("Deze tijd valt niet binnen de openingsuren\x0a\x0a");
-                        }
-                        Console.WriteLine("Enter: Ga terug naar het vorige scherm");
-                        Console.ReadKey();
                         break;
                     case '3':
                         int MaxPersonen = VrijePlaatsen(Datum, Tijd, Reserveringen.Reserveringen);
@@ -205,13 +199,15 @@ namespace TheFatDuckRestaurant
                 }
                 else
                 {
-                    Console.WriteLine("Er zijn niet genoeg vrije plaatsen op dit tijdstip\x0a");
+                    Console.WriteLine("Er zijn niet genoeg vrije plaatsen op dit tijdstip\x0a\x0a");
                 }
             }
             else
             {
-                Console.WriteLine("Deze tijd is ongeldig\x0a");
+                Console.WriteLine("Deze tijd is ongeldig\x0a\x0a");
             }
+            Console.WriteLine("Enter: Ga terug naar het vorige scherm");
+            Console.ReadKey();
             return Tuple.Create(false, 0);
         }
         public static Tuple<bool, string> CheckDatum(string Datum)
