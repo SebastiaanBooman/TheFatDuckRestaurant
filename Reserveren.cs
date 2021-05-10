@@ -176,6 +176,7 @@ namespace TheFatDuckRestaurant
 
         public static Tuple<bool, int> CheckTijd(string T, int Personen, string Datum, Reservering[] Reserveringen)
         {
+            Console.Clear();
             string Tijd = "";
             foreach (char sym in T)
             {
