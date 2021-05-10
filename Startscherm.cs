@@ -9,39 +9,8 @@ namespace TheFatDuckRestaurant
 {
     class Startscherm
     {
-        static void Main(string[] args)
-        {
-            //Menu menu = instantiateMenu();
-            //addItemMenu(menu.Voorgerechten);
-            //KiesMenu(menu);
-            StartschermFunctie();
-        }
-
-
-        /*public static string ASCIIART()
-        {
-            string ASCIILogoL1 = "  _______ _            ______    _     _____             _     ";
-            string ASCIILogoL2 = " |__   __| |          |  ____|  | |   |  __ \\           | |    ";
-            string ASCIILogoL3 = "    | |  | |__   ___  | |__ __ _| |_  | |  | |_   _  ___| | __ ";
-            string ASCIILogoL4 = "    | |  | '_ \\ / _ \\ |  __/ _` | __| | |  | | | | |/ __| |/ / ";
-            string ASCIILogoL5 = "    | |  | | | |  __/ | | | (_| | |_  | |__| | |_| | (__|   <  ";
-            string ASCIILogoL6 = "    |_|  |_| |_|\\___| |_|  \\__,_|\\__| |_____/ \\__,_|\\___|_|\\_\\ ";
-
-            string ASCIIDuckL1 = "           ..\n";
-            string ASCIIDuckL2 = "          ( '`<\n";
-            string ASCIIDuckL3 = "           )(\n";
-            string ASCIIDuckL4 = "    ( ----'  '.\n";
-            string ASCIIDuckL5 = "    (         ;\n";
-            string ASCIIDuckL6 = "     (_______,'\n";
-
-
-            string ASCIILogoAll = ASCIILogoL1 + ASCIIDuckL1 + ASCIILogoL2 + ASCIIDuckL2 + ASCIILogoL3 + ASCIIDuckL3 + ASCIILogoL4 + ASCIIDuckL4 + ASCIILogoL5 + ASCIIDuckL5 + ASCIILogoL6 + ASCIIDuckL6;
-
-
-            Console.WriteLine(ASCIILogoAll);
-            return ASCIILogoAll;
-
-        } */
+        static void Main(string[] args) => StartschermFunctie(); //Main functie called het startscherm bij het opstarten van de applicatie
+    
         public static void StartschermFunctie()
         {
             bool verkeerdeInput = false;
@@ -50,8 +19,8 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.GeneralArt());
-                Console.WriteLine("1: Informatie over The Fat Duck\x0a");
-                Console.WriteLine("2: Login bij The Fat Duck\x0a");
+                Console.WriteLine("1: Informatie\x0a");
+                Console.WriteLine("2: Login\x0a");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
                 Console.WriteLine("4: Reserveren\x0a");
                 Console.WriteLine("0: Applicatie afsluiten\x0a");
@@ -65,7 +34,6 @@ namespace TheFatDuckRestaurant
                 {
                     case '1':
                         TheFatDuckInformatie();
-                        Console.WriteLine("Test");
                         break;
                     case '2':
                         var HuidigeGebruiker = Login();
@@ -92,16 +60,15 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine(ASCIIART.GeneralArt());
-                Console.WriteLine("Informatie over Fat Duck restaurant\n\n");
+                Console.WriteLine(ASCIIART.InformatieArt());
                 Console.WriteLine("<Informatie over the Fat Duck>\n\n");
-                Console.WriteLine("1: Terug naar startscherm");
+                Console.WriteLine("0: Terug naar startscherm");
                 if (verkeerdeInput)
-                    Console.WriteLine("VerkeerdeInput, probeer 1");
+                    Console.WriteLine("VerkeerdeInput, probeer 0");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
-                if(userInputChar == '1')
+                if(userInputChar == '0')
                 {
                     passed = true;
                     return;
@@ -143,8 +110,59 @@ namespace TheFatDuckRestaurant
             string ASCIIMenuL5 = " | |  | |  __/ | | | |_| |";
             string ASCIIMenuL6 = " |_|  |_|\\___|_| |_|\\__,_|";
 
+            string ASCIILogoAll = ASCIIMenuL1 + ASCIIDuckL1 + ASCIIMenuL2 + ASCIIDuckL2 + ASCIIMenuL3 + ASCIIDuckL3 + ASCIIMenuL4 + ASCIIDuckL4 + ASCIIMenuL5 + ASCIIDuckL5 + ASCIIMenuL6 + ASCIIDuckL6;
+            return ASCIILogoAll;
+        }
+        public static string LoginArt()
+        {
+            string ASCIILoginL1 = "  _                 _       ";
+            string ASCIILoginL2 = " | |               (_)      ";
+            string ASCIILoginL3 = " | |     ___   __ _ _ _ __  ";
+            string ASCIILoginL4 = " | |    / _ \\ / _` | | '_ \\ ";
+            string ASCIILoginL5 = " | |___| (_) | (_| | | | | |";
+            string ASCIILoginL6 = " |______\\___/ \\__, |_|_| |_|";
+            string ASCIILoginL7 = "               __/ |        \n";
+            string ASCIILoginL8 = "              |___/         \n";
 
-            string ASCIILogoAll = ASCIIMenuL1 + ASCIILogoL1 + ASCIIDuckL1 + ASCIIMenuL2 + ASCIILogoL2 + ASCIIDuckL2 + ASCIIMenuL3 + ASCIILogoL3 + ASCIIDuckL3 + ASCIIMenuL4 + ASCIILogoL4 + ASCIIDuckL4 + ASCIIMenuL5 + ASCIILogoL5 + ASCIIDuckL5 + ASCIIMenuL6 + ASCIILogoL6 + ASCIIDuckL6;
+            string ASCIILogoAll = ASCIILoginL1 + ASCIIDuckL1 + ASCIILoginL2 + ASCIIDuckL2 + ASCIILoginL3 + ASCIIDuckL3 + ASCIILoginL4 + ASCIIDuckL4 + ASCIILoginL5 + ASCIIDuckL5 + ASCIILoginL6 + ASCIIDuckL6 + ASCIILoginL7 + ASCIILoginL8;
+            return ASCIILogoAll;
+        }
+        public static string InformatieArt()
+        {
+            string ASCIIInfoL1 = "  _____        __                           _   _      ";
+            string ASCIIInfoL2 = " |_   _|      / _|                         | | (_)     ";
+            string ASCIIInfoL3 = "   | |  _ __ | |_ ___  _ __ _ __ ___   __ _| |_ _  ___ ";
+            string ASCIIInfoL4 = "   | | | '_ \\|  _/ _ \\| '__| '_ ` _ \\ / _` | __| |/ _ \\";
+            string ASCIIInfoL5 = "  _| |_| | | | || (_) | |  | | | | | | (_| | |_| |  __/";
+            string ASCIIInfoL6 = " |_____|_| |_|_| \\___/|_|  |_| |_| |_|\\__,_|\\__|_|\\___|";
+
+            string ASCIILogoAll = ASCIIInfoL1 + ASCIIDuckL1 + ASCIIInfoL2 + ASCIIDuckL2 + ASCIIInfoL3 + ASCIIDuckL3 + ASCIIInfoL4 + ASCIIDuckL4 + ASCIIInfoL5 + ASCIIDuckL5 + ASCIIInfoL6 + ASCIIDuckL6;
+            return ASCIILogoAll;
+        }
+        public static string ReserverenArt()
+        {
+            string ASCIIReserverenL1 = "  _____                                              ";
+            string ASCIIReserverenL2 = " |  __ \\                                             ";
+            string ASCIIReserverenL3 = " | |__) |___  ___  ___ _ ____   _____ _ __ ___ _ __  ";
+            string ASCIIReserverenL4 = " |  _  // _ \\/ __|/ _ \\ '__\\ \\ / / _ \\ '__/ _ \\ '_ \\ ";
+            string ASCIIReserverenL5 = " | | \\ \\  __/\\__ \\  __/ |   \\ V /  __/ | |  __/ | | |";
+            string ASCIIReserverenL6 = " |_|  \\_\\___||___/\\___|_|    \\_/ \\___|_|  \\___|_| |_|";
+
+            string ASCIILogoAll = ASCIIReserverenL1 + ASCIIDuckL1 + ASCIIReserverenL2 + ASCIIDuckL2 + ASCIIReserverenL3 + ASCIIDuckL3 + ASCIIReserverenL4 + ASCIIDuckL4 + ASCIIReserverenL5 + ASCIIDuckL5 + ASCIIReserverenL6 + ASCIIDuckL6;
+            return ASCIILogoAll;
+        }
+        public static string RegistrerenArt()
+        {
+            string ASCIIRegistrerenL1 = "  _____            _     _                           ";
+            string ASCIIRegistrerenL2 = " |  __ \\          (_)   | |                          ";
+            string ASCIIRegistrerenL3 = " | |__) |___  __ _ _ ___| |_ _ __ ___ _ __ ___ _ __  ";
+            string ASCIIRegistrerenL4 = " |  _  // _ \\/ _` | / __| __| '__/ _ \\ '__/ _ \\ '_ \\ ";
+            string ASCIIRegistrerenL5 = " | | \\ \\  __/ (_| | \\__ \\ |_| | |  __/ | |  __/ | | |";
+            string ASCIIRegistrerenL6 = " |_|  \\_\\___|\\__, |_|___/\\__|_|  \\___|_|  \\___|_| |_|";
+            string ASCIIRegistrerenL7 = "              __/ |                                  \n";
+            string ASCIIRegistrerenL8 = "             |___/                                   \n";
+
+            string ASCIILogoAll = ASCIIRegistrerenL1 + ASCIIDuckL1 + ASCIIRegistrerenL2 + ASCIIDuckL2 + ASCIIRegistrerenL3 + ASCIIDuckL3 + ASCIIRegistrerenL4 + ASCIIDuckL4 + ASCIIRegistrerenL5 + ASCIIDuckL5 + ASCIIRegistrerenL6 + ASCIIDuckL6 + ASCIIRegistrerenL7 + ASCIIRegistrerenL8;
             return ASCIILogoAll;
         }
     }
