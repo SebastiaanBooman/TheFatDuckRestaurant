@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.Startscherm;
+using static TheFatDuckRestaurant.Reserveren;
 namespace TheFatDuckRestaurant
 {
     public class Gebruikers
@@ -11,16 +12,12 @@ namespace TheFatDuckRestaurant
         public Gebruiker[] Klanten { get; set; }
         public Gebruiker[] Medewerkers { get; set; }
 
-        public Gebruikers() //Empty constructor for json deserialisen.
-        {
-
-        }
+        public Gebruikers() { } //Empty constructor for json deserialisen.
         public Gebruikers(Gebruiker[] klanten, Gebruiker[] medewerkers)
         {
             this.Klanten = klanten;
             this.Medewerkers = medewerkers;
         }
- 
     }
 
     public class Gebruiker
@@ -34,6 +31,21 @@ namespace TheFatDuckRestaurant
             this.Wachtwoord = wachtwoord;
         }
         public Gebruiker() { }
+    }
+
+    public class Klant : Gebruiker
+    {
+        public Reservering[] Reserveringen { get; set; }
+
+        public Klant(string naam, string wachtwoord, Reservering[] reserveringen) : base(naam, wachtwoord)
+        {
+            this.Reserveringen = reserveringen;
+        }
+    }
+
+    public class Medewerker : Gebruiker
+    {
+
     }
 
     public class Inloggen

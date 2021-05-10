@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheFatDuckRestaurant
 {
-    class Reserveren
+    public class Reserveren
     {
         public class Reservering
         {
