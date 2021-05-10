@@ -26,13 +26,14 @@ namespace TheFatDuckRestaurant
             string Datum = "";
             int Personen = 0;
             string TijdString = "";
+            string Prijs = "€0";
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine("1: Pas de datum aan "+ (Datum == "" ? "<Nog geen datum>" : $"({Datum})"));
                 Console.WriteLine("2: Pas de tijd aan " + (Tijd == 0 ? "<Nog geen tijd>" : $"({TijdString})"));
                 Console.WriteLine("3: Pas het aantal personen aan " + (Personen == 0 ? "<Nog geen aantal personen>" : $"({Personen})"));
-                Console.WriteLine("4: Bevestig de reservering\x0a" + "0: Annuleer de reservering");
+                Console.WriteLine($"4: Pas uw menukeuze aan ({Prijs})\x0a"+"5: Bevestig de reservering\x0a" + "0: Annuleer de reservering");
                 userInput = Console.ReadKey().KeyChar;
                 Console.Clear();
                 switch (userInput)
@@ -63,6 +64,8 @@ namespace TheFatDuckRestaurant
                             TijdString = $"{ Tijd / 100}:{Tijd % 100}";
                             TijdString += TijdString.Length < 5 ? "0" : "";
                             Console.WriteLine($"De tijd is aangepast naar {Tijd}\x0a\x0a");
+                            Console.WriteLine("Enter: Ga terug naar het vorige scherm");
+                            Console.ReadKey();
                         }
                         break;
                     case '3':
@@ -79,6 +82,10 @@ namespace TheFatDuckRestaurant
                         Console.ReadKey();
                         break;
                     case '4':
+                        Console.WriteLine("<Menukeuzes>");
+                        Console.ReadKey();
+                        break;
+                    case '5':
                         if(Tijd != 0 && Datum != "" && Personen != 0)
                         {
                             Reservering NieuweReservering = new Reservering
