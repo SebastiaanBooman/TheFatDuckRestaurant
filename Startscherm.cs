@@ -33,8 +33,46 @@ namespace TheFatDuckRestaurant
                 switch (gebruikerInput)
                 {
                     case '1':
-                        gebruiker.Showmenu();
+                        this.theFatDuckInformatie();
+                        break;
+                    case '2':
+                        this.login();
+                        break;
+                    case '3':
+                        menu = gebruiker.showMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
+                        break;
+                    case '4':
+                        reserveerlijst = gebruiker.Reserveer(menu); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker
+                        break;
+                    case '5':
+                        //etc
+                        break;
                 }
+            }
+        }
+        public void theFatDuckInformatie()
+        {
+            bool passed = false;
+            bool verkeerdeInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.InformatieArt());
+                Console.WriteLine("<Informatie over the Fat Duck>\n\n");
+                Console.WriteLine("0: Terug naar startscherm");
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("VerkeerdeInput, probeer 0");
+                    verkeerdeInput = false;
+                }
+                ConsoleKeyInfo userInput = Console.ReadKey();
+                char userInputChar = userInput.KeyChar;
+                if (userInputChar == '0')
+                {
+                    passed = true;
+                    return;
+                }
+                verkeerdeInput = true;
             }
         }
     }
