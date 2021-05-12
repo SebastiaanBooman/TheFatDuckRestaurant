@@ -26,14 +26,14 @@ namespace TheFatDuckRestaurant
             string Datum = "";
             int Personen = 0;
             string TijdString = "";
-            string Prijs = "€0";
+            string AantalGerechten = "0 items";
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("1: Pas de datum aan "+ (Datum == "" ? "<Nog geen datum>" : $"({Datum})"));
-                Console.WriteLine("2: Pas de tijd aan " + (Tijd == 0 ? "<Nog geen tijd>" : $"({TijdString})"));
-                Console.WriteLine("3: Pas het aantal personen aan " + (Personen == 0 ? "<Nog geen aantal personen>" : $"({Personen})"));
-                Console.WriteLine($"4: Pas uw menukeuze aan ({Prijs})\x0a"+"5: Bevestig de reservering\x0a" + "0: Annuleer de reservering");
+                Console.WriteLine("1: Datum\t\t"+ (Datum == "" ? "<Nog geen datum>" : $"({Datum})"));
+                Console.WriteLine("2: Tijd\t\t\t" + (Tijd == 0 ? "<Nog geen tijd>" : $"({TijdString})"));
+                Console.WriteLine("3: Aantal personen\t" + (Personen == 0 ? "<Nog geen aantal personen>" : $"({Personen})"));
+                Console.WriteLine($"4: Gerechten\t\t({AantalGerechten})\x0a"+"5: Bevestig de reservering\x0a" + "0: Annuleer de reservering");
                 userInput = Console.ReadKey().KeyChar;
                 Console.Clear();
                 switch (userInput)
@@ -72,9 +72,9 @@ namespace TheFatDuckRestaurant
                         int MaxPersonen = VrijePlaatsen(Datum, Tijd, Reserveringen.Reserveringen);
                         Console.WriteLine((Personen == 0 ? "Nog geen aantal personen" : $"({Personen})") + "\x0a" + $"Er zijn {MaxPersonen} plaatsen vrij\x0aVoor hoeveel personen wilt u reserveren?");
                         Tuple<bool, int> NieuwPersonen = CheckPersonen(Console.ReadLine(), MaxPersonen);
-                        Console.Clear();
                         if (NieuwPersonen.Item1)
                         {
+                            Console.Clear();
                             Personen = NieuwPersonen.Item2;
                             Console.WriteLine($"Het aantal personen is aangepast naar {Personen}\x0a\x0a");
                         }
@@ -82,7 +82,7 @@ namespace TheFatDuckRestaurant
                         Console.ReadKey();
                         break;
                     case '4':
-                        Console.WriteLine("<Menukeuzes>");
+                        Console.WriteLine("<Gerechten>");
                         Console.ReadKey();
                         break;
                     case '5':
