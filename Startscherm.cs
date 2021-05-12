@@ -7,11 +7,42 @@ using static TheFatDuckRestaurant.Reserveren;
 
 namespace TheFatDuckRestaurant
 {
-    class Startscherm
+    public static class MainClass
     {
-        static void Main(string[] args) => StartschermFunctie(); //Main functie called het startscherm bij het opstarten van de applicatie
+        static void Main(string[] args)
+        {
+            Restaurant TheFatDuck = new Restaurant();
+            TheFatDuck.StartFunctie();
+        }
+    }
+
+    public class Restaurant
+    {
+        public Gebruikers gebruikers;
+        public ReserveerLijst reserveerlijst;
+        public Menu menu;
+        public Gebruiker gebruiker = new Gebruiker("", "");
+
+        public void StartFunctie()
+        {
+            bool passed = false;
+            while (!passed)
+            {
+                char gebruikerInput = gebruiker.startScherm();
+
+                switch (gebruikerInput)
+                {
+                    case '1':
+                        gebruiker.Showmenu();
+                }
+            }
+        }
+    }
+}
     
-        public static void StartschermFunctie()
+    //=> StartschermFunctie(); //Main functie called het startscherm bij het opstarten van de applicatie
+    
+     /*   public static void StartschermFunctie()
         {
             bool verkeerdeInput = false;
             bool passed = false;
@@ -52,29 +83,4 @@ namespace TheFatDuckRestaurant
                         break;
                 }
             }
-        }
-        public static void TheFatDuckInformatie()
-        {
-            bool passed = false;
-            bool verkeerdeInput = false;
-            while (!passed)
-            {
-                Console.Clear();
-                Console.WriteLine(ASCIIART.InformatieArt());
-                Console.WriteLine("<Informatie over the Fat Duck>\n\n");
-                Console.WriteLine("0: Terug naar startscherm");
-                if (verkeerdeInput)
-                    Console.WriteLine("VerkeerdeInput, probeer 0");
-
-                ConsoleKeyInfo userInput = Console.ReadKey();
-                char userInputChar = userInput.KeyChar;
-                if(userInputChar == '0')
-                {
-                    passed = true;
-                    return;
-                }
-                verkeerdeInput = true;
-            }
-        }
-    }
-}
+        } */
