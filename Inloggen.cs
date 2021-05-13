@@ -30,7 +30,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine(ASCIIART.LoginArt());
                 Console.WriteLine("1: Login als klant\x0a");
                 Console.WriteLine("2: Login als medewerker\n");
                 Console.WriteLine("3: Registreer een nieuw account\x0a");
@@ -47,9 +47,15 @@ namespace TheFatDuckRestaurant
                 switch (userInputChar)
                 {
                     case '1':
-                        return logInAlsKlant();
+                        gebruiker = logIn("Klant");//return logIn();
+                        if (gebruiker as Klant != null)
+                            return gebruiker;
+                        break;
                     case '2':
-                        return null;
+                        gebruiker = logIn("Medewerker");
+                        if (gebruiker as Medewerker != null)
+                            return gebruiker;
+                        break;
                     case '3':
                         return null;
                     case '0':
@@ -61,12 +67,12 @@ namespace TheFatDuckRestaurant
             }
             return null;
         }
-        public Gebruiker logInAlsKlant()
+        public Gebruiker logIn(string gebruikerType)
         {
-            Func< Klant, Tuple<bool, string>> CheckWachtwoord = (klantObject) =>
+            Func< Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>
             {
                 string Input = Console.ReadLine();
-                return Tuple.Create(Input == klantObject.Wachtwoord || Input == "0", Input);
+                return Tuple.Create(Input == gebruikerObject.Wachtwoord || Input == "0", Input);
             };
             bool passed = false;
             while (!passed)
@@ -74,11 +80,15 @@ namespace TheFatDuckRestaurant
                 //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
                 bool NaamBestaat = false;
                 Klant klantObject = null;
+                Medewerker medewerkerObject = null;
                 Console.Clear();
                 Console.WriteLine(ASCIIART.LoginArt());
                 Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
                 string GegevenNaam = Console.ReadLine();
-                if (GegevenNaam != "0")
+                if(GegevenNaam == "0")
+                    return new Gebruiker("", "");
+                
+                if(gebruikerType == "Klant")
                 {
                     foreach (Klant klant in Klanten)
                     {
@@ -88,35 +98,65 @@ namespace TheFatDuckRestaurant
                             klantObject = klant;
                         }
                     }
-                    if (NaamBestaat)
+                }
+                else
+                {
+                    foreach (Medewerker medewerker in Medewerkers)
                     {
-                        Console.Clear();
-                        Console.WriteLine(TheFatDuckRestaurant.ASCIIART.LoginArt());
-                        Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in");
-                        Tuple<bool, string> Password = CheckWachtwoord(klantObject);
-                        while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
+                        if (GegevenNaam == medewerker.Naam)
                         {
-                            Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in\x0A\x0A" + "0: Ga terug naar het vorige scherm");
-                            Password = CheckWachtwoord(klantObject);
-                        }
-                        if (Password.Item2 != "0") //sluit het inlogscherm af wanneer 'terug' was getypt
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.LoginArt());
-                            Console.WriteLine("U bent ingelogd!\x0A\x0A" + "Enter: Ga terug naar het sartscherm");
-                            return klantObject;
-                        }
-                    }
-                    else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer '0' is ingevoerd
-                    {
-                        Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
-                        if (Console.ReadKey().KeyChar == '0')
-                        {
-                            return new Gebruiker("", "");
+                            NaamBestaat = true;
+                            medewerkerObject = medewerker;
+
                         }
                     }
                 }
-            }
+                if (NaamBestaat)
+                {
+                    Tuple<bool, string> Password = Tuple.Create(false, "");
+                    Console.Clear();
+                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.LoginArt());
+                    Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in");
+                    if(gebruikerType == "Klant")
+                       Password = CheckWachtwoord(klantObject);
+                    else
+                    {
+                       Password = CheckWachtwoord(medewerkerObject);
+                    }
+                    while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
+                    {
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.LoginArt());
+                        Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in\x0A\x0A" + "0: Ga terug naar het vorige scherm");
+                        if(klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
+                            Password = CheckWachtwoord(klantObject);
+                        else
+                        {
+                            Password = CheckWachtwoord(medewerkerObject);
+                        }
+                    }
+                    if (Password.Item2 != "0") //sluit het inlogscherm af wanneer 'terug' was getypt
+                    {
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.LoginArt());
+                        Console.WriteLine("U bent ingelogd!\x0A\x0A" + "Enter: Ga terug naar het sartscherm");
+                        Console.ReadLine();
+                        if(klantObject != null)
+                            return klantObject;
+                        return medewerkerObject;
+                    }
+                }
+                else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer '0' is ingevoerd
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.LoginArt());
+                    Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
+                    if (Console.ReadKey().KeyChar == '0')
+                    {
+                        return new Gebruiker("", "");
+                    }
+                    }
+                }
             return null;
         }
         public Gebruiker logOut()
