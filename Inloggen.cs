@@ -17,10 +17,11 @@ namespace TheFatDuckRestaurant
         public Eigenaar eigenaar { get; set; }
 
         public Gebruikers() { } //Empty constructor for json deserialisen.
-        public Gebruikers(Klant[] klanten, Medewerker[] medewerkers)
+        public Gebruikers(Klant[] klanten, Medewerker[] medewerkers, Eigenaar eigenaar)
         {
             this.Klanten = klanten;
             this.Medewerkers = medewerkers;
+            this.eigenaar = eigenaar;
         }
 
         public Gebruiker accountManager(Gebruiker gebruiker)
@@ -33,7 +34,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine(ASCIIART.LoginArt());
                 Console.WriteLine("1: Login als klant\x0a");
                 Console.WriteLine("2: Login als medewerker\n");
-                Console.WriteLine("3: Registreer een nieuw account\x0a");
+                Console.WriteLine("3: Registreer een nieuw account als klant\x0a");
                 Console.WriteLine("0: Terug\x0a");
 
                 if (verkeerdeInput)
@@ -57,7 +58,10 @@ namespace TheFatDuckRestaurant
                             return gebruiker;
                         break;
                     case '3':
-                        return null;
+                        gebruiker = registreer(gebruiker);
+                        if(gebruiker as Klant != null)
+                            return gebruiker;
+                        break;
                     case '0':
                         return gebruiker;
                     default:
@@ -159,6 +163,62 @@ namespace TheFatDuckRestaurant
                 }
             return null;
         }
+
+        public Gebruiker registreer(Gebruiker gebruiker)
+        {
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
+            var naamInput = Console.ReadLine();
+            Console.Clear();
+
+            if (naamInput != "0")
+            {
+                foreach (var klant in Klanten)
+                {
+                    while (klant.Naam == naamInput)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.RegistrerenArt());
+                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
+                        naamInput = Console.ReadLine();
+                    }
+                }
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw wachtwoord in:");
+                string password = Console.ReadLine(); //TODO: Check voor password met requirements
+
+                Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
+
+                for (int i = 0; i < Klanten.Length; i++)
+                {
+                    nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
+                }
+                Klant nieuweKlant = new Klant(naamInput, password, null); //nieuwe klant word aangemaakt
+                nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe gebruiker toe aan lijst
+                Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
+                var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
+                File.WriteAllText("gebruikers.json", toSerializeKlant);
+
+
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine($"Welkom nieuwe klant: {naamInput}!\nKlik op een toets om verder te gaan");
+                Console.ReadKey();
+                return nieuweKlant;
+            }
+
+            else
+            {
+                return gebruiker; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
+            }
+        }
+
         public Gebruiker logOut()
         {
             bool passed = false;
