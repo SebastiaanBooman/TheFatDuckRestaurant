@@ -187,7 +187,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("0: Applicatie afsluiten\x0a");
 
                 if (verkeerdeInput)
-                    Console.WriteLine("Verkeerde input, probeer 1,2,3");
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3,4,5,6 of 0");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
