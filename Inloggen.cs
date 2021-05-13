@@ -5,20 +5,141 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.MainClass;
 using static TheFatDuckRestaurant.Reserveren;
+using static TheFatDuckRestaurant.ASCIIART;
+using static TheFatDuckRestaurant.Menucode;
+
 namespace TheFatDuckRestaurant
 {
     public class Gebruikers
     {
-        public Gebruiker[] Klanten { get; set; }
-        public Gebruiker[] Medewerkers { get; set; }
+        public Klant[] Klanten { get; set; }
+        public Medewerker[] Medewerkers { get; set; }
+        public Eigenaar eigenaar { get; set; }
 
         public Gebruikers() { } //Empty constructor for json deserialisen.
-        public Gebruikers(Gebruiker[] klanten, Gebruiker[] medewerkers)
+        public Gebruikers(Klant[] klanten, Medewerker[] medewerkers)
         {
             this.Klanten = klanten;
             this.Medewerkers = medewerkers;
         }
+
+        public Gebruiker accountManager(Gebruiker gebruiker)
+        {
+            bool verkeerdeInput = false;
+            bool passed = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine("1: Login als klant\x0a");
+                Console.WriteLine("2: Login als medewerker\n");
+                Console.WriteLine("3: Registreer een nieuw account\x0a");
+                Console.WriteLine("0: Terug\x0a");
+
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3");
+                    verkeerdeInput = false;
+                }
+
+                ConsoleKeyInfo userInput = Console.ReadKey();
+                char userInputChar = userInput.KeyChar;
+                switch (userInputChar)
+                {
+                    case '1':
+                        return logInAlsKlant();
+                    case '2':
+                        return null;
+                    case '3':
+                        return null;
+                    case '0':
+                        return gebruiker;
+                    default:
+                        verkeerdeInput = true;
+                        break;
+                }
+            }
+            return null;
+        }
+        public Gebruiker logInAlsKlant()
+        {
+            Func< Klant, Tuple<bool, string>> CheckWachtwoord = (klantObject) =>
+            {
+                string Input = Console.ReadLine();
+                return Tuple.Create(Input == klantObject.Wachtwoord || Input == "0", Input);
+            };
+            bool passed = false;
+            while (!passed)
+            {
+                //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
+                bool NaamBestaat = false;
+                Klant klantObject = null;
+                Console.Clear();
+                Console.WriteLine(ASCIIART.LoginArt());
+                Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
+                string GegevenNaam = Console.ReadLine();
+                if (GegevenNaam != "0")
+                {
+                    foreach (Klant klant in Klanten)
+                    {
+                        if (GegevenNaam == klant.Naam)
+                        {
+                            NaamBestaat = true;
+                            klantObject = klant;
+                        }
+                    }
+                    if (NaamBestaat)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(TheFatDuckRestaurant.ASCIIART.LoginArt());
+                        Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in");
+                        Tuple<bool, string> Password = CheckWachtwoord(klantObject);
+                        while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
+                        {
+                            Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in\x0A\x0A" + "0: Ga terug naar het vorige scherm");
+                            Password = CheckWachtwoord(klantObject);
+                        }
+                        if (Password.Item2 != "0") //sluit het inlogscherm af wanneer 'terug' was getypt
+                        {
+                            Console.Clear();
+                            Console.WriteLine(ASCIIART.LoginArt());
+                            Console.WriteLine("U bent ingelogd!\x0A\x0A" + "Enter: Ga terug naar het sartscherm");
+                            return klantObject;
+                        }
+                    }
+                    else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer '0' is ingevoerd
+                    {
+                        Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
+                        if (Console.ReadKey().KeyChar == '0')
+                        {
+                            return new Gebruiker("", "");
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        public Gebruiker logOut()
+        {
+            bool passed = false;
+            bool wrongInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                //ASCIIART
+                Console.WriteLine("U bent uitgelogd!\n\n0: Terug");
+                if (wrongInput)
+                    Console.WriteLine("Verkeerde Input! Probeer 0");
+                char userInput = Console.ReadKey().KeyChar;
+                if (userInput == '0')
+                    return new Gebruiker("", "");
+                wrongInput = true;
+            }
+            return null;
+        }
     }
+
+}
 
     public class Gebruiker
     {
@@ -32,6 +153,29 @@ namespace TheFatDuckRestaurant
         }
         public Gebruiker() { }
 
+        public virtual TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
+        {
+        //menu.Bekijkmenu -> Gebruiker
+        //menu.ReserveerMenu -> Klant
+        //menu.PasAanMenu -> Medewerker
+        return menu;
+        }
+        public virtual ReserveerLijst reserveer(TheFatDuckRestaurant.Menu menu, ReserveerLijst reserveerLijst)
+        {
+        return reserveerLijst;
+        }
+
+        public virtual string bekijkDailyRevenue()
+        {
+        return null;
+        }
+
+        public virtual string bekijkClickStream()
+        {
+        return null;
+        }
+        
+
         public virtual char startScherm()
         {
             bool verkeerdeInput = false;
@@ -39,7 +183,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Login\x0a");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
@@ -77,14 +221,15 @@ namespace TheFatDuckRestaurant
         {
             this.Reserveringen = reserveringen;
         }
-        public override char startScherm()
+    public Klant() { }
+    public override char startScherm()
         {
             bool verkeerdeInput = false;
             bool passed = false;
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Logout\n");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
@@ -126,7 +271,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Logout\n");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
@@ -177,7 +322,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Login\x0a");
                 Console.WriteLine("3: Logout\n");
@@ -216,168 +361,65 @@ namespace TheFatDuckRestaurant
         }
     }
 
-    public class Inloggen
-    {
-        public static Dictionary<string, dynamic> Login()
-        {
-            var jsonString = File.ReadAllText("gebruikers.json");
-            Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
-            bool passed = false;
-            bool wrongInput = false;
-            Dictionary<string, dynamic> HuidigeGebruiker = null;
-            while (!passed)
-            {
-                Console.Clear();
-                Console.WriteLine(ASCIIART.LoginArt());
-                Console.WriteLine("1: Login als klant\n\n2: Registreer als klant\n\n3: Login als medewerker\n\n0: Ga terug naar het startscherm");
-                if (wrongInput)
-                {
-                    Console.WriteLine("Verkeerde input! Probeer 1, 2, 3 of 0");
-                    wrongInput = false;
-                }
-                ConsoleKeyInfo Choice = Console.ReadKey();
-                char ChoiceChar = Choice.KeyChar;
-                switch (ChoiceChar)
-                {
-                    case '1':
-                        HuidigeGebruiker = Inlogscherm(gebruikers.Klanten, gebruikers);
-                        return HuidigeGebruiker;
-                    case '2':
-                        var NieuweGebruiker = Registreren.Registreerscherm();
-                        return NieuweGebruiker;
-                    case '3':
-                        HuidigeGebruiker = Inlogscherm(gebruikers.Medewerkers, gebruikers);
-                        return HuidigeGebruiker;
-                    case '0':
-                        return null;
-                        break;
-                    default:
-                        wrongInput = true;
-                        break;
-                }
-            }
-            return null;
-        }
+/*
+ class Registreren
+ {
+     public static Dictionary<string, dynamic> Registreerscherm()
+     {
+         var jsonOptions = new JsonSerializerOptions
+         {
+             WriteIndented = true,
+         };
+         var jsonString = File.ReadAllText("gebruikers.json");
+         Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
 
-        public static Dictionary<string, dynamic> Inlogscherm(Gebruiker[] gebruiker, Gebruikers gebruikers)
-        {
-            Func<int, Gebruiker[], Tuple<bool, string>> CheckWachtwoord = (index, gebruiker) =>
-            {
-                string Input = Console.ReadLine();
-                return Tuple.Create(Input == gebruiker[index].Wachtwoord || Input == "1", Input);
-            };
+         Console.Clear();
+         Console.WriteLine(ASCIIART.RegistrerenArt());
+         Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
+         var naamInput = Console.ReadLine();
+         Console.Clear();
 
-            //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
-            bool NaamBestaat = false;
-            Console.Clear();
-            Console.WriteLine(ASCIIART.LoginArt());
-            Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
-            string GegevenNaam = Console.ReadLine();
-            if (GegevenNaam != "0")
-            {
-                int index = 0;
-                for (int i = 0; i < gebruiker.Length && !NaamBestaat; i++) //checkt of de gebruikersnaam bestaat
-                {
-                    if (GegevenNaam == gebruiker[i].Naam)
-                    {
-                        NaamBestaat = true; index = i;
-                    }
-                }
-                if (NaamBestaat)
-                {
-                    Console.Clear();
-                    Console.WriteLine(ASCIIART.LoginArt());
-                    Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in");
-                    Tuple<bool, string> Password = CheckWachtwoord(index, gebruiker);
-                    while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
-                    {
-                        Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in\x0A\x0A" + "1: Ga terug naar het vorige scherm");
-                        Password = CheckWachtwoord(index, gebruiker);
-                    }
-                    if (Password.Item2 != "1") //sluit het inlogscherm af wanneer 'terug' was getypt
-                    {
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.LoginArt());
-                        Console.WriteLine("U bent ingelogd!\x0A\x0A" + "Enter: Ga terug naar het sartscherm");
-                        Dictionary<string, dynamic> dic = new Dictionary<string, dynamic>();
-                        dic.Add("Gebruiker", gebruiker[index]);
-                        dic.Add("Medewerker", gebruiker == gebruikers.Medewerkers);
-                        Console.ReadKey();
-                        return dic;
-                        //return Tuple.Create(gebruiker, index);
-                    }
-                }
-                else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer 'terug' is getypt
-                {
-                    Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
-                    if (Console.ReadKey().KeyChar != '0')
-                    {
-                        return Inlogscherm(gebruiker, gebruikers);
-                    }
-                    return null;
-                }
-            }
-            return null;
-        }
+         if (naamInput != "0")
+         {
+             foreach (var gebruiker in gebruikers.Klanten)
+             {
+                 while (gebruiker.Naam == naamInput)
+                 {
+                     Console.Clear();
+                     Console.WriteLine(ASCIIART.RegistrerenArt());
+                     Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
+                     naamInput = Console.ReadLine();
+                 }
+             }
+             Console.Clear();
+             Console.WriteLine(ASCIIART.RegistrerenArt());
+             Console.WriteLine("Voer uw wachtwoord in:");
+             string password = Console.ReadLine(); //TODO: Check voor password met requirements
 
-    }
-    class Registreren
-    {
-        public static Dictionary<string, dynamic> Registreerscherm()
-        {
-            var jsonOptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
-            var jsonString = File.ReadAllText("gebruikers.json");
-            Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
+             Klant[] nieuweGebruikerLijst = new Klant[gebruikers.Klanten.Length + 1];
 
-            Console.Clear();
-            Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
-            var naamInput = Console.ReadLine();
-            Console.Clear();
-
-            if (naamInput != "0")
-            {
-                foreach (var gebruiker in gebruikers.Klanten)
-                {
-                    while (gebruiker.Naam == naamInput)
-                    {
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.RegistrerenArt());
-                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
-                        naamInput = Console.ReadLine();
-                    }
-                }
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw wachtwoord in:");
-                string password = Console.ReadLine(); //TODO: Check voor password met requirements
-
-                Gebruiker[] nieuweGebruikerLijst = new Gebruiker[gebruikers.Klanten.Length + 1];
-
-                for(int i = 0; i < gebruikers.Klanten.Length; i++)
-                {
-                    nieuweGebruikerLijst[i] = gebruikers.Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
-                }
-                nieuweGebruikerLijst[nieuweGebruikerLijst.Length - 1] = new Gebruiker(naamInput,  password); //voegt nieuwe gebruiker toe aan lijst
-                gebruikers.Klanten = nieuweGebruikerLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
-                var toSerializeKlant = JsonSerializer.Serialize(gebruikers, jsonOptions);
-                File.WriteAllText("gebruikers.json", toSerializeKlant);
+             for(int i = 0; i < gebruikers.Klanten.Length; i++)
+             {
+                 nieuweGebruikerLijst[i] = gebruikers.Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
+             }
+             nieuweGebruikerLijst[nieuweGebruikerLijst.Length - 1] = new Klant(naamInput,  password, null); //voegt nieuwe gebruiker toe aan lijst
+             gebruikers.Klanten = nieuweGebruikerLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
+             var toSerializeKlant = JsonSerializer.Serialize(gebruikers, jsonOptions);
+             File.WriteAllText("gebruikers.json", toSerializeKlant);
 
 
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine($"Welkom nieuwe gebruiker: {naamInput}!\n0: Enter");
-                Console.ReadKey();
-                return null;
-            }
+             Console.Clear();
+             Console.WriteLine(ASCIIART.RegistrerenArt());
+             Console.WriteLine($"Welkom nieuwe gebruiker: {naamInput}!\n0: Enter");
+             Console.ReadKey();
+             return null;
+         }
 
-            else
-            {
-                return null;
-            }
-        }
-    }
+         else
+         {
+             return null;
+         }
+     }
+ }
 }
+*/

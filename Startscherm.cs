@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using static TheFatDuckRestaurant.Menucode;
-using static TheFatDuckRestaurant.Inloggen;
+//using static TheFatDuckRestaurant.Inloggen;
 using static TheFatDuckRestaurant.Reserveren;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TheFatDuckRestaurant
 {
@@ -18,10 +20,14 @@ namespace TheFatDuckRestaurant
 
     public class Restaurant
     {
-        public Gebruikers gebruikers;
+        public static string jsonString = File.ReadAllText("gebruikers.json");
+        public Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
         public ReserveerLijst reserveerLijst;
         public Menu menu;
         public Gebruiker gebruiker = new Gebruiker("", "");
+
+
+
 
         public void StartFunctie()
         {
@@ -36,15 +42,16 @@ namespace TheFatDuckRestaurant
                         this.theFatDuckInformatie();
                         break;
                     case '2':
-                        gebruiker = gebruikers.logIn(); //Veranderd de gebruiker als er wordt ingelogd of een nieuw account wordt aangemaakt, veranderd ook de user als er wordt uiteglogd
+                        gebruiker = gebruikers.accountManager(gebruiker); //Veranderd de gebruiker als er wordt ingelogd of een nieuw account wordt aangemaakt
                         break;
                     case '3':
-                        //logout functie
+                        gebruiker = gebruikers.logOut();
+                        break;
                     case '4':
-                        menu = gebruiker.showMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
+                        menu = gebruiker.bekijkMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
                         break;
                     case '5':
-                        reserveerLijst = gebruiker.Reserveer(menu); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker, ook als een medewerker/eigenaar de reserveringen wilt inzien/koppelen/aanpassen
+                        //reserveerLijst = gebruiker.Reserveer(menu, reserveerLijst); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker, ook als een medewerker/eigenaar de reserveringen wilt inzien/koppelen/aanpassen
                         break;
                     case '6':
                         //daily revenue
