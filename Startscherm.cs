@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using static TheFatDuckRestaurant.Menucode;
-//using static TheFatDuckRestaurant.Inloggen;
 using static TheFatDuckRestaurant.Reserveren;
 using System.Text.Json;
 using System.Text.Json.Serialization;

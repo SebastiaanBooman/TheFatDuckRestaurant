@@ -200,7 +200,7 @@ namespace TheFatDuckRestaurant
                     nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
                 }
                 Klant nieuweKlant = new Klant(naamInput, password, null); //nieuwe klant word aangemaakt
-                nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe gebruiker toe aan lijst
+                nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
                 Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
                 var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
                 File.WriteAllText("gebruikers.json", toSerializeKlant);
@@ -340,7 +340,7 @@ namespace TheFatDuckRestaurant
 
                 if (verkeerdeInput)
                 {
-                    Console.WriteLine("Verkeerde input, probeer 1,2,3 of 4");
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3,4 of 5");
                     verkeerdeInput = false;
                 }
 
@@ -478,66 +478,3 @@ namespace TheFatDuckRestaurant
             return '0';
         }
     }
-
-/*
- class Registreren
- {
-     public static Dictionary<string, dynamic> Registreerscherm()
-     {
-         var jsonOptions = new JsonSerializerOptions
-         {
-             WriteIndented = true,
-         };
-         var jsonString = File.ReadAllText("gebruikers.json");
-         Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
-
-         Console.Clear();
-         Console.WriteLine(ASCIIART.RegistrerenArt());
-         Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
-         var naamInput = Console.ReadLine();
-         Console.Clear();
-
-         if (naamInput != "0")
-         {
-             foreach (var gebruiker in gebruikers.Klanten)
-             {
-                 while (gebruiker.Naam == naamInput)
-                 {
-                     Console.Clear();
-                     Console.WriteLine(ASCIIART.RegistrerenArt());
-                     Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
-                     naamInput = Console.ReadLine();
-                 }
-             }
-             Console.Clear();
-             Console.WriteLine(ASCIIART.RegistrerenArt());
-             Console.WriteLine("Voer uw wachtwoord in:");
-             string password = Console.ReadLine(); //TODO: Check voor password met requirements
-
-             Klant[] nieuweGebruikerLijst = new Klant[gebruikers.Klanten.Length + 1];
-
-             for(int i = 0; i < gebruikers.Klanten.Length; i++)
-             {
-                 nieuweGebruikerLijst[i] = gebruikers.Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
-             }
-             nieuweGebruikerLijst[nieuweGebruikerLijst.Length - 1] = new Klant(naamInput,  password, null); //voegt nieuwe gebruiker toe aan lijst
-             gebruikers.Klanten = nieuweGebruikerLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
-             var toSerializeKlant = JsonSerializer.Serialize(gebruikers, jsonOptions);
-             File.WriteAllText("gebruikers.json", toSerializeKlant);
-
-
-             Console.Clear();
-             Console.WriteLine(ASCIIART.RegistrerenArt());
-             Console.WriteLine($"Welkom nieuwe gebruiker: {naamInput}!\n0: Enter");
-             Console.ReadKey();
-             return null;
-         }
-
-         else
-         {
-             return null;
-         }
-     }
- }
-}
-*/
