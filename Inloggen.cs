@@ -32,7 +32,7 @@ namespace TheFatDuckRestaurant
         }
         public Gebruiker() { }
 
-        public char startScherm()
+        public virtual char startScherm()
         {
             bool verkeerdeInput = false;
             bool passed = false;
@@ -43,11 +43,12 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Login\x0a");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
-                //Console.WriteLine("4: Reserveren\x0a");
-                //Console.WriteLine("0: Applicatie afsluiten\x0a");
 
                 if (verkeerdeInput)
+                {
                     Console.WriteLine("Verkeerde input, probeer 1,2,3");
+                    verkeerdeInput = false;
+                }
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -55,18 +56,16 @@ namespace TheFatDuckRestaurant
                 {
                     case '1':
                         return '1';
-                        //TheFatDuckInformatie();
                     case '2':
                         return '2';
-                        //var HuidigeGebruiker = Login();
                     case '3':
-                        return '3';
-                        //KiesMenu();
+                        return '4';
                     default:
                         verkeerdeInput = true;
                         break;
                 }
             }
+            return '0'; 
         }
     }
 
@@ -78,16 +77,143 @@ namespace TheFatDuckRestaurant
         {
             this.Reserveringen = reserveringen;
         }
+        public override char startScherm()
+        {
+            bool verkeerdeInput = false;
+            bool passed = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine("1: Informatie\x0a");
+                Console.WriteLine("2: Logout\n");
+                Console.WriteLine("3: Bezichtig het menu\x0a");
+                Console.WriteLine("4: Reserveren\x0a");
+
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3 of 4");
+                    verkeerdeInput = false;
+                }
+
+                ConsoleKeyInfo userInput = Console.ReadKey();
+                char userInputChar = userInput.KeyChar;
+                switch (userInputChar)
+                {
+                    case '1':
+                        return '1';
+                    case '2':
+                        return '3';
+                    case '3':
+                        return '4';
+                    case '4':
+                        return '5';
+                    default:
+                        verkeerdeInput = true;
+                        break;
+                }
+            }
+            return '0';
+        }
     }
 
     public class Medewerker : Gebruiker
     {
+        public override char startScherm()
+        {
+            bool verkeerdeInput = false;
+            bool passed = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine("1: Informatie\x0a");
+                Console.WriteLine("2: Logout\n");
+                Console.WriteLine("3: Bezichtig het menu\x0a");
+                Console.WriteLine("4: Bezichtig reserveringen\x0a");
+                Console.WriteLine("5: Bezichtig de Clickstream\x0a");
+                Console.WriteLine("6: Bezichtig de dagelijkse opbrengsten\x0a");
+                Console.WriteLine("0: Applicatie afsluiten\x0a");
 
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3,4,5,6 of 0");
+                    verkeerdeInput = false;
+                }
+
+                ConsoleKeyInfo userInput = Console.ReadKey();
+                char userInputChar = userInput.KeyChar;
+                switch (userInputChar)
+                {
+                    case '1':
+                        return '1';
+                    case '2':
+                        return '3';
+                    case '3':
+                        return '4';
+                    case '4':
+                        return '5';
+                    case '5':
+                        return '7';
+                    case '6':
+                        return '6';
+                    case '0':
+                        return '0';
+                    default:
+                        verkeerdeInput = true;
+                        break;
+                }
+            }
+            return '0';
+        }
     }
 
     public class Eigenaar : Medewerker
     {
+        public override char startScherm()
+        {
+            bool verkeerdeInput = false;
+            bool passed = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.GeneralArt());
+                Console.WriteLine("1: Informatie\x0a");
+                Console.WriteLine("2: Login\x0a");
+                Console.WriteLine("3: Logout\n");
+                Console.WriteLine("4: Bezichtig het menu\x0a");
+                Console.WriteLine("5: Bezichtig reserveringen\x0a");
+                Console.WriteLine("6: Bezichtig de Clickstream\x0a");
+                Console.WriteLine("0: Applicatie afsluiten\x0a");
 
+                if (verkeerdeInput)
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3");
+
+                ConsoleKeyInfo userInput = Console.ReadKey();
+                char userInputChar = userInput.KeyChar;
+                switch (userInputChar)
+                {
+                    case '1':
+                        return '1';
+                    case '2':
+                        return '2';
+                    case '3':
+                        return '4';
+                    case '4':
+                        return '3';
+                    case '5':
+                        return '5';
+                    case '6':
+                        return '7';
+                    case '0':
+                        return '0';
+                    default:
+                        verkeerdeInput = true;
+                        break;
+                }
+            }
+            return '0';
+        }
     }
 
     public class Inloggen

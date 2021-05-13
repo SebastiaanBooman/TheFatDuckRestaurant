@@ -19,7 +19,7 @@ namespace TheFatDuckRestaurant
     public class Restaurant
     {
         public Gebruikers gebruikers;
-        public ReserveerLijst reserveerlijst;
+        public ReserveerLijst reserveerLijst;
         public Menu menu;
         public Gebruiker gebruiker = new Gebruiker("", "");
 
@@ -28,7 +28,7 @@ namespace TheFatDuckRestaurant
             bool passed = false;
             while (!passed)
             {
-                char gebruikerInput = gebruiker.startScherm();
+                char gebruikerInput = gebruiker.startScherm(); // ALL possible input: 1: Fat duck informatie, 2: Login/registratie, 3: Logout, 4: Menu bekijken/aanpassen, 5: Reserveer als klant/reservering koppelen als medewerker, 6: daily revenue bekijken, 7: clickstream van klanten bekijken, 8: Applicatie afsluiten
 
                 switch (gebruikerInput)
                 {
@@ -36,16 +36,24 @@ namespace TheFatDuckRestaurant
                         this.theFatDuckInformatie();
                         break;
                     case '2':
-                        this.login();
+                        gebruiker = gebruikers.logIn(); //Veranderd de gebruiker als er wordt ingelogd of een nieuw account wordt aangemaakt, veranderd ook de user als er wordt uiteglogd
                         break;
                     case '3':
+                        //logout functie
+                    case '4':
                         menu = gebruiker.showMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
                         break;
-                    case '4':
-                        reserveerlijst = gebruiker.Reserveer(menu); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker
-                        break;
                     case '5':
-                        //etc
+                        reserveerLijst = gebruiker.Reserveer(menu); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker, ook als een medewerker/eigenaar de reserveringen wilt inzien/koppelen/aanpassen
+                        break;
+                    case '6':
+                        //daily revenue
+                        break;
+                    case '7':
+                        //clickstream van klanten
+                        break;
+                    case '8':
+                        passed = true; // Applicatie afsluiten als eigenaar
                         break;
                 }
             }
