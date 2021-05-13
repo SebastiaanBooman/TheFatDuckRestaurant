@@ -21,12 +21,11 @@ namespace TheFatDuckRestaurant
         public static void Reserveer()
         {
             ReserveerLijst Reserveringen = JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json"));
-            char userInput;
             int Tijd = 0;
             string Datum = "";
             int Personen = 0;
             string TijdString = "";
-            string AantalGerechten = "0 items";
+            string AantalGerechten = "0 gerechten";
             while (true)
             {
                 Console.Clear();
@@ -34,7 +33,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("2: Tijd\t\t\t" + (Tijd == 0 ? "<Nog geen tijd>" : $"({TijdString})"));
                 Console.WriteLine("3: Aantal personen\t" + (Personen == 0 ? "<Nog geen aantal personen>" : $"({Personen})"));
                 Console.WriteLine($"4: Gerechten\t\t({AantalGerechten})\x0a"+"5: Bevestig de reservering\x0a" + "0: Annuleer de reservering");
-                userInput = Console.ReadKey().KeyChar;
+                char userInput = Console.ReadKey().KeyChar;
                 Console.Clear();
                 switch (userInput)
                 {
