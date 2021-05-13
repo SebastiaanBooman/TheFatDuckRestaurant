@@ -274,6 +274,8 @@ namespace TheFatDuckRestaurant
         {
         return null;
         }
+
+        public virtual void bekijkReserveringen() { }
         
 
         public virtual char startScherm()
@@ -334,6 +336,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("2: Logout\n");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
                 Console.WriteLine("4: Reserveren\x0a");
+                Console.WriteLine("5: Bezichtig uw reserveringen");
 
                 if (verkeerdeInput)
                 {
@@ -353,6 +356,8 @@ namespace TheFatDuckRestaurant
                         return '4';
                     case '4':
                         return '5';
+                case '5':
+                    return '9';
                     default:
                         verkeerdeInput = true;
                         break;
@@ -360,7 +365,20 @@ namespace TheFatDuckRestaurant
             }
             return '0';
         }
+    public override void bekijkReserveringen()
+    {
+        Console.Clear();
+        Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+        if (this.Reserveringen == null)
+        {
+            Console.WriteLine("U heeft momenteel geen reserveringen! Klik op een toets om terug te gaan");
+            Console.ReadLine();
+            return;
+        }
+        return; //functionaliteit voor als er wel reserveringen zijn gemaakt.
     }
+}
+
 
     public class Medewerker : Gebruiker
     {
