@@ -66,8 +66,8 @@ namespace TheFatDuckRestaurant
                         passed = true; // Applicatie afsluiten als eigenaar
                         break;
                     case '9':
-                        reserveerLijst.bekijkReserveringen(gebruiker as Klant);
-                        reserveerLijst.bekijkReserveringen(gebruiker as Medewerker);
+                        //reserveerLijst.bekijkReserveringen(gebruiker as Klant);
+                        gebruiker.bekijkReserveringen(reserveerLijst);
                         updateGebruikers(this.gebruikers);
                         updateReserveerlijst(this.reserveerLijst);
                         break;

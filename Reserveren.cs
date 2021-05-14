@@ -13,7 +13,7 @@ namespace TheFatDuckRestaurant
         {
             public ReserveerLijst() { }
             public Reservering[] Reserveringen { get; set; }
-            public void bekijkReserveringen(Medewerker medewerker)
+            /*public void bekijkReserveringen(Medewerker medewerker) //in gebruiker (virtual) met Reserveerlijst als parameter
             {
                 if(this.Reserveringen == null)
                 {
@@ -56,7 +56,7 @@ namespace TheFatDuckRestaurant
                     return;
                 }
             }
-            public void bekijkReserveringen(Klant klant)
+            public void bekijkReserveringen(Klant klant) // in klant (override) met Reserveerlijst als parameter
             {
                 if(this.Reserveringen == null)
                 {
@@ -73,8 +73,6 @@ namespace TheFatDuckRestaurant
                 {
                     Console.Clear();
                     Reservering[] KlantReserveringen = new Reservering[klant.AantalReserveringen];
-                    //Console.WriteLine($"{klant.AantalReserveringen}, {this.Reserveringen.Length}");
-                    //Console.ReadKey();
                     int j = 0;
                     for (int i = 0; i < this.Reserveringen.Length; i++)
                     {
@@ -104,7 +102,7 @@ namespace TheFatDuckRestaurant
                         Console.ReadKey();
                     }
                 }
-            }
+            }*/
             public bool changeReservering(Reservering reservering)
             {
                 removeReservering(reservering);
@@ -245,7 +243,7 @@ namespace TheFatDuckRestaurant
             };
             File.WriteAllText("gebruikers.json", JsonSerializer.Serialize(gebruikers, JSONoptions));
         }
-        public class Reservering
+        public class Reservering //Nieuwe file
         {
             public int Tijd { get; set; }
             public string Datum { get; set; }

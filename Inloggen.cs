@@ -281,6 +281,50 @@ namespace TheFatDuckRestaurant
         return reserveerLijst;
         }
 
+    public virtual void bekijkReserveringen(ReserveerLijst Reserveerlijst)
+    {
+        if (Reserveerlijst.Reserveringen == null)
+        {
+            Reserveerlijst.Reserveringen = new Reservering[0];
+        }
+        if (Reserveerlijst.Reserveringen.Length == 0)
+        {
+            Console.Clear();
+            Console.WriteLine("Er zijn nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+            Console.ReadKey();
+            return;
+        }
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)");
+            string datum = Console.ReadLine();
+            Console.Clear();
+            string datumLower = "";
+            foreach (char sym in datum)
+            {
+                if (Char.IsLetter(sym))
+                {
+                    Char.ToLower(sym);
+                }
+                datumLower += sym;
+            }
+            Console.WriteLine(datumLower + "\x0a");
+            string ReserveringString = "";
+            foreach (Reservering reservering in Reserveerlijst.Reserveringen)
+            {
+                if (reservering.Datum == datumLower)
+                {
+                    ReserveringString += "<Info reservering>\x0a";
+                }
+            }
+            Console.WriteLine(ReserveringString == "" ? "Er zijn nog geen reserveringen gedaan voor deze datum\x0a" : ReserveringString);
+            Console.WriteLine("Enter: Ga terug naar het startscherm");
+            Console.ReadKey();
+            return;
+        }
+    }
+
         public virtual string bekijkDailyRevenue()
         {
         return null;
@@ -350,6 +394,54 @@ namespace TheFatDuckRestaurant
         //menu.ReserveerMenu -> Klant
         //menu.PasAanMenu -> Medewerker
         return menu;
+    }
+
+    public override void bekijkReserveringen(ReserveerLijst Reserveerlijst)
+    {
+        if (Reserveerlijst.Reserveringen == null)
+        {
+            Reserveerlijst.Reserveringen = new Reservering[0];
+        }
+        if (Reserveerlijst.Reserveringen.Length == 0)
+        {
+            Console.Clear();
+            Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+            Console.ReadKey();
+            return;
+        }
+        while (true)
+        {
+            Console.Clear();
+            Reservering[] KlantReserveringen = new Reservering[this.AantalReserveringen];
+            int j = 0;
+            for (int i = 0; i < Reserveerlijst.Reserveringen.Length; i++)
+            {
+                if (Reserveerlijst.Reserveringen[i].Bezoeker.Naam == this.Naam)
+                {
+                    KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
+                    Console.WriteLine($"{j}: <Info reservering>");
+                }
+            }
+            Console.WriteLine("\x0a" + "0: Ga terug naar het startscherm");
+            int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+            Console.Clear();
+            if (Index == 0)
+            {
+                return;
+            }
+            if (Index <= j && Index > 0)
+            {
+                if (!Reserveerlijst.changeReservering(KlantReserveringen[Index - 1]))
+                {
+                    this.AantalReserveringen -= 1;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                Console.ReadKey();
+            }
+        }
     }
     public override char startScherm()
         {
@@ -488,7 +580,7 @@ namespace TheFatDuckRestaurant
                     case '3':
                         return '4';
                     case '4':
-                        return '5';
+                        return '9';
                     case '5':
                         return '7';
                     case '6':
