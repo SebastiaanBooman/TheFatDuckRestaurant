@@ -199,7 +199,7 @@ namespace TheFatDuckRestaurant
                 {
                     nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
                 }
-                Klant nieuweKlant = new Klant(naamInput, password, null); //nieuwe klant word aangemaakt
+                Klant nieuweKlant = new Klant(naamInput, password, 0); //nieuwe klant word aangemaakt
                 nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
                 Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
                 var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
@@ -317,11 +317,11 @@ namespace TheFatDuckRestaurant
 
     public class Klant : Gebruiker
     {
-        public Reservering[] Reserveringen { get; set; }
+        public int AantalReserveringen { get; set; }
 
-        public Klant(string naam, string wachtwoord, Reservering[] reserveringen) : base(naam, wachtwoord)
+        public Klant(string naam, string wachtwoord, int reserveringen) : base(naam, wachtwoord)
         {
-            this.Reserveringen = reserveringen;
+            this.AantalReserveringen = reserveringen;
         }
     public Klant() { }
     public override char startScherm()
@@ -369,7 +369,7 @@ namespace TheFatDuckRestaurant
     {
         Console.Clear();
         Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-        if (this.Reserveringen == null)
+        if (this.AantalReserveringen == 0)
         {
             Console.WriteLine("U heeft momenteel geen reserveringen! Klik op een toets om terug te gaan");
             Console.ReadLine();
