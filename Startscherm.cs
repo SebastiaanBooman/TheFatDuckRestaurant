@@ -25,7 +25,7 @@ namespace TheFatDuckRestaurant
         public Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
         public ReserveerLijst reserveerLijst;
         public Menu menu = JsonSerializer.Deserialize<Menu>(MenujsonString);
-        public Gebruiker gebruiker = new Gebruiker("", "");
+        public Gebruiker gebruiker = new Gebruiker("", "", "", "");
 
         public void StartFunctie()
         {

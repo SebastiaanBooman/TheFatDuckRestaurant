@@ -90,7 +90,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
                 string GegevenNaam = Console.ReadLine();
                 if(GegevenNaam == "0")
-                    return new Gebruiker("", "");
+                    return new Gebruiker("", "", "", "");
                 
                 if(gebruikerType == "Klant")
                 {
@@ -157,7 +157,7 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
                     if (Console.ReadKey().KeyChar == '0')
                     {
-                        return new Gebruiker("", "");
+                        return new Gebruiker("", "", "", "");
                     }
                     }
                 }
@@ -193,13 +193,24 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("Voer uw wachtwoord in:");
                 string password = Console.ReadLine(); //TODO: Check voor password met requirements
 
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw adres in:");
+                string adres = Console.ReadLine(); //TODO: Check voor adres met requirements
+
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw woonplaats in:");
+                string woonplaats = Console.ReadLine(); //TODO: Check voor woonplaats met requirements
+
+
                 Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
 
                 for (int i = 0; i < Klanten.Length; i++)
                 {
                     nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
                 }
-                Klant nieuweKlant = new Klant(naamInput, password, null); //nieuwe klant word aangemaakt
+                Klant nieuweKlant = new Klant(naamInput, password, adres, woonplaats, null); //nieuwe klant word aangemaakt
                 nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
                 Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
                 var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
@@ -232,7 +243,7 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine("Verkeerde Input! Probeer 0");
                 char userInput = Console.ReadKey().KeyChar;
                 if (userInput == '0')
-                    return new Gebruiker("", "");
+                    return new Gebruiker("", "", "","");
                 wrongInput = true;
             }
             return null;
@@ -245,11 +256,15 @@ namespace TheFatDuckRestaurant
     {
         public string Naam { get; set; }
         public string Wachtwoord { get; set; }
+        public string Adres { get; set; }
+        public string Woonplaats { get; set; }
 
-        public Gebruiker(string naam, string wachtwoord)
+        public Gebruiker(string naam, string wachtwoord, string adres, string woonplaats)
         {
             this.Naam = naam;
             this.Wachtwoord = wachtwoord;
+            this.Adres = adres;
+            this.Woonplaats = woonplaats;
         }
         public Gebruiker() { }
 
@@ -322,7 +337,7 @@ namespace TheFatDuckRestaurant
     {
         public Reservering[] Reserveringen { get; set; }
 
-        public Klant(string naam, string wachtwoord, Reservering[] reserveringen) : base(naam, wachtwoord)
+        public Klant(string naam, string wachtwoord, string adres, string woonplaats, Reservering[] reserveringen) : base(naam, wachtwoord, adres, woonplaats)
         {
             this.Reserveringen = reserveringen;
         }

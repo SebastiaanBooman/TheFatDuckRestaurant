@@ -1,26 +1,39 @@
 ﻿{
   "Klanten": [
     {
+      "Reserveringen": null,
       "Naam": "Rafael",
-      "Wachtwoord": "rafael"
+      "Wachtwoord": "rafael",
+      "Adres": null,
+      "Woonplaats": null
     },
     {
+      "Reserveringen": null,
       "Naam": "Tom",
-      "Wachtwoord": "tom"
+      "Wachtwoord": "tom",
+      "Adres": null,
+      "Woonplaats": null
     }
   ],
   "Medewerkers": [
     {
       "Naam": "Jake",
-      "Wachtwoord": "Darcy"
+      "Wachtwoord": "Darcy",
+      "Adres": null,
+      "Woonplaats": null
     },
     {
       "Naam": "Art",
-      "Wachtwoord": "Brown"
+      "Wachtwoord": "Brown",
+      "Adres": null,
+      "Woonplaats": null
     },
     {
       "Naam": "Sally",
-      "Wachtwoord":  "Buns"
+      "Wachtwoord": "Buns",
+      "Adres": null,
+      "Woonplaats": null
     }
-  ]
+  ],
+  "eigenaar": null
 }
