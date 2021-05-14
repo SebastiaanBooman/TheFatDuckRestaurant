@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.MainClass;
 using static TheFatDuckRestaurant.Reserveren;
 using static TheFatDuckRestaurant.ASCIIART;
-using static TheFatDuckRestaurant.Menucode;
+using static TheFatDuckRestaurant.Menu;
 
 namespace TheFatDuckRestaurant
 {
@@ -255,10 +255,11 @@ namespace TheFatDuckRestaurant
 
         public virtual TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
         {
-        //menu.Bekijkmenu -> Gebruiker
-        //menu.ReserveerMenu -> Klant
-        //menu.PasAanMenu -> Medewerker
-        return menu;
+            menu.BekijkMenuGebruiker();
+            //menu.Bekijkmenu -> Gebruiker
+            //menu.ReserveerMenu -> Klant
+            //menu.PasAanMenu -> Medewerker
+            return menu;
         }
         public virtual ReserveerLijst reserveer(TheFatDuckRestaurant.Menu menu, ReserveerLijst reserveerLijst)
         {
@@ -324,6 +325,15 @@ namespace TheFatDuckRestaurant
             this.Reserveringen = reserveringen;
         }
     public Klant() { }
+
+    public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
+    {
+        menu.BekijkMenuKlant();
+        //menu.Bekijkmenu -> Gebruiker
+        //menu.ReserveerMenu -> Klant
+        //menu.PasAanMenu -> Medewerker
+        return menu;
+    }
     public override char startScherm()
         {
             bool verkeerdeInput = false;
@@ -382,6 +392,14 @@ namespace TheFatDuckRestaurant
 
     public class Medewerker : Gebruiker
     {
+        public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
+        {
+            menu.BekijkMenuMedewerker();
+            //menu.Bekijkmenu -> Gebruiker
+            //menu.ReserveerMenu -> Klant
+            //menu.PasAanMenu -> Medewerker
+            return menu;
+        }
         public override char startScherm()
         {
             bool verkeerdeInput = false;

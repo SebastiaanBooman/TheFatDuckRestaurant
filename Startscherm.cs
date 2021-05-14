@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using static TheFatDuckRestaurant.Menucode;
+using static TheFatDuckRestaurant.Menu;
+//using static TheFatDuckRestaurant.Inloggen;
 using static TheFatDuckRestaurant.Reserveren;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,13 +21,11 @@ namespace TheFatDuckRestaurant
     public class Restaurant
     {
         public static string jsonString = File.ReadAllText("gebruikers.json");
+        public static string MenujsonString = File.ReadAllText("menu.json");
         public Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
         public ReserveerLijst reserveerLijst;
-        public Menu menu;
+        public Menu menu = JsonSerializer.Deserialize<Menu>(MenujsonString);
         public Gebruiker gebruiker = new Gebruiker("", "");
-
-
-
 
         public void StartFunctie()
         {
