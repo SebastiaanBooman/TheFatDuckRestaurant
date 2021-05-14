@@ -52,7 +52,7 @@ namespace TheFatDuckRestaurant
                 char toetsUserChar = toetsUser.KeyChar;
 
                 if (typeGebruiker == "Medewerker" && toetsUserChar == 'A')
-                    MenuAanpassenScherm(typeGerecht);
+                    typeGerecht = MenuAanpassenScherm(typeGerecht);
 
                 if (toetsUserChar == '0')
                     return;
@@ -171,7 +171,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void MenuAanpassenScherm(Gerechten[] typeGerecht)
+        public Gerechten[] MenuAanpassenScherm(Gerechten[] typeGerecht)
         {
             bool passed = false;
             while (passed != true)
@@ -191,25 +191,46 @@ namespace TheFatDuckRestaurant
                 {
                     case '1':
                         if (typeGerecht == Voorgerechten)
+                        {
                             AddItemHandler("Voorgerechten");
+                            typeGerecht = Voorgerechten;
+                        }
                         else if (typeGerecht == Hoofdgerechten)
+                        {
                             AddItemHandler("Hoofdgerechten");
+                            typeGerecht = Hoofdgerechten;
+                        }
                         else
+                        {
                             AddItemHandler("Nagerechten");
+                            typeGerecht = Nagerechten;
+                        }
                         break;
                     case '2':
-                        //typeGerecht = removeItemScreen(typeGerecht, typeGerechtNaam);
-                        //return typeGerecht;
+                        if (typeGerecht == Voorgerechten)
+                            typeGerecht = removeItemScreen(typeGerecht, "Voorgerechten");
+                        else if (typeGerecht == Hoofdgerechten)
+                            typeGerecht = removeItemScreen(typeGerecht, "Hoofdgerechten");
+                        else
+                            typeGerecht = removeItemScreen(typeGerecht, "Nagerechten");
+                        break;
                     case '0':
-                        return;
+                        if (typeGerecht == Voorgerechten)
+                            return Voorgerechten;
+                        else if (typeGerecht == Hoofdgerechten)
+                            return Hoofdgerechten;
+                        else
+                            return Nagerechten;
+                        break;
                 }
             }
+            return null;
         }
 
         public Gerechten AddItemScherm(string typeGerechtNaam)
         {
             var passed = false;
-
+            var nietAllesIngevuld = false;
             var naam_ = "<Nog geen naam>";
             var prijs_ = 0.0;
             var beschrijving_ = "<Nog geen beschrijving>";
@@ -224,21 +245,25 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine($"1: Naam \t\t{naam_}");
                 Console.WriteLine($"2: Prijs \t\t{prijs_}");
                 Console.WriteLine($"3: Beschrijving \t{beschrijving_}");
-                Console.WriteLine("4: Ingredienten");
+                Console.WriteLine("4: Ingredienten:");
                 if (ingredienten_ != null)
                 {
-                    Console.WriteLine($"\nDit zijn de ingredienten van het nieuwe item: ");
                     for (int i = 0; i < ingredienten_.Length; i++)
                     {
-                        Console.WriteLine(ingredienten_[i]);
+                        Console.WriteLine($"- {ingredienten_[i]}");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("\t<Nog geen ingredienten>");
+                    Console.WriteLine("<Nog geen ingredienten>");
                 }
                 Console.WriteLine($"\n5: Item opslaan\xA0");
                 Console.WriteLine($"0: Terug");
+                if(nietAllesIngevuld)
+                {
+                    Console.WriteLine("\nERROR: Vul eerst alle velden in voordat u het item opslaat!");
+                    nietAllesIngevuld = false;
+                }
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
                 switch (toetsUserChar)
@@ -263,14 +288,14 @@ namespace TheFatDuckRestaurant
                             {
                                 for (int i = 0; i < ingredienten_.Length; i++)
                                 {
-                                    Console.WriteLine(ingredienten_[i]);
+                                    Console.WriteLine($"- {ingredienten_[i]}");
                                 }
                             }
                             else
                             {
                                 Console.WriteLine("<Nog geen ingredienten.>");
                             }
-                            Console.WriteLine("\n\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
+                            Console.WriteLine("\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
                             var userInputIngredienten = Console.ReadLine();
                             if (userInputIngredienten == "0")
                             {
@@ -297,13 +322,23 @@ namespace TheFatDuckRestaurant
                         }
                         break;
                     case '5':
+                        if(ingredienten_ == null || naam_ == "<Nog geen naam>" || beschrijving_ == "<Nog geen beschrijving>")
+                        {
+                            nietAllesIngevuld = true;
+                            break;
+                        }
+
                         Console.Clear();
                         Console.WriteLine(ASCIIART.MenuArt());
-                        Console.WriteLine("Het item wordt toegevoegd aan het voorgerechten menu, weet u dit zeker?\n\nA: Item bevestigen en toevoegen aan het menu\n0: Item annuleren");
+                        Console.WriteLine($"Het item wordt toegevoegd aan het {typeGerechtNaam} menu, weet u dit zeker?\n\nA: Item bevestigen en toevoegen aan het menu\n0: Item annuleren");
                         ConsoleKeyInfo userInputConfirmatie = Console.ReadKey();
                         char userInputConfirmatieChar = userInputConfirmatie.KeyChar;
                         if (userInputConfirmatieChar == 'A' || userInputConfirmatieChar == 'a')
                         {
+                            Console.Clear();
+                            Console.WriteLine(ASCIIART.MenuArt());
+                            Console.WriteLine($"{naam_} is succesvol toegevoegd aan de {typeGerechtNaam}!\n\n0: Terug");
+                            Console.ReadKey();
                             return new Gerechten(naam_, prijs_, beschrijving_, ingredienten_);
                         }
                         break;
@@ -363,8 +398,7 @@ namespace TheFatDuckRestaurant
                 }
             }
 
-            var jsonString = JsonSerializer.Serialize(this, JSONoptions);
-            File.WriteAllText("menu.json", jsonString);
+            MenuOpslaan();
             return;
         }
 
@@ -448,6 +482,89 @@ namespace TheFatDuckRestaurant
                 }
             }
             return oldDescription; //Onnodige return kwa design, alleen alle mogelijke paden moeten een return value hebben.
+        }
+
+        public Gerechten[] removeItemScreen(Gerechten[] typeGerecht, string typeGerechtNaam)
+        {
+            bool passed = false;
+            while (passed != true)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.MenuArt());
+                Console.WriteLine("Item uit " + typeGerechtNaam + " menu verwijderen\x0aToets op het getal naast het menu item wat u weg wil en enter om het te verwijderen\x0a");
+                if (typeGerecht.Length > 0)
+                {
+                    for (int i = 1; i < typeGerecht.Length + 1; i++)
+                    {
+                        Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A");
+                    }
+
+                }
+                else
+                    Console.WriteLine("<Er bestaan nog geen " + typeGerechtNaam + " in het menu>");
+
+                Console.WriteLine("\n0: Terug");
+                ConsoleKeyInfo userInput = Console.ReadKey();
+                char userInputChar = userInput.KeyChar;
+                try
+                {
+                    var userInputConverted = Int32.Parse(userInputChar.ToString());
+                    typeGerecht = removeItemMenu(typeGerecht, typeGerechtNaam, userInputConverted);
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.MenuArt());
+                    Console.WriteLine("Item is verwijderd uit het menu!\n\n0: Terug");
+                    Console.ReadKey();
+                    return typeGerecht;
+                }
+                catch
+                {
+                    if (userInputChar == '0')
+                        return typeGerecht;
+                }
+
+            }
+            return null;
+        }
+
+        public Gerechten[] removeItemMenu(Gerechten[] typeGerecht, string typeGerechtNaam, int removeIndex)
+        {
+
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+
+            Gerechten[] newGerechten = new Gerechten[typeGerecht.Length - 1];
+            int j = 0;
+            for (int i = 0; i < typeGerecht.Length; i++)
+            {
+                if (i != removeIndex - 1)
+                {
+                    newGerechten[j] = typeGerecht[i];
+                    j++;
+                }
+            }
+
+            if (typeGerechtNaam == "Voorgerechten")
+                Voorgerechten = newGerechten;
+            if (typeGerechtNaam == "Hoofdgerechten")
+                Hoofdgerechten = newGerechten;
+            if (typeGerechtNaam == "Nagerechten")
+                Nagerechten = newGerechten;
+            
+            MenuOpslaan();
+            return newGerechten;
+        }
+
+        public void MenuOpslaan()
+        {
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+
+            var jsonString = JsonSerializer.Serialize(this, JSONoptions);
+            File.WriteAllText("menu.json", jsonString);
         }
 
     }

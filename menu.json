@@ -37,7 +37,7 @@
     },
     {
       "naam": "Oesters",
-      "prijs": 5.0,
+      "prijs": 5,
       "beschrijving": "3 gestoomde oesters",
       "ingredienten": [
         "knoflook",
@@ -46,7 +46,7 @@
     },
     {
       "naam": "Ha kau",
-      "prijs": 9.0,
+      "prijs": 9,
       "beschrijving": "Een rond deegvelletje gevuld met gestoomde garnalen",
       "ingredienten": [
         "garnalen",
@@ -70,7 +70,7 @@
     {
       "naam": "Sushi: dragon rolls",
       "prijs": 16.5,
-      "beschrijving": "Een heerlijke vegetarische salade",
+      "beschrijving": "Heerlijke gefrituurde sushirolls",
       "ingredienten": [
         "rijst",
         "nori",
@@ -82,9 +82,11 @@
     {
       "naam": "Indische rijsttafel",
       "prijs": 17.5,
-      "beschrijving": "Een heerlijke rijsttafel met mini loempia's, babi pangang, gebakke garnalen en saté!",
+      "beschrijving": "Een heerlijke rijsttafel met mini loempia\u0027s, babi pangang, gebakke garnalen en sat\u00E9!",
       "ingredienten": [
-        "rijst"
+        "rijst",
+        "garnalen",
+        "tauge"
       ]
     },
     {
@@ -122,9 +124,9 @@
       ]
     },
     {
-      "naam": "Gefileerde kip met pikante saus",
+      "naam": "Kipfilet met pikante saus",
       "prijs": 13.5,
-      "beschrijving": "Een favoriet uit de Indonesische keuken, verrukkelijke gebakke rijst",
+      "beschrijving": "Gon Bao Kai ofwel kipfilet met pikante saus geserveerd met heerlijke groenten",
       "ingredienten": [
         "kipdijfilet",
         "rode paprika",
@@ -136,11 +138,14 @@
     {
       "naam": "Tjap Tjoy compleet",
       "prijs": 14.9,
-      "beschrijving": "Een favoriet uit de Indonesische keuken, verrukkelijke gebakke rijst",
+      "beschrijving": "Lekkere knapperige groenten met een subtiele smaak van de oestersaus, verse gember en sesamolie.",
       "ingredienten": [
         "varkenshaas",
         "kipfilet",
         "runderhaas",
+        "gember",
+        "sesamolie",
+        "groentemix (paprika, champignons, komkommer, wortel)",
         "(glutenvrij)"
       ]
     }
@@ -159,12 +164,12 @@
     {
       "naam": "Vers fruit met slagroom",
       "prijs": 6.5,
-      "beschrijving": "Een heerlijke vegetarische salade",
+      "beschrijving": "Een heerlijke zoete salade",
       "ingredienten": [
         "bananen",
         "verse ananas",
         "appels",
-        "kiwi's",
+        "kiwi\u0027s",
         "peren",
         "blauwe zoete druiven",
         "slagroom"
@@ -173,7 +178,7 @@
     {
       "naam": "Brownie",
       "prijs": 8.5,
-      "beschrijving": "Brownie met noten: knapperig van buiten en smeuïg van binnen",
+      "beschrijving": "Brownie met noten: knapperig van buiten en smeu\u00EFg van binnen",
       "ingredienten": [
         "margarine",
         "choco poeder",
@@ -182,7 +187,7 @@
       ]
     },
     {
-      "naam": "Crème brûlée",
+      "naam": "Cr\u00E8me br\u00FBl\u00E9e",
       "prijs": 10,
       "beschrijving": "Een custardachtig nagerecht, met daaroverheen een gekaramelliseerde laag suiker.",
       "ingredienten": [
