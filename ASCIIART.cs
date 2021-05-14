@@ -54,6 +54,21 @@ namespace TheFatDuckRestaurant
             string ASCIILogoAll = ASCIILoginL1 + ASCIIDuckL1 + ASCIILoginL2 + ASCIIDuckL2 + ASCIILoginL3 + ASCIIDuckL3 + ASCIILoginL4 + ASCIIDuckL4 + ASCIILoginL5 + ASCIIDuckL5 + ASCIILoginL6 + ASCIIDuckL6 + ASCIILoginL7 + ASCIILoginL8;
             return ASCIILogoAll;
         }
+
+        public static string LogoutArt()
+        {
+            string ASCIILogoutL1 = "  _                             _   ";
+            string ASCIILogoutL2 = " | |                           | |  ";
+            string ASCIILogoutL3 = " | |     ___   __ _  ___  _   _| |_ ";
+            string ASCIILogoutL4 = " | |    / _ \\ / _` |/ _ \\| | | | __|";
+            string ASCIILogoutL5 = " | |___| (_) | (_| | (_) | |_| | |_ ";
+            string ASCIILogoutL6 = " |______\\___/ \\__, |\\___/ \\__,_|\\__|";
+            string ASCIILogoutL7 = "               __/ |                \n";
+            string ASCIILogoutL8 = "              |___/                 \n";
+
+            string ASCIILogoAll = ASCIILogoutL1 + ASCIIDuckL1 + ASCIILogoutL2 + ASCIIDuckL2 + ASCIILogoutL3 + ASCIIDuckL3 + ASCIILogoutL4 + ASCIIDuckL4 + ASCIILogoutL5 + ASCIIDuckL5 + ASCIILogoutL6 + ASCIIDuckL6 + ASCIILogoutL7 + ASCIILogoutL8;
+            return ASCIILogoAll;
+        }
         public static string InformatieArt()
         {
             string ASCIIInfoL1 = "  _____        __                           _   _      ";
@@ -90,6 +105,18 @@ namespace TheFatDuckRestaurant
             string ASCIIRegistrerenL8 = "             |___/                                   \n";
 
             string ASCIILogoAll = ASCIIRegistrerenL1 + ASCIIDuckL1 + ASCIIRegistrerenL2 + ASCIIDuckL2 + ASCIIRegistrerenL3 + ASCIIDuckL3 + ASCIIRegistrerenL4 + ASCIIDuckL4 + ASCIIRegistrerenL5 + ASCIIDuckL5 + ASCIIRegistrerenL6 + ASCIIDuckL6 + ASCIIRegistrerenL7 + ASCIIRegistrerenL8;
+            return ASCIILogoAll;
+        }
+        public static string AccountArt()
+        {
+            string ASCIIAccountL1 = "                                    _   ";
+            string ASCIIAccountL2 = "     /\\                            | |  ";
+            string ASCIIAccountL3 = "    /  \\   ___ ___ ___  _   _ _ __ | |_ ";
+            string ASCIIAccountL4 = "   / /\\ \\ / __/ __/ _ \\| | | | '_ \\| __|";
+            string ASCIIAccountL5 = "  / ____ \\ (_| (_| (_) | |_| | | | | |_ ";
+            string ASCIIAccountL6 = " /_/    \\_\\___\\___\\___/ \\__,_|_| |_|\\__|";
+
+            string ASCIILogoAll = ASCIIAccountL1 + ASCIIDuckL1 + ASCIIAccountL2 + ASCIIDuckL2 + ASCIIAccountL3 + ASCIIDuckL3 + ASCIIAccountL4 + ASCIIDuckL4 + ASCIIAccountL5 + ASCIIDuckL5 + ASCIIAccountL6 + ASCIIDuckL6;
             return ASCIILogoAll;
         }
     }
