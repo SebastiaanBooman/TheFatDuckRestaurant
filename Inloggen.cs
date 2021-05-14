@@ -119,7 +119,7 @@ namespace TheFatDuckRestaurant
                 {
                     Tuple<bool, string> Password = Tuple.Create(false, "");
                     Console.Clear();
-                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.LoginArt());
+                    Console.WriteLine(ASCIIART.LoginArt());
                     Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in");
                     if(gebruikerType == "Klant")
                        Password = CheckWachtwoord(klantObject);
@@ -226,7 +226,7 @@ namespace TheFatDuckRestaurant
             while (!passed)
             {
                 Console.Clear();
-                //ASCIIART
+                Console.WriteLine(ASCIIART.LogoutArt());
                 Console.WriteLine("U bent uitgelogd!\n\n0: Terug");
                 if (wrongInput)
                     Console.WriteLine("Verkeerde Input! Probeer 0");
@@ -277,7 +277,8 @@ namespace TheFatDuckRestaurant
         }
 
         public virtual void bekijkReserveringen() { }
-        
+
+        public virtual void bekijkAccount() { }
 
         public virtual char startScherm()
         {
@@ -287,6 +288,7 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
+                Console.WriteLine("STATUS: Uitgelogd\x0a");
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Login\x0a");
                 Console.WriteLine("3: Bezichtig het menu\x0a");
@@ -342,11 +344,13 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
-                Console.WriteLine("1: Informatie\x0a");
-                Console.WriteLine("2: Logout\n");
-                Console.WriteLine("3: Bezichtig het menu\x0a");
-                Console.WriteLine("4: Reserveren\x0a");
-                Console.WriteLine("5: Bezichtig uw reserveringen");
+                Console.WriteLine($"STATUS: Ingelogd als klant, welkom {Naam}\x0a");
+                Console.WriteLine("1: Restaurant informatie\x0a");
+                Console.WriteLine("2: Account informatie\n");
+                Console.WriteLine("3: Logout\n");
+                Console.WriteLine("4: Bezichtig het menu\x0a");
+                Console.WriteLine("5: Reserveren\x0a");
+                Console.WriteLine("6: Bezichtig uw reserveringen");
 
                 if (verkeerdeInput)
                 {
@@ -361,13 +365,15 @@ namespace TheFatDuckRestaurant
                     case '1':
                         return '1';
                     case '2':
-                        return '3';
+                        return 'A';
                     case '3':
-                        return '4';
+                        return '3';
                     case '4':
+                        return '4';
+                    case '5':
                         return '5';
-                case '5':
-                    return '9';
+                    case '6':
+                        return '9';
                     default:
                         verkeerdeInput = true;
                         break;
@@ -375,6 +381,39 @@ namespace TheFatDuckRestaurant
             }
             return '0';
         }
+
+    public override void bekijkAccount()
+    {
+        bool verkeerdeInput = false;
+        bool passed = false;
+        while (!passed)
+        {
+            Console.Clear();
+            Console.WriteLine(TheFatDuckRestaurant.ASCIIART.AccountArt());
+            Console.WriteLine($"Account Naam: {Naam}\x0a");
+            Console.WriteLine($"Account Type: Klant\x0a");
+            Console.WriteLine($"1: Account Reserveringen\x0a");
+            Console.WriteLine("0: Return");
+            if (verkeerdeInput)
+            {
+                Console.WriteLine("Verkeerde Input! Probeer 1 of 0");
+                verkeerdeInput = false;
+            }
+
+            char userInput = Console.ReadKey().KeyChar;
+            switch (userInput)
+            {
+                case '1':
+                //call to account reserveringen.
+                case '0':
+                    return;
+                default:
+                    verkeerdeInput = true;
+                    break;
+            }
+        }
+    }
+
     public override void bekijkReserveringen()
     {
         Console.Clear();
@@ -408,6 +447,7 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
+                Console.WriteLine("STATUS: Ingelogd als medewerker\x0a");
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Logout\n");
                 Console.WriteLine("3: Bezichtig het menu\x0a");

@@ -63,6 +63,9 @@ namespace TheFatDuckRestaurant
                     case '9':
                         gebruiker.bekijkReserveringen();
                         break;
+                    case 'A':
+                        gebruiker.bekijkAccount();
+                        break;
                 }
             }
         }
