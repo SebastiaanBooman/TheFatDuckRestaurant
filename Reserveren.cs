@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace TheFatDuckRestaurant
 {
-    class Reserveren
+    public class Reserveren
     {
         public class ReserveerLijst
         {
