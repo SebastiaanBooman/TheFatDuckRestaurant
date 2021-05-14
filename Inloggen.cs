@@ -335,11 +335,11 @@ namespace TheFatDuckRestaurant
 
     public class Klant : Gebruiker
     {
-        public Reservering[] Reserveringen { get; set; }
-
-        public Klant(string naam, string wachtwoord, string adres, string woonplaats, Reservering[] reserveringen) : base(naam, wachtwoord, adres, woonplaats)
+        public int AantalReserveringen { get; set; }
+        
+        public Klant(string naam, string wachtwoord, string adres, string woonplaats, int reserveringen) : base(naam, wachtwoord, adres, woonplaats)
         {
-            this.Reserveringen = reserveringen;
+            this.AantalReserveringen = reserveringen;
         }
     public Klant() { }
 
@@ -433,7 +433,7 @@ namespace TheFatDuckRestaurant
     {
         Console.Clear();
         Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-        if (this.Reserveringen == null)
+        if (this.AantalReserveringen == 0)
         {
             Console.WriteLine("U heeft momenteel geen reserveringen! Klik op een toets om terug te gaan");
             Console.ReadLine();
