@@ -14,6 +14,442 @@ namespace TheFatDuckRestaurant
         public Gerechten[] Voorgerechten { get; set; }
         public Gerechten[] Hoofdgerechten { get; set; }
         public Gerechten[] Nagerechten { get; set; }
+
+        public void kiesMenuOpties()
+        {
+            Console.Clear();
+            Console.WriteLine(ASCIIART.MenuArt());
+            Console.WriteLine("KIES HET TYPE GERECHT:\x0A\x0A");
+            Console.WriteLine("1: Voorgerechten\x0A");
+            Console.WriteLine("2: Hoofdgerechten\x0A");
+            Console.WriteLine("3: Nagerechten\x0A\x0a");
+            Console.WriteLine("0: Terug");
+        }
+
+        public void laadSpecifiekMenu(Gerechten[] typeGerecht, string typeGebruiker)
+        {
+            bool passed = false;
+            while (passed != true)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.MenuArt());
+                if (typeGerecht == Voorgerechten)
+                    Console.WriteLine($"\nVoorgerechten\n");
+                else if (typeGerecht == Hoofdgerechten)
+                    Console.WriteLine($"\nHoofdgerechten\n");
+                else
+                    Console.WriteLine($"\nNagerechten\n");
+                for (int i = 1; i < typeGerecht.Length + 1; i++)
+                {
+                    Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A"); //1 : "GerechtNaam" (etc)
+                }
+
+                if (typeGebruiker == "Medewerker")
+                    Console.WriteLine("A: Menu aanpassen");
+                Console.WriteLine("0: Terug");
+
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
+
+                if (typeGebruiker == "Medewerker" && toetsUserChar == 'A')
+                    MenuAanpassenScherm(typeGerecht);
+
+                if (toetsUserChar == '0')
+                    return;
+                else if (typeGebruiker == "Klant")
+                    ShowItemReserveringHandler(typeGerecht, toetsUserChar);
+                else
+                    ShowItemHandler(typeGerecht, toetsUserChar);
+            }
+        }
+
+        public void BekijkSpecifiekMenu(string typeGebruiker)
+        {
+            bool passed = false;
+            bool verkeerdeInput = false;
+
+            while(passed != true)
+            {
+                Console.Clear();
+                kiesMenuOpties();
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of 0");
+                }
+
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
+                switch (toetsUserChar)
+                {
+                    case '1':
+                        laadSpecifiekMenu(Voorgerechten, typeGebruiker);
+                        break;
+                    case '2':
+                        laadSpecifiekMenu(Hoofdgerechten, typeGebruiker);
+                        break;
+                    case '3':
+                        laadSpecifiekMenu(Nagerechten, typeGebruiker);
+                        break;
+                    case '0':
+                        return;
+                    default:
+                        verkeerdeInput = true;
+                        break;
+                }
+            }
+        }
+
+        public void BekijkMenuMedewerker()
+        {
+            bool passed = false;
+            while (passed != true)
+            {
+                Console.Clear();
+                BekijkSpecifiekMenu("Medewerker");
+                return;
+            }
+        }
+
+        public void BekijkMenuGebruiker()
+        {
+            bool passed = false;
+            while (passed != true)
+            {
+                Console.Clear();
+                BekijkSpecifiekMenu("Gebruiker");
+                return;
+        
+            }
+        }
+
+        public void BekijkMenuKlant()
+        {
+            bool passed = false;
+            while (passed != true)
+            {
+                Console.Clear();
+                BekijkSpecifiekMenu("Klant");
+                return;
+            }
+        }
+
+        public void ShowItemHandler(Gerechten[] geladenMenu, char toetsUserChar)
+        {
+            try
+            {
+                ShowItemStandaard(geladenMenu[Int32.Parse(toetsUserChar.ToString())-1]);
+                Console.WriteLine($"\n\n0 : Terug");
+                Console.ReadKey();
+            }
+            catch{ return; }
+        }
+
+        public void ShowItemReserveringHandler(Gerechten[] geladenMenu, char toetsUserChar)
+        {
+            try
+            {
+                ShowItemStandaard(geladenMenu[Int32.Parse(toetsUserChar.ToString())-1]);
+                Console.WriteLine("\nR: Toevoegen aan reservering");
+                Console.WriteLine($"0 : Terug");
+                Console.ReadKey();
+            }
+            catch { return; }
+        }
+
+        public void ShowItemStandaard(Gerechten gerecht)
+        {
+
+            Console.Clear();
+            Console.WriteLine(ASCIIART.MenuArt());
+            Console.WriteLine($"Gerecht: " + gerecht.naam + "\x0A");
+            Console.WriteLine($"Prijs: {gerecht.prijs} Euro\x0a");
+            Console.WriteLine($"Beschrijving: " + gerecht.beschrijving + "\x0a");
+            Console.WriteLine($"Ingredienten: ");
+            for (int i = 0; i < gerecht.ingredienten.Length; i++)
+            {
+                Console.WriteLine($"- {gerecht.ingredienten[i]}");
+            }
+        }
+
+        public void MenuAanpassenScherm(Gerechten[] typeGerecht)
+        {
+            bool passed = false;
+            while (passed != true)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.MenuArt());
+                if(typeGerecht == Voorgerechten)
+                    Console.WriteLine("Voorgerechten menu aanpassen\n\n1: Item toevoegen\n\n2: Item verwijderen\n\n0: Terug");
+                else if (typeGerecht == Hoofdgerechten)
+                    Console.WriteLine("Hoofdgerechten menu aanpassen\n\n1: Item toevoegen\n\n2: Item verwijderen\n\n0: Terug");
+                else
+                    Console.WriteLine("Nagerechten menu aanpassen\n\n1: Item toevoegen\n\n2: Item verwijderen\n\n0: Terug");
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
+
+                switch (toetsUserChar)
+                {
+                    case '1':
+                        if (typeGerecht == Voorgerechten)
+                            AddItemHandler("Voorgerechten");
+                        else if (typeGerecht == Hoofdgerechten)
+                            AddItemHandler("Hoofdgerechten");
+                        else
+                            AddItemHandler("Nagerechten");
+                        break;
+                    case '2':
+                        //typeGerecht = removeItemScreen(typeGerecht, typeGerechtNaam);
+                        //return typeGerecht;
+                    case '0':
+                        return;
+                }
+            }
+        }
+
+        public Gerechten AddItemScherm(string typeGerechtNaam)
+        {
+            var passed = false;
+
+            var naam_ = "<Nog geen naam>";
+            var prijs_ = 0.0;
+            var beschrijving_ = "<Nog geen beschrijving>";
+            string[] ingredienten_ = null; ;
+
+            while (!passed)
+            {
+                var passedSpecifiek = false;
+                Console.Clear();
+                Console.WriteLine(ASCIIART.MenuArt());
+                Console.WriteLine("Voeg een nieuw " + typeGerechtNaam + " item toe aan het menu \x0A");
+                Console.WriteLine($"1: Naam \t\t{naam_}");
+                Console.WriteLine($"2: Prijs \t\t{prijs_}");
+                Console.WriteLine($"3: Beschrijving \t{beschrijving_}");
+                Console.WriteLine("4: Ingredienten");
+                if (ingredienten_ != null)
+                {
+                    Console.WriteLine($"\nDit zijn de ingredienten van het nieuwe item: ");
+                    for (int i = 0; i < ingredienten_.Length; i++)
+                    {
+                        Console.WriteLine(ingredienten_[i]);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\t<Nog geen ingredienten>");
+                }
+                Console.WriteLine($"\n5: Item opslaan\xA0");
+                Console.WriteLine($"0: Terug");
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
+                switch (toetsUserChar)
+                {
+                    case '1':
+                        naam_ = ChangeItemName(naam_); //Input "1" roept de functie die een gerecht's naam laat veranderen.
+                        break;
+                    case '2':
+                        prijs_ = ChangeItemPrice(prijs_); //Input "2" roept de functie die een gerecht's prijs laat veranderen.
+                        break;
+                    case '3':
+                        beschrijving_ = ChangeItemDescription(beschrijving_); //Input "3" roept de functie die een gerecht's beschrijving laat veranderen.
+                        break;
+                    case '4': //TODO: Ingredienten aanpassen moet ook in een aparte functie komen. Momenteel moeilijk te implementeren omdat de ingredienten niet een field of property van een class is en je kan het dus moeilijk callen.
+                        Console.Clear();
+                        while (!passedSpecifiek)
+                        {
+                            Console.Clear();
+                            Console.WriteLine(ASCIIART.MenuArt());
+                            Console.WriteLine($"Ingredienten aanpassen:\n\nDit zijn de huidige ingredienten:");
+                            if (ingredienten_ != null)
+                            {
+                                for (int i = 0; i < ingredienten_.Length; i++)
+                                {
+                                    Console.WriteLine(ingredienten_[i]);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("<Nog geen ingredienten.>");
+                            }
+                            Console.WriteLine("\n\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
+                            var userInputIngredienten = Console.ReadLine();
+                            if (userInputIngredienten == "0")
+                            {
+                                passedSpecifiek = true;
+                            }
+                            else
+                            {
+                                if (ingredienten_ != null)
+                                {
+                                    var tempIngredienten = new string[ingredienten_.Length + 1];
+                                    for (int i = 0; i < ingredienten_.Length; i++)
+                                    {
+                                        tempIngredienten[i] = ingredienten_[i];
+                                    }
+                                    tempIngredienten[tempIngredienten.Length - 1] = userInputIngredienten;
+                                    ingredienten_ = tempIngredienten;
+                                }
+                                else
+                                {
+                                    ingredienten_ = new string[1];
+                                    ingredienten_[0] = userInputIngredienten;
+                                }
+                            }
+                        }
+                        break;
+                    case '5':
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.MenuArt());
+                        Console.WriteLine("Het item wordt toegevoegd aan het voorgerechten menu, weet u dit zeker?\n\nA: Item bevestigen en toevoegen aan het menu\n0: Item annuleren");
+                        ConsoleKeyInfo userInputConfirmatie = Console.ReadKey();
+                        char userInputConfirmatieChar = userInputConfirmatie.KeyChar;
+                        if (userInputConfirmatieChar == 'A' || userInputConfirmatieChar == 'a')
+                        {
+                            return new Gerechten(naam_, prijs_, beschrijving_, ingredienten_);
+                        }
+                        break;
+                    case '0':
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.MenuArt());
+                        Console.WriteLine("U gaat terug naar het algemene menu en er worden verder geen gerechten toegevoegd aan het menu, weet u dit zeker?\n\nA: Verder werken aan menu item\n0: Item schrappen en terug gaan");
+                        ConsoleKeyInfo userInputFinale = Console.ReadKey();
+                        char userInputFinaleChar = userInputFinale.KeyChar;
+                        if (userInputFinaleChar == '0')
+                        {
+                            return null;
+                        }
+                        else
+                            passed = false;
+                        break;
+                }
+            }
+            return null;
+        }
+
+        public void AddItemHandler(string typeGerechtNaam)
+        {
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            var newGerecht = AddItemScherm(typeGerechtNaam);
+
+            if(newGerecht != null)
+            {
+
+                if (typeGerechtNaam == "Voorgerechten")
+                {
+                    var newGerechten = new Gerechten[Voorgerechten.Length + 1];
+                    for (int i = 0; i < Voorgerechten.Length; i++)
+                        newGerechten[i] = Voorgerechten[i];          
+                    newGerechten[Voorgerechten.Length] = newGerecht;
+                    Voorgerechten = newGerechten;
+                }
+
+                if (typeGerechtNaam == "Hoofdgerechten")
+                {
+                    var newGerechten = new Gerechten[Hoofdgerechten.Length + 1];
+                    for (int i = 0; i < Hoofdgerechten.Length; i++)
+                        newGerechten[i] = Hoofdgerechten[i];
+                    newGerechten[Hoofdgerechten.Length] = newGerecht;
+                    Hoofdgerechten = newGerechten;
+                }
+                if (typeGerechtNaam == "Nagerechten")
+                {
+                    var newGerechten = new Gerechten[Nagerechten.Length + 1];
+                    for (int i = 0; i < Nagerechten.Length; i++)
+                        newGerechten[i] = Nagerechten[i];
+                    newGerechten[Nagerechten.Length] = newGerecht;
+                    Nagerechten = newGerechten;
+                }
+            }
+
+            var jsonString = JsonSerializer.Serialize(this, JSONoptions);
+            File.WriteAllText("menu.json", jsonString);
+            return;
+        }
+
+        private static string ChangeItemName(string OldName) //Functie die gecalled kan worden om een specifiek menu item's naam te veranderen
+        {
+            bool passed = false;
+            bool wrongInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.MenuArt());
+                Console.WriteLine($"Naam aanpassen:\n\nDit is de oude naam: {OldName}\n\nToets de nieuwe naam in en klik op enter\n\n0: Terug");
+                if (wrongInput)
+                {
+                    Console.WriteLine("Foutieve input!\nZorg ervoor dat de naam alleen letters bevat.");
+                    wrongInput = false;
+                }
+                string userInputNaam = Console.ReadLine();
+                if (userInputNaam == "0") //Als de input "0" is , return de oude naam (veranderd niets), anders loopt de code door een paar checks.
+                    return OldName;
+                else if (userInputNaam.Any(char.IsDigit)) //Checkt of er een getal tussen de letters staat.
+                    wrongInput = true;
+                else
+                {
+                    return userInputNaam;
+                }
+            }
+            return OldName; //Onnodige return kwa design, alleen alle mogelijke paden moeten een return value hebben.
+        }
+
+        private static double ChangeItemPrice(double OldPrice)
+        {
+            bool passed = false;
+            bool wrongInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.MenuArt());
+                Console.WriteLine($"Prijs aanpassen:\n\nDit is de huidige prijs: {OldPrice}\n\nToets de nieuwe prijs in en klik op enter\n\n0: Terug");
+                if (wrongInput)
+                {
+                    Console.WriteLine("Verkeerde Input! Voer een int (1) of double (1.x) in.");
+                    wrongInput = false;
+                }
+                var userInputPrijs = Console.ReadLine();
+                if (userInputPrijs == "0")
+                    return OldPrice;
+                else
+                {
+                    try
+                    {
+                        var userInputPrijsConverted = double.Parse(userInputPrijs);
+                        return userInputPrijsConverted;
+                    }
+                    catch (System.FormatException)
+                    {
+                        wrongInput = true;
+                    }
+                }
+            }
+            return OldPrice; //Onnodige return kwa design, alleen alle mogelijke paden moeten een return value hebben.
+        }
+
+        private static string ChangeItemDescription(string oldDescription)
+        {
+            bool passed = false;
+            //bool wrongInput = false;
+            while (!passed)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.MenuArt());
+                Console.WriteLine($"Beschrijving aanpassen:\n\nDit is de huidige beschrijving: {oldDescription}\n\nToets de nieuwe beschrijving in en klik op enter\n\n0: Terug");
+                var userInputBeschrijving = Console.ReadLine();
+                if (userInputBeschrijving == "0")
+                {
+                    return oldDescription;
+                }
+                else
+                {
+                    return userInputBeschrijving;
+                }
+            }
+            return oldDescription; //Onnodige return kwa design, alleen alle mogelijke paden moeten een return value hebben.
+        }
+
     }
 
     public class Gerechten
@@ -22,8 +458,21 @@ namespace TheFatDuckRestaurant
         public double prijs { get; set; }
         public string beschrijving { get; set; }
         public string[] ingredienten { get; set; }
+
+        public Gerechten(string _naam, double _prijs, string _beschrijving, string[] _ingredienten)
+        {
+            this.naam = _naam;
+            this.prijs = _prijs;
+            this.beschrijving = _beschrijving;
+            this.ingredienten = _ingredienten;
+        }
+
+        public Gerechten() { }
     }
 
+}
+
+    /*
     public class Menucode
     {
         public static void KiesMenu()
@@ -499,3 +948,4 @@ namespace TheFatDuckRestaurant
         }
     }
 }
+*/
