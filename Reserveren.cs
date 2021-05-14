@@ -126,6 +126,7 @@ namespace TheFatDuckRestaurant
                         case '5':
                             if (AddReservering(NieuweReservering))
                             {
+                                klant.AantalReserveringen += 1;
                                 return true;
                             }
                             break;
