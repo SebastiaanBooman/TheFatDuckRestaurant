@@ -21,7 +21,7 @@ namespace TheFatDuckRestaurant
     {
         public static string jsonString = File.ReadAllText("gebruikers.json");
         public Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
-        public ReserveerLijst reserveerLijst;
+        public ReserveerLijst reserveerLijst = JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json"));
         public Menu menu;
         public Gebruiker gebruiker = new Gebruiker("", "");
 
@@ -50,6 +50,7 @@ namespace TheFatDuckRestaurant
                         menu = gebruiker.bekijkMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
                         break;
                     case '5':
+                        reserveerLijst.bekijkReserveringen();
                         //reserveerLijst = gebruiker.Reserveer(menu, reserveerLijst); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker, ook als een medewerker/eigenaar de reserveringen wilt inzien/koppelen/aanpassen
                         break;
                     case '6':

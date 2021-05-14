@@ -12,6 +12,67 @@ namespace TheFatDuckRestaurant
         {
             public ReserveerLijst() { }
             public Reservering[] Reserveringen { get; set; }
+            public void bekijkReserveringen()
+            {
+                char Input = '1';
+                if(this.Reserveringen.Length == 0)
+                {
+                    while (this.Reserveringen.Length == 0 && Input != '0')
+                    {
+                        Console.Clear();
+                        Console.WriteLine("U heeft nog geen reserveringen gemaakt.\x0a\x0a");
+                        Console.WriteLine("1: Maak een nieuwe reservering aan\x0a" + "0: Ga terug naar het startscherm");
+                        Input = Console.ReadKey().KeyChar;
+                        Console.Clear();
+                        switch (Input)
+                        {
+                            case '1':
+                                createReservering();
+                                break;
+                            case '0':
+                                break;
+                            default:
+                                Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                Console.ReadKey();
+                                break;
+                        }
+                    }
+                }
+                if(this.Reserveringen.Length > 0)
+                {
+                    int Index = 1;
+                    while (Index != 0)
+                    {
+                        Console.Clear();
+                        int i = 1;
+                        foreach (Reservering reservering in this.Reserveringen)
+                        {
+                            Console.WriteLine($"{i++}: <Info reservering>");
+                        }
+                        Console.WriteLine($"\x0a{i}: Maak een nieuwe reservering aan\x0a" + "0: Ga terug naar het startscherm");
+
+                        Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                        Console.Clear();
+                        if (Index == 0)
+                        {
+                            return;
+                        }
+                        else if (Index == i)
+                        {
+                            createReservering();
+                        }
+                        else if (Index < i && Index > 0)
+                        {
+                            changeReservering(this.Reserveringen[Index-1]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                            Console.ReadKey();
+                        }
+                    }
+                }
+            }
             public void changeReservering(Reservering reservering)
             {
                 if(createReservering(reservering.Tijd, reservering.Datum, reservering.Personen))
@@ -111,6 +172,7 @@ namespace TheFatDuckRestaurant
                         newReserveringen = new Reservering[] { reservering };
                     }
                     this.Reserveringen = newReserveringen;
+                    updateReserveerlijst();
                     Console.WriteLine("U heeft gereserveerd!\x0a\x0a" + "Enter: Ga terug naar het startscherm");
                     Console.ReadKey();
                     return true;
@@ -134,6 +196,14 @@ namespace TheFatDuckRestaurant
                     }
                 }
                 return MaxPersonen;
+            }
+            private void updateReserveerlijst()
+            {
+                var JSONoptions = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                };
+                File.WriteAllText("reserveringen.json", JsonSerializer.Serialize(this.Reserveringen, JSONoptions));
             }
         }
         public class Reservering
@@ -281,18 +351,7 @@ namespace TheFatDuckRestaurant
         {
             ReserveerLijst reserveerlijst = JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json"));
             reserveerlijst.createReservering();
-            updateReserveerlijst(reserveerlijst);
             reserveerlijst.changeReservering(reserveerlijst.Reserveringen[0]);
-            updateReserveerlijst(reserveerlijst);
-        }
-
-        public static void updateReserveerlijst(ReserveerLijst newReserveerLijst)
-        {
-            var JSONoptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
-            File.WriteAllText("reserveringen.json", JsonSerializer.Serialize(newReserveerLijst, JSONoptions));
         }
     }
 }
