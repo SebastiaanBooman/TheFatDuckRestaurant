@@ -210,7 +210,7 @@ namespace TheFatDuckRestaurant
                 {
                     nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
                 }
-                Klant nieuweKlant = new Klant(naamInput, password, adres, woonplaats, null); //nieuwe klant word aangemaakt
+                Klant nieuweKlant = new Klant(naamInput, password, adres, woonplaats, 0); //nieuwe klant word aangemaakt
                 nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
                 Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
                 var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);

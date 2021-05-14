@@ -30,8 +30,8 @@ namespace TheFatDuckRestaurant
                 {
                     Console.Clear();
                     Reservering[] KlantReserveringen = new Reservering[klant.AantalReserveringen];
-                    Console.WriteLine($"{klant.AantalReserveringen}, {this.Reserveringen.Length}");
-                    Console.ReadKey();
+                    //Console.WriteLine($"{klant.AantalReserveringen}, {this.Reserveringen.Length}");
+                    //Console.ReadKey();
                     int j = 0;
                     for (int i = 0; i < this.Reserveringen.Length; i++)
                     {
@@ -50,7 +50,7 @@ namespace TheFatDuckRestaurant
                     }
                     if(Index <= j && Index > 0)
                     {
-                        if (!changeReservering(KlantReserveringen[Index]))
+                        if (!changeReservering(KlantReserveringen[Index-1]))
                         {
                             klant.AantalReserveringen -= 1;
                         }
