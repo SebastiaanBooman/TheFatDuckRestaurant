@@ -67,6 +67,7 @@ namespace TheFatDuckRestaurant
                         break;
                     case '9':
                         reserveerLijst.bekijkReserveringen(gebruiker as Klant);
+                        reserveerLijst.bekijkReserveringen(gebruiker as Medewerker);
                         updateGebruikers(this.gebruikers);
                         updateReserveerlijst(this.reserveerLijst);
                         break;
