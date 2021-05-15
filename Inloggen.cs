@@ -315,7 +315,7 @@ namespace TheFatDuckRestaurant
             {
                 if (reservering.Datum == datumLower)
                 {
-                    ReserveringString += "<Info reservering>\x0a";
+                    ReserveringString += $"{reservering.TijdString()} {reservering.Bezoeker.Naam} ({reservering.Personen} personen)\x0a";
                 }
             }
             Console.WriteLine(ReserveringString == "" ? "Er zijn nog geen reserveringen gedaan voor deze datum\x0a" : ReserveringString);
@@ -419,7 +419,7 @@ namespace TheFatDuckRestaurant
                 if (Reserveerlijst.Reserveringen[i].Bezoeker.Naam == this.Naam)
                 {
                     KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
-                    Console.WriteLine($"{j}: <Info reservering>");
+                    Console.WriteLine($"{j}: {Reserveerlijst.Reserveringen[i].Datum} om {Reserveerlijst.Reserveringen[i].TijdString()} ({Reserveerlijst.Reserveringen[i].Personen} personen)");
                 }
             }
             Console.WriteLine("\x0a" + "0: Ga terug naar het startscherm");
