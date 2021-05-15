@@ -167,6 +167,14 @@ namespace TheFatDuckRestaurant
                 this.Personen = personen;
                 this.Bezoeker = bezoeker;
             }
+            public void Info()
+            {
+                Console.WriteLine("Klant:\t\t" + this.Bezoeker.Naam);
+                Console.WriteLine("Tijd:\t\t" + TijdString());
+                Console.WriteLine("Datum:\t\t" + this.Datum);
+                Console.WriteLine("Personen:\t" + this.Personen);
+                Console.WriteLine("Menu:\t\t" + "<gerechten>");
+            }
             public char Create(string addition)
             {
                 Console.Clear();
