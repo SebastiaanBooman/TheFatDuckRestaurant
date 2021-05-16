@@ -169,13 +169,14 @@ namespace TheFatDuckRestaurant
         {
 
             // Lambda om te checken of het een geldig wachtwoord is. Gebruikt RegEx
-            //      1       2               3                   4                 5
-            // @"   ^  (?=.+?[A-Z])    (?=.+?[0-9])    (?=.+?[^a-zA-Z0-9])     .{8,}$"
+            //      1       2               3                   4                5      6
+            // @"   ^  (?=.+?[A-Z])    (?=.+?[0-9])    (?=.+?[^a-zA-Z0-9])     .{8,}    $"
             // 1 is de start van de string (input)
             // 2 is een check of er ergens in de string 1 of meer hoofdletters zijn.
             // 3 is een check of er ergens in de string 1 of meer cijfers zijn.
             // 4 is een check of er ergens in de string 1 of meer characters zijn dat geen kleine letter, hoofdletter of getal is
             // 5 is een check of de string minimaal 8 tot meer characters heeft
+            // 6 is het einde van de string (input)
 
             Func<string, bool> ValidatePassword = (input) =>
             {
