@@ -120,7 +120,7 @@ namespace TheFatDuckRestaurant
                     Tuple<bool, string> Password = Tuple.Create(false, "");
                     Console.Clear();
                     Console.WriteLine(ASCIIART.LoginArt());
-                    Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in");
+                    Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in:");
                     if(gebruikerType == "Klant")
                        Password = CheckWachtwoord(klantObject);
                     else
@@ -131,7 +131,7 @@ namespace TheFatDuckRestaurant
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
-                        Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in\x0A\x0A" + "0: Ga terug naar het vorige scherm");
+                        Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in:\x0A\x0A" + "0: Terug");
                         if(klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
                             Password = CheckWachtwoord(klantObject);
                         else
@@ -143,7 +143,7 @@ namespace TheFatDuckRestaurant
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
-                        Console.WriteLine("U bent ingelogd!\x0A\x0A" + "Enter: Ga terug naar het sartscherm");
+                        Console.WriteLine("U bent ingelogd!\x0A\x0A" + "0: Naar het startscherm");
                         Console.ReadLine();
                         if(klantObject != null)
                             return klantObject;
