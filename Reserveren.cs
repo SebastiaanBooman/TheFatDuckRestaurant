@@ -13,96 +13,6 @@ namespace TheFatDuckRestaurant
         {
             public ReserveerLijst() { }
             public Reservering[] Reserveringen { get; set; }
-            /*public void bekijkReserveringen(Medewerker medewerker) //in gebruiker (virtual) met Reserveerlijst als parameter
-            {
-                if(this.Reserveringen == null)
-                {
-                    this.Reserveringen = new Reservering[0];
-                }
-                if(this.Reserveringen.Length == 0)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Er zijn nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
-                    Console.ReadKey();
-                    return;
-                }
-                while (true)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)");
-                    string datum = Console.ReadLine();
-                    Console.Clear();
-                    string datumLower = "";
-                    foreach(char sym in datum)
-                    {
-                        if (Char.IsLetter(sym))
-                        {
-                            Char.ToLower(sym);
-                        }
-                        datumLower += sym;
-                    }
-                    Console.WriteLine(datumLower + "\x0a");
-                    string ReserveringString = "";
-                    foreach(Reservering reservering in this.Reserveringen)
-                    {
-                        if (reservering.Datum == datumLower)
-                        {
-                            ReserveringString += "<Info reservering>\x0a";
-                        }
-                    }
-                    Console.WriteLine(ReserveringString == "" ? "Er zijn nog geen reserveringen gedaan voor deze datum\x0a" : ReserveringString);
-                    Console.WriteLine("Enter: Ga terug naar het startscherm");
-                    Console.ReadKey();
-                    return;
-                }
-            }
-            public void bekijkReserveringen(Klant klant) // in klant (override) met Reserveerlijst als parameter
-            {
-                if(this.Reserveringen == null)
-                {
-                    this.Reserveringen = new Reservering[0];
-                }
-                if(this.Reserveringen.Length == 0)
-                {
-                    Console.Clear();
-                    Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
-                    Console.ReadKey();
-                    return;
-                }
-                while(true)
-                {
-                    Console.Clear();
-                    Reservering[] KlantReserveringen = new Reservering[klant.AantalReserveringen];
-                    int j = 0;
-                    for (int i = 0; i < this.Reserveringen.Length; i++)
-                    {
-                        if(this.Reserveringen[i].Bezoeker.Naam == klant.Naam)
-                        {
-                            KlantReserveringen[j++] = this.Reserveringen[i];
-                            Console.WriteLine($"{j}: <Info reservering>");
-                        }
-                    }
-                    Console.WriteLine("\x0a"+"0: Ga terug naar het startscherm");
-                    int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
-                    Console.Clear();
-                    if(Index == 0)
-                    {
-                        return;
-                    }
-                    if(Index <= j && Index > 0)
-                    {
-                        if (!changeReservering(KlantReserveringen[Index-1]))
-                        {
-                            klant.AantalReserveringen -= 1;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
-                        Console.ReadKey();
-                    }
-                }
-            }*/
             public bool changeReservering(Reservering reservering)
             {
                 removeReservering(reservering);
@@ -257,6 +167,14 @@ namespace TheFatDuckRestaurant
                 this.Personen = personen;
                 this.Bezoeker = bezoeker;
             }
+            public void Info()
+            {
+                Console.WriteLine("Klant:\t\t" + this.Bezoeker.Naam);
+                Console.WriteLine("Tijd:\t\t" + TijdString());
+                Console.WriteLine("Datum:\t\t" + this.Datum);
+                Console.WriteLine("Personen:\t" + this.Personen);
+                Console.WriteLine("Menu:\t\t" + "<gerechten>");
+            }
             public char Create(string addition)
             {
                 Console.Clear();
@@ -380,7 +298,7 @@ namespace TheFatDuckRestaurant
                 }
                 return Dag < 31 ? true : false;
             }
-            private string TijdString()
+            public string TijdString()
             {
                 string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;
                 return tstring.Length < 5 ? tstring + "0" : tstring;

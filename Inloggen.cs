@@ -335,19 +335,66 @@ namespace TheFatDuckRestaurant
                 }
                 datumLower += sym;
             }
-            Console.WriteLine(datumLower + "\x0a");
-            string ReserveringString = "";
+            int Aantal = 0;
             foreach (Reservering reservering in Reserveerlijst.Reserveringen)
             {
                 if (reservering.Datum == datumLower)
                 {
-                    ReserveringString += "<Info reservering>\x0a";
+                    Aantal++;
+                }
+            }
+
+            if(Aantal > 0)
+            {
+                while (true)
+                {
+                    Console.Clear();
+                    Console.WriteLine(datumLower + "\x0a");
+                    Reservering[] RelevanteReserveringen = new Reservering[Aantal];
+                    int i = 0;
+                    foreach (Reservering reservering in Reserveerlijst.Reserveringen)
+                    {
+                        if (reservering.Datum == datumLower)
+                        {
+                            Console.WriteLine($"{i + 1}: {reservering.TijdString()} {reservering.Bezoeker.Naam} ({reservering.Personen} personen)");
+                            RelevanteReserveringen[i++] = reservering;
+                        }
+                    }
+                    Console.WriteLine("\x0a"+"0: Ga terug naar het startscherm");
+                    int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                    Console.Clear();
+                    if (Index == 0)
+                    {
+                        return;
+                    }
+                    if (Index > 0 && Index <= Aantal)
+                    {
+                        RelevanteReserveringen[Index - 1].Info();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Dit is geen geldige input");
+                    }
+                    Console.WriteLine("\x0a"+"Enter: Ga terug naar het vorige scherm");
+                    Console.ReadKey();
+                }
+            }
+            Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
+            Console.WriteLine("Enter: Ga terug naar het startscherm");
+            Console.ReadKey();
+            /*string ReserveringString = "";
+            foreach (Reservering reservering in Reserveerlijst.Reserveringen)
+            {
+                if (reservering.Datum == datumLower)
+                {
+                    ReserveringString += $"{reservering.TijdString()} {reservering.Bezoeker.Naam} ({reservering.Personen} personen)\x0a";
+                    reservering.Info();
                 }
             }
             Console.WriteLine(ReserveringString == "" ? "Er zijn nog geen reserveringen gedaan voor deze datum\x0a" : ReserveringString);
             Console.WriteLine("Enter: Ga terug naar het startscherm");
             Console.ReadKey();
-            return;
+            return;*/
         }
     }
 
@@ -445,7 +492,7 @@ namespace TheFatDuckRestaurant
                 if (Reserveerlijst.Reserveringen[i].Bezoeker.Naam == this.Naam)
                 {
                     KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
-                    Console.WriteLine($"{j}: <Info reservering>");
+                    Console.WriteLine($"{j}: {Reserveerlijst.Reserveringen[i].Datum} om {Reserveerlijst.Reserveringen[i].TijdString()} ({Reserveerlijst.Reserveringen[i].Personen} personen)");
                 }
             }
             Console.WriteLine("\x0a" + "0: Ga terug naar het startscherm");
