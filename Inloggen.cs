@@ -7,6 +7,7 @@ using static TheFatDuckRestaurant.MainClass;
 using static TheFatDuckRestaurant.Reserveren;
 using static TheFatDuckRestaurant.ASCIIART;
 using static TheFatDuckRestaurant.Menu;
+using System.Text.RegularExpressions;
 
 namespace TheFatDuckRestaurant
 {
@@ -166,6 +167,23 @@ namespace TheFatDuckRestaurant
 
         public Gebruiker registreer(Gebruiker gebruiker)
         {
+
+            // Lambda om te checken of het een geldig wachtwoord is. Gebruikt RegEx
+            //      1       2               3                   4                 5
+            // @"   ^  (?=.+?[A-Z])    (?=.+?[0-9])    (?=.+?[^a-zA-Z0-9])     .{8,}$"
+            // 1 is de start van de string (input)
+            // 2 is een check of er ergens in de string 1 of meer hoofdletters zijn.
+            // 3 is een check of er ergens in de string 1 of meer cijfers zijn.
+            // 4 is een check of er ergens in de string 1 of meer characters zijn dat geen kleine letter, hoofdletter of getal is
+            // 5 is een check of de string minimaal 8 tot meer characters heeft
+
+            Func<string, bool> ValidatePassword = (input) =>
+            {
+                Regex regex = new Regex(@"^(?=.+?[A-Z])(?=.+?[0-9])(?=.+?[^a-zA-Z0-9_@.-]).{8,}$");
+                Match match = regex.Match(input);
+                return match.Success;
+            };
+
             var jsonOptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
@@ -190,8 +208,15 @@ namespace TheFatDuckRestaurant
                 }
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw wachtwoord in:");
-                string password = Console.ReadLine(); //TODO: Check voor password met requirements
+                Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                string password = Console.ReadLine();
+                while (!ValidatePassword(password))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                    password = Console.ReadLine();
+                }
 
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
