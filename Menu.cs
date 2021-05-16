@@ -67,7 +67,7 @@ namespace TheFatDuckRestaurant
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
 
-                if (typeGebruiker == "Medewerker" && toetsUserChar == 'A')
+                if (typeGebruiker == "Medewerker" && (toetsUserChar == 'A' || toetsUserChar == 'a'))
                     typeGerecht = MenuAanpassenScherm(typeGerecht);
 
                 else if (huidigePaginaNR + 1 < hoeveelheidPaginas && toetsUserChar == '8')
@@ -528,15 +528,29 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("\n0: Terug");
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
+
+                if (userInputChar == '0')
+                    return typeGerecht;
                 try
                 {
                     var userInputConverted = Int32.Parse(userInputChar.ToString());
-                    typeGerecht = removeItemMenu(typeGerecht, typeGerechtNaam, userInputConverted);
                     Console.Clear();
                     Console.WriteLine(ASCIIART.MenuArt());
-                    Console.WriteLine("Item is verwijderd uit het menu!\n\n0: Terug");
-                    Console.ReadKey();
-                    return typeGerecht;
+                    Console.WriteLine($"Weet u zeker dat u {typeGerecht[userInputConverted-1].naam} wil verwijderen uit het menu?\n\nA: Item definitief verwijderen\n0: Terug");
+
+                    ConsoleKeyInfo confirmInput = Console.ReadKey();
+                    char confirmInputChar = confirmInput.KeyChar;
+                    if (confirmInputChar == 'A' || confirmInputChar == 'a')
+                    {
+                        typeGerecht = removeItemMenu(typeGerecht, typeGerechtNaam, userInputConverted);
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.MenuArt());
+                        Console.WriteLine("Item is verwijderd uit het menu!\n\n0: Terug naar menu aanpassen");
+                        Console.ReadKey();
+                        return typeGerecht;
+                    }
+                    else
+                        passed = false;
                 }
                 catch
                 {
