@@ -320,37 +320,55 @@ namespace TheFatDuckRestaurant
 
             if(Aantal > 0)
             {
+                int huidigePaginaNR = 0;
+                Reservering[] RelevanteReserveringen = new Reservering[Aantal];
+                int j = 0;
+                foreach (Reservering reservering in Reserveerlijst.Reserveringen)
+                {
+                    if (reservering.Datum == datumLower)
+                    {
+                        RelevanteReserveringen[j++] = reservering;
+                    }
+                }
+                int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
                 while (true)
                 {
                     Console.Clear();
-                    Console.WriteLine(datumLower + "\x0a");
-                    Reservering[] RelevanteReserveringen = new Reservering[Aantal];
-                    int i = 0;
-                    foreach (Reservering reservering in Reserveerlijst.Reserveringen)
-                    {
-                        if (reservering.Datum == datumLower)
-                        {
-                            Console.WriteLine($"{i + 1}: {reservering.TijdString()} {reservering.Bezoeker.Naam} ({reservering.Personen} personen)");
-                            RelevanteReserveringen[i++] = reservering;
-                        }
+                    Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+                    for(int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
+                    { 
+                        Console.WriteLine($"{i+1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker.Naam} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
                     }
-                    Console.WriteLine("\x0a"+"0: Ga terug naar het startscherm");
+                    Console.WriteLine();
+                    if (huidigePaginaNR + 1 < hoeveelheidPaginas)
+                        Console.WriteLine("8: Volgende pagina");
+                    if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                        Console.WriteLine("9: Vorige pagina");
+                    Console.WriteLine("0: Ga terug naar het startscherm");
                     int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
                     Console.Clear();
                     if (Index == 0)
                     {
                         return;
                     }
-                    if (Index > 0 && Index <= Aantal)
+                    if (Index > 0 && Index < 8)
                     {
                         RelevanteReserveringen[Index - 1].Info();
+                    }
+                    else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+                    {
+                        huidigePaginaNR++;
+                    }
+                    else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                    {
+                        huidigePaginaNR--;
                     }
                     else
                     {
                         Console.WriteLine("Dit is geen geldige input");
+                        Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
+                        Console.ReadKey();
                     }
-                    Console.WriteLine("\x0a"+"Enter: Ga terug naar het vorige scherm");
-                    Console.ReadKey();
                 }
             }
             Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
@@ -456,32 +474,51 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return;
         }
+        int huidigePaginaNR = 0;
+        Reservering[] KlantReserveringen = new Reservering[this.AantalReserveringen];
+        int j = 0;
+        for (int i = 0; i < Reserveerlijst.Reserveringen.Length; i++)
+        {
+            if (Reserveerlijst.Reserveringen[i].Bezoeker.Naam == this.Naam)
+            {
+                KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
+            }
+        }
+        int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
         while (true)
         {
             Console.Clear();
-            Reservering[] KlantReserveringen = new Reservering[this.AantalReserveringen];
-            int j = 0;
-            for (int i = 0; i < Reserveerlijst.Reserveringen.Length; i++)
+            Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+            for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < KlantReserveringen.Length; i++)
             {
-                if (Reserveerlijst.Reserveringen[i].Bezoeker.Naam == this.Naam)
-                {
-                    KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
-                    Console.WriteLine($"{j}: {Reserveerlijst.Reserveringen[i].Datum} om {Reserveerlijst.Reserveringen[i].TijdString()} ({Reserveerlijst.Reserveringen[i].Personen} personen)");
-                }
+                Console.WriteLine($"{i+1}: {KlantReserveringen[i + huidigePaginaNR * 7].Datum} om {KlantReserveringen[i + huidigePaginaNR * 7].TijdString()} ({KlantReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
             }
-            Console.WriteLine("\x0a" + "0: Ga terug naar het startscherm");
+            Console.WriteLine();
+            if (huidigePaginaNR + 1 < hoeveelheidPaginas)
+                Console.WriteLine("8: Volgende pagina");
+            if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                Console.WriteLine("9: Vorige pagina");
+            Console.WriteLine("0: Ga terug naar het startscherm");
             int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
             Console.Clear();
             if (Index == 0)
             {
                 return;
             }
-            if (Index <= j && Index > 0)
+            if (Index < 7 && Index > 0)
             {
                 if (!Reserveerlijst.changeReservering(KlantReserveringen[Index - 1]))
                 {
                     this.AantalReserveringen -= 1;
                 }
+            }
+            else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+            {
+                huidigePaginaNR++;
+            }
+            else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+            {
+                huidigePaginaNR--;
             }
             else
             {
