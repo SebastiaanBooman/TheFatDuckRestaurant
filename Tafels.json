@@ -1,0 +1,174 @@
+{
+  "Tafels": [
+    {
+      "ID": "1A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "1B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "2A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "2B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "3A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "3B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "4A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "4B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "5A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "5B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "6A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "6B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "7A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "7B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "8A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "8B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "9A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "9B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "9B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "10A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "10B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "11A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "11B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "12A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "12B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "13A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "13B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "14A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "14B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "15A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "15B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "16A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "16B",
+      "Plekken": 2,
+      "Gereserveerd": false
+    },
+    {
+      "ID": "17A",
+      "Plekken": 4,
+      "Gereserveerd": false
+    }
+  ]
+}
