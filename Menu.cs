@@ -29,6 +29,7 @@ namespace TheFatDuckRestaurant
         public void laadSpecifiekMenu(Gerechten[] typeGerecht, string typeGebruiker)
         {
             bool passed = false;
+            int huidigePaginaNR = 0; //Bij de eerste keer laden van het menu zal de eerste 7 gerechten worden getoont.
             while (passed != true)
             {
                 Console.Clear();
@@ -39,10 +40,25 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine($"\nHoofdgerechten\n");
                 else
                     Console.WriteLine($"\nNagerechten\n");
-                for (int i = 1; i < typeGerecht.Length + 1; i++)
+
+                int hoeveelheidPaginas = (int)Math.Ceiling(typeGerecht.Length / 7.0); //Berekent hoeveel pagina's van 7 gerechten er moeten zijn om alle gerechten te kunnen tonen (Bijv. 25 / 7 = 4 paginas)
+                Console.WriteLine($"Pagina {huidigePaginaNR +1}/{hoeveelheidPaginas}\n");
+                for (int i = 1; i < 8; i++) //Laat 7 gerechten zien per slide
                 {
-                    Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A"); //1 : "GerechtNaam" (etc)
+                    try
+                    {
+                        Console.WriteLine(i + ": " + typeGerecht[(i - 1) + (7 * huidigePaginaNR)].naam + "\x0A"); //1 : "GerechtNaam" (etc), laat alleen de gerechten zien voor de juiste pagina nr
+                    }
+                    catch (IndexOutOfRangeException) //Omdat de gerechten per 7 worden laten zien, zal er bij 5 gerechten op een pagina een error komen omdat het programma niet bestaande gerechten 6 en 7 ook probeert te tonen.
+                    {
+
+                    }
                 }
+                if (huidigePaginaNR+1 < hoeveelheidPaginas)
+                    Console.WriteLine("8: Volgende pagina");
+                if (huidigePaginaNR+1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                    Console.WriteLine("9: Vorige pagina");
+
 
                 if (typeGebruiker == "Medewerker")
                     Console.WriteLine("A: Menu aanpassen");
@@ -51,15 +67,21 @@ namespace TheFatDuckRestaurant
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
 
-                if (typeGebruiker == "Medewerker" && toetsUserChar == 'A')
+                if (typeGebruiker == "Medewerker" && (toetsUserChar == 'A' || toetsUserChar == 'a'))
                     typeGerecht = MenuAanpassenScherm(typeGerecht);
 
-                if (toetsUserChar == '0')
+                else if (huidigePaginaNR + 1 < hoeveelheidPaginas && toetsUserChar == '8')
+                    huidigePaginaNR++;
+
+                else if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1) && toetsUserChar == '9')
+                    huidigePaginaNR--;
+
+                else if (toetsUserChar == '0')
                     return;
                 else if (typeGebruiker == "Klant")
-                    ShowItemReserveringHandler(typeGerecht, toetsUserChar);
+                    ShowItemReserveringHandler(typeGerecht, toetsUserChar, huidigePaginaNR);
                 else
-                    ShowItemHandler(typeGerecht, toetsUserChar);
+                    ShowItemHandler(typeGerecht, toetsUserChar, huidigePaginaNR);
             }
         }
 
@@ -133,22 +155,22 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void ShowItemHandler(Gerechten[] geladenMenu, char toetsUserChar)
+        public void ShowItemHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR)
         {
             try
             {
-                ShowItemStandaard(geladenMenu[Int32.Parse(toetsUserChar.ToString())-1]);
+                ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString())-1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
                 Console.WriteLine($"\n\n0 : Terug");
                 Console.ReadKey();
             }
             catch{ return; }
         }
 
-        public void ShowItemReserveringHandler(Gerechten[] geladenMenu, char toetsUserChar)
+        public void ShowItemReserveringHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR)
         {
             try
             {
-                ShowItemStandaard(geladenMenu[Int32.Parse(toetsUserChar.ToString())-1]);
+                ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString())-1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
                 Console.WriteLine("\nR: Toevoegen aan reservering");
                 Console.WriteLine($"0 : Terug");
                 Console.ReadKey();
@@ -506,15 +528,29 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("\n0: Terug");
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
+
+                if (userInputChar == '0')
+                    return typeGerecht;
                 try
                 {
                     var userInputConverted = Int32.Parse(userInputChar.ToString());
-                    typeGerecht = removeItemMenu(typeGerecht, typeGerechtNaam, userInputConverted);
                     Console.Clear();
                     Console.WriteLine(ASCIIART.MenuArt());
-                    Console.WriteLine("Item is verwijderd uit het menu!\n\n0: Terug");
-                    Console.ReadKey();
-                    return typeGerecht;
+                    Console.WriteLine($"Weet u zeker dat u {typeGerecht[userInputConverted-1].naam} wil verwijderen uit het menu?\n\nA: Item definitief verwijderen\n0: Terug");
+
+                    ConsoleKeyInfo confirmInput = Console.ReadKey();
+                    char confirmInputChar = confirmInput.KeyChar;
+                    if (confirmInputChar == 'A' || confirmInputChar == 'a')
+                    {
+                        typeGerecht = removeItemMenu(typeGerecht, typeGerechtNaam, userInputConverted);
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.MenuArt());
+                        Console.WriteLine("Item is verwijderd uit het menu!\n\n0: Terug naar menu aanpassen");
+                        Console.ReadKey();
+                        return typeGerecht;
+                    }
+                    else
+                        passed = false;
                 }
                 catch
                 {
