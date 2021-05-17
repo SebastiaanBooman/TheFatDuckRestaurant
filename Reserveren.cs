@@ -274,11 +274,7 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                     /*Gerechten gekozenGerecht = laat het menu een 'list of Gerechten' returnen
-                    if(gekozenGerecht.Length == 0)
-                    {
-                        return;
-                    }
-                    else
+                    if(gekozenGerecht.Length != 0)
                     {
                         addGerecht(gekozenGerechten);
                     }
