@@ -207,9 +207,9 @@ namespace TheFatDuckRestaurant
                             else
                             {
                                 int huidigePaginaNR = 0;
-                                int hoeveelheidPaginas = (int)Math.Ceiling(this.Gerechten.Length / 7.0);
                                 while (true)
                                 {
+                                    int hoeveelheidPaginas = (int)Math.Ceiling(this.Gerechten.Length / 7.0);
                                     Console.Clear();
                                     Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                                     for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < this.Gerechten.Length; i++)
@@ -228,10 +228,20 @@ namespace TheFatDuckRestaurant
                                     {
                                         return;
                                     }
-                                    if (Index < 7 && Index > 0)
+                                    if (Index < 8 && Index > 0)
                                     {
-                                        Console.WriteLine("<Bekijk het gekozen gerecht met mogelijkheid om deze te verwijderen>");
-                                        Console.ReadKey();
+                                        //Laat informatie (ingrediënten, prijs, etc.) zien over het gekozen gerecht (this.Gerechten[Index - 1 + huidigePaginaNR * 7])
+                                        Console.WriteLine("<Bekijk het gekozen gerecht>");
+                                        Console.WriteLine("\n1: Verwijder het gerecht van de bestelling\n0: Ga terug naar het vorige scherm");
+                                        char userInput = Console.ReadKey().KeyChar;
+                                        Console.Clear();
+                                        switch(userInput)
+                                        {
+                                            case '1':
+                                                removeGerecht(this.Gerechten[Index - 1 + huidigePaginaNR * 7]);
+                                                Console.WriteLine("Het gerecht is verwijderd!\n\nEnter: Ga terug naar het vorige scherm");
+                                                break;
+                                        }
                                     }
                                     else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
                                     {
@@ -263,7 +273,7 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                    /*Gerechten gekozenGerecht = laat het menu een list of Gerechten returnen
+                    /*Gerechten gekozenGerecht = laat het menu een 'list of Gerechten' returnen
                     if(gekozenGerecht.Length == 0)
                     {
                         return;
@@ -285,6 +295,24 @@ namespace TheFatDuckRestaurant
                 for(int j = 0; j < gerechten.Length; j++)
                 {
                     nieuwegerechten[i++] = gerechten[j];
+                }
+                this.Gerechten = nieuwegerechten;
+            }
+            private void removeGerecht(Gerechten gerecht)
+            {
+                Gerechten[] nieuwegerechten = new Gerechten[this.Gerechten.Length - 1];
+                bool Removed = false;
+                int i = 0;
+                foreach(Gerechten Gerecht in this.Gerechten)
+                {
+                    if(gerecht != Gerecht || Removed)
+                    {
+                        nieuwegerechten[i++] = Gerecht;
+                    }
+                    else
+                    {
+                        Removed = true;
+                    }
                 }
                 this.Gerechten = nieuwegerechten;
             }

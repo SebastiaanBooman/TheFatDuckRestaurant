@@ -362,9 +362,9 @@ namespace TheFatDuckRestaurant
                          */
                     }
                 }
-                int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
                 while (true)
                 {
+                    int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
                     Console.Clear();
                     Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                     for(int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
@@ -504,9 +504,9 @@ namespace TheFatDuckRestaurant
             }
         }
         int huidigePaginaNR = 0;
-        int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
         while (true)
         {
+            int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
             Console.Clear();
             Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
             for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < KlantReserveringen.Length; i++)
