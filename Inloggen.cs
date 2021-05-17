@@ -407,19 +407,6 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
             Console.WriteLine("Enter: Ga terug naar het startscherm");
             Console.ReadKey();
-            /*string ReserveringString = "";
-            foreach (Reservering reservering in Reserveerlijst.Reserveringen)
-            {
-                if (reservering.Datum == datumLower)
-                {
-                    ReserveringString += $"{reservering.TijdString()} {reservering.Bezoeker.Naam} ({reservering.Personen} personen)\x0a";
-                    reservering.Info();
-                }
-            }
-            Console.WriteLine(ReserveringString == "" ? "Er zijn nog geen reserveringen gedaan voor deze datum\x0a" : ReserveringString);
-            Console.WriteLine("Enter: Ga terug naar het startscherm");
-            Console.ReadKey();
-            return;*/
         }
     }
 
@@ -507,7 +494,6 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return;
         }
-        int huidigePaginaNR = 0;
         Reservering[] KlantReserveringen = new Reservering[this.AantalReserveringen];
         int j = 0;
         for (int i = 0; i < Reserveerlijst.Reserveringen.Length; i++)
@@ -517,6 +503,7 @@ namespace TheFatDuckRestaurant
                 KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
             }
         }
+        int huidigePaginaNR = 0;
         int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
         while (true)
         {
