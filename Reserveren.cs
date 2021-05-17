@@ -261,32 +261,31 @@ namespace TheFatDuckRestaurant
             }
             private void addGerechten(Menu menu)
             {
-                while (true)
-                {
-                    Console.Clear();
-                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                    /*Gerechten gekozenGerecht = laat het menu een gekozen item returnen of null
-                    if(gekozenGerecht == null)
+                Console.Clear();
+                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                    /*Gerechten gekozenGerecht = laat het menu een list of Gerechten returnen
+                    if(gekozenGerecht.Length == 0)
                     {
                         return;
                     }
                     else
                     {
-                        addGerecht(gekozenGerecht);
-                        Console.WriteLine("Het gerecht is toegevoegd aan uw reservering\n\nEnter: Ga terug naar het vorige scherm")
-                        Console.ReadKey;
+                        addGerecht(gekozenGerechten);
                     }
                     */
-                }
             }
-            private void addGerecht(Gerechten gerecht)
+            private void addGerecht(Gerechten[] gerechten)
             {
-                Gerechten[] nieuwegerechten = new Gerechten[this.Gerechten.Length + 1];
-                for(int i = 0; i < this.Gerechten.Length; i++)
+                Gerechten[] nieuwegerechten = new Gerechten[this.Gerechten.Length + gerechten.Length];
+                int i = 0;
+                foreach(Gerechten gerecht in this.Gerechten)
                 {
-                    nieuwegerechten[i] = this.Gerechten[i];
+                    nieuwegerechten[i++] = gerecht;
                 }
-                nieuwegerechten[this.Gerechten.Length] = gerecht;
+                for(int j = 0; j < gerechten.Length; j++)
+                {
+                    nieuwegerechten[i++] = gerechten[j];
+                }
                 this.Gerechten = nieuwegerechten;
             }
             public void Info()
