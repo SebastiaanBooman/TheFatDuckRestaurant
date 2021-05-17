@@ -321,6 +321,7 @@ namespace TheFatDuckRestaurant
             if(Aantal > 0)
             {
                 int huidigePaginaNR = 0;
+                //double TotalRevenue = 0.0;
                 Reservering[] RelevanteReserveringen = new Reservering[Aantal];
                 int j = 0;
                 foreach (Reservering reservering in Reserveerlijst.Reserveringen)
@@ -328,6 +329,11 @@ namespace TheFatDuckRestaurant
                     if (reservering.Datum == datumLower)
                     {
                         RelevanteReserveringen[j++] = reservering;
+                        /*foreach(Gerecht gerecht in reservering)
+                         * {
+                         *  TotalRevenue += gerecht.Prijs;
+                         * }
+                         */
                     }
                 }
                 int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
@@ -345,6 +351,7 @@ namespace TheFatDuckRestaurant
                     if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
                         Console.WriteLine("9: Vorige pagina");
                     Console.WriteLine("0: Ga terug naar het startscherm");
+                    //Console.WriteLine(TotalRevenue + " euro");
                     int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
                     Console.Clear();
                     if (Index == 0)
