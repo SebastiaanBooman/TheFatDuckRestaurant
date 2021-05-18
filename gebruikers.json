@@ -1,14 +1,14 @@
 ﻿{
   "Klanten": [
     {
-      "Reserveringen": null,
+      "AantalReserveringen": 0,
       "Naam": "Rafael",
       "Wachtwoord": "rafael",
       "Adres": null,
       "Woonplaats": null
     },
     {
-      "Reserveringen": null,
+      "AantalReserveringen": 1,
       "Naam": "Tom",
       "Wachtwoord": "tom",
       "Adres": null,
@@ -35,5 +35,10 @@
       "Woonplaats": null
     }
   ],
-  "eigenaar": null
+  "Eigenaar": {
+    "Naam": "Jake Darcy",
+    "Wachtwoord": "JD",
+    "Adres": "TheFatDuckRestaurant",
+    "Woonplaats": "Test"
+  }
 }

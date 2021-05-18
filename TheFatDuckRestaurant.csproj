@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <None Include="bin\Debug\netcoreapp3.1\reserveringen.json" />
+    <None Include="bin\Debug\netcoreapp3.1\Tafels.json" />
   </ItemGroup>
 
   <ItemGroup>
