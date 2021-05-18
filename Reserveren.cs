@@ -169,8 +169,10 @@ namespace TheFatDuckRestaurant
             public int Personen { get; set; }
             public Klant Bezoeker { get; set; }
             public Gerechten[] Gerechten { get; set; }
+
+            public Tafel[] Tafels { get; set; }
             public Reservering() { }
-            public Reservering(int tijd, string datum, int personen, Klant bezoeker, Gerechten[] gerechten)
+            public Reservering(int tijd, string datum, int personen, Klant bezoeker, Gerechten[] gerechten) //Tafels worden niet doorgegeven bij deze constructor omdat een klant bij het reserveren zelf geen keuze zal hebben. Tafels worden later gekoppeld door medewerkers.
             {
                 this.Tijd = tijd;
                 this.Datum = datum;
