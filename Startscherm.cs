@@ -36,7 +36,7 @@ namespace TheFatDuckRestaurant
             bool passed = false;
             while (!passed)
             {
-                char gebruikerInput = gebruiker.startScherm(); // ALL possible input: 1: Fat duck informatie, 2: Login/registratie, 3: Logout, 4: Menu bekijken/aanpassen, 5: Reserveer als klant/reservering koppelen als medewerker, 6: daily revenue bekijken, 7: clickstream van klanten bekijken, 8: Applicatie afsluiten, 9: Eigen reserveringen inkijken als klant
+                char gebruikerInput = gebruiker.startScherm(); // ALL possible input: 1: Fat duck informatie, 2: Login/registratie, 3: Logout, 4: Menu bekijken/aanpassen, 5: Reserveer als klant/reservering koppelen als medewerker, 6: daily revenue bekijken, 7: clickstream van klanten bekijken, 8: Applicatie afsluiten, 9: Eigen reserveringen inkijken als klant, A: Account bekijken van een gebruiker, B: Medewerker toevoegen als eigenaar
 
                 switch (gebruikerInput)
                 {
@@ -53,10 +53,17 @@ namespace TheFatDuckRestaurant
                         menu = gebruiker.bekijkMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
                         break;
                     case '5':
-                        if (reserveerLijst.createReservering(gebruiker as Klant))
+                        if(gebruiker as Klant != null)
                         {
-                            updateGebruikers(this.gebruikers);
-                            updateReserveerlijst(this.reserveerLijst);
+                            if (reserveerLijst.createReservering(gebruiker as Klant))
+                            {
+                                updateGebruikers(this.gebruikers);
+                                updateReserveerlijst(this.reserveerLijst);
+                            }
+                        }
+                        else if(gebruiker as Medewerker != null)
+                        {
+                            //medewerker tafels koppelen aan reserveringen.
                         }
                         //reserveerLijst = gebruiker.Reserveer(menu, reserveerLijst); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker, ook als een medewerker/eigenaar de reserveringen wilt inzien/koppelen/aanpassen
                         break;
@@ -77,6 +84,9 @@ namespace TheFatDuckRestaurant
                         break;
                     case 'A':
                         gebruiker.bekijkAccount();
+                        break;
+                    case 'B':
+                        gebruikers.registreerMedewerker();
                         break;
                 }
             }

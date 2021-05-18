@@ -255,6 +255,10 @@ namespace TheFatDuckRestaurant
                 return gebruiker; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
             }
         }
+        public Medewerker registreerMedewerker()
+        {
+            return null;
+        }
 
         public Gebruiker logOut()
         {
@@ -711,8 +715,8 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
                 Console.WriteLine("1: Informatie\x0a");
-                Console.WriteLine("2: Login\x0a");
-                Console.WriteLine("3: Logout\n");
+                Console.WriteLine("2: Logout\n");
+                Console.WriteLine("3: Voeg nieuwe medewerker toe");
                 Console.WriteLine("4: Bezichtig het menu\x0a");
                 Console.WriteLine("5: Bezichtig reserveringen\x0a");
                 Console.WriteLine("6: Bezichtig de Clickstream\x0a");
@@ -728,9 +732,9 @@ namespace TheFatDuckRestaurant
                     case '1':
                         return '1';
                     case '2':
-                        return '2';
-                    case '3':
                         return '4';
+                    case '3':
+                        return 'B';
                     case '4':
                         return '3';
                     case '5':
