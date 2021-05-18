@@ -15,14 +15,14 @@ namespace TheFatDuckRestaurant
     {
         public Klant[] Klanten { get; set; }
         public Medewerker[] Medewerkers { get; set; }
-        public Eigenaar eigenaar { get; set; }
+        public Eigenaar Eigenaar { get; set; }
 
         public Gebruikers() { } //Empty constructor for json deserialisen.
         public Gebruikers(Klant[] klanten, Medewerker[] medewerkers, Eigenaar eigenaar)
         {
             this.Klanten = klanten;
             this.Medewerkers = medewerkers;
-            this.eigenaar = eigenaar;
+            this.Eigenaar = eigenaar;
         }
 
         public Gebruiker accountManager(Gebruiker gebruiker)
@@ -35,7 +35,8 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine(ASCIIART.LoginArt());
                 Console.WriteLine("1: Login als klant\x0a");
                 Console.WriteLine("2: Login als medewerker\n");
-                Console.WriteLine("3: Registreer een nieuw account als klant\x0a");
+                Console.WriteLine("3: Login als eigenaar\n");
+                Console.WriteLine("4: Registreer een nieuw account als klant\x0a");
                 Console.WriteLine("0: Terug\x0a");
 
                 if (verkeerdeInput)
@@ -59,6 +60,11 @@ namespace TheFatDuckRestaurant
                             return gebruiker;
                         break;
                     case '3':
+                        gebruiker = logIn("Eigenaar");
+                        if (gebruiker as Eigenaar != null)
+                            return gebruiker;
+                        break;
+                    case '4':
                         gebruiker = registreer(gebruiker);
                         if(gebruiker as Klant != null)
                             return gebruiker;
@@ -86,6 +92,8 @@ namespace TheFatDuckRestaurant
                 bool NaamBestaat = false;
                 Klant klantObject = null;
                 Medewerker medewerkerObject = null;
+                Eigenaar eigenaarObject = null; 
+
                 Console.Clear();
                 Console.WriteLine(ASCIIART.LoginArt());
                 Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
@@ -104,7 +112,7 @@ namespace TheFatDuckRestaurant
                         }
                     }
                 }
-                else
+                else if(gebruikerType == "Medewerker")
                 {
                     foreach (Medewerker medewerker in Medewerkers)
                     {
@@ -116,6 +124,14 @@ namespace TheFatDuckRestaurant
                         }
                     }
                 }
+                else
+                {
+                    if(GegevenNaam == Eigenaar.Naam)
+                    {
+                        NaamBestaat = true;
+                        eigenaarObject = Eigenaar;
+                    }
+                }
                 if (NaamBestaat)
                 {
                     Tuple<bool, string> Password = Tuple.Create(false, "");
@@ -124,9 +140,13 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in:");
                     if(gebruikerType == "Klant")
                        Password = CheckWachtwoord(klantObject);
-                    else
+                    else if(gebruikerType == "Medewerker")
                     {
                        Password = CheckWachtwoord(medewerkerObject);
+                    }
+                    else
+                    {
+                        Password = CheckWachtwoord(eigenaarObject);
                     }
                     while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
                     {
@@ -148,7 +168,12 @@ namespace TheFatDuckRestaurant
                         Console.ReadLine();
                         if(klantObject != null)
                             return klantObject;
-                        return medewerkerObject;
+                        else if(medewerkerObject != null)
+                            return medewerkerObject;
+                        else
+                        {
+                            return eigenaarObject;
+                        }
                     }
                 }
                 else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer '0' is ingevoerd
@@ -474,7 +499,7 @@ namespace TheFatDuckRestaurant
         {
             this.AantalReserveringen = reserveringen;
         }
-    public Klant() { }
+    public Klant() { } //Empty constructor voor json.
 
     public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
     {
@@ -646,6 +671,11 @@ namespace TheFatDuckRestaurant
 
     public class Medewerker : Gebruiker
     {
+    public Medewerker(string naam, string wachtwoord, string adres, string woonplaats) : base(naam, wachtwoord, adres, woonplaats) { }
+
+    public Medewerker() { }
+
+
         public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
         {
             menu.BekijkMenuMedewerker();
@@ -706,6 +736,11 @@ namespace TheFatDuckRestaurant
 
     public class Eigenaar : Medewerker
     {
+        public Eigenaar(string naam, string wachtwoord, string adres, string woonplaats) : base(naam, wachtwoord, adres, woonplaats) { }
+        public Eigenaar() { }
+
+
+
         public override char startScherm()
         {
             bool verkeerdeInput = false;
@@ -714,9 +749,10 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
+                Console.WriteLine("STATUS: Ingelogd als eigenaar\x0a");
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Logout\n");
-                Console.WriteLine("3: Voeg nieuwe medewerker toe");
+                Console.WriteLine("3: Voeg nieuwe medewerker toe\n");
                 Console.WriteLine("4: Bezichtig het menu\x0a");
                 Console.WriteLine("5: Bezichtig reserveringen\x0a");
                 Console.WriteLine("6: Bezichtig de Clickstream\x0a");
@@ -736,13 +772,13 @@ namespace TheFatDuckRestaurant
                     case '3':
                         return 'B';
                     case '4':
-                        return '3';
+                        return '4';
                     case '5':
                         return '5';
                     case '6':
                         return '7';
                     case '0':
-                        return '0';
+                        return '8';
                     default:
                         verkeerdeInput = true;
                         break;
