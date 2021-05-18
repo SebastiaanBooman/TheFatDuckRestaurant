@@ -49,7 +49,7 @@ namespace TheFatDuckRestaurant
                         menu = gebruiker.bekijkMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
                         break;
                     case '5':
-                        if (reserveerLijst.createReservering(gebruiker as Klant))
+                        if (reserveerLijst.createReservering(gebruiker.Naam))
                         {
                             updateGebruikers(this.gebruikers);
                             updateReserveerlijst(this.reserveerLijst);

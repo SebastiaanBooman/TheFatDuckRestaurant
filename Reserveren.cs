@@ -13,11 +13,11 @@ namespace TheFatDuckRestaurant
         {
             public ReserveerLijst() { }
             public Reservering[] Reserveringen { get; set; }
-            public bool changeReservering(Reservering reservering)
+            public void changeReservering(Reservering reservering)
             {
                 removeReservering(reservering);
                 //GERECHTEN
-                return createReservering(reservering.Bezoeker, reservering.Tijd, reservering.Datum, reservering.Personen, null, "Verwijder");
+                createReservering(reservering.Bezoeker, reservering.Tijd, reservering.Datum, reservering.Personen, null, "Verwijder");
             }
             private void removeReservering(Reservering reservering)
             {
@@ -31,7 +31,7 @@ namespace TheFatDuckRestaurant
                 }
                 this.Reserveringen = newReserveringen;
             }
-            public bool createReservering(Klant klant, int tijd = 0, string datum = "", int personen = 0,Gerechten[] gerechten = null, string changeItem = "Annuleer")
+            public bool createReservering(string klant, int tijd = 0, string datum = "", int personen = 0,Gerechten[] gerechten = null, string changeItem = "Annuleer")
             {
                 //GERECHTEN
                 Reservering NieuweReservering = new Reservering(tijd,datum,personen,klant,gerechten);
@@ -82,7 +82,6 @@ namespace TheFatDuckRestaurant
                         case '5':
                             if (AddReservering(NieuweReservering))
                             {
-                                klant.AantalReserveringen += 1;
                                 return true;
                             }
                             break;
@@ -140,6 +139,10 @@ namespace TheFatDuckRestaurant
                 {
                     if (this.Reserveringen[i].Datum == datum && this.Reserveringen[i].Tijd > tijd - 200 && this.Reserveringen[i].Tijd < tijd + 200)
                     {
+                        if(Reserveringen[i].Personen % 2 == 1)
+                        {
+                            MaxPersonen--;
+                        }
                         MaxPersonen -= Reserveringen[i].Personen;
                     }
                 }
@@ -167,10 +170,10 @@ namespace TheFatDuckRestaurant
             public int Tijd { get; set; }
             public string Datum { get; set; }
             public int Personen { get; set; }
-            public Klant Bezoeker { get; set; }
+            public string Bezoeker { get; set; }
             public Gerechten[] Gerechten { get; set; }
             public Reservering() { }
-            public Reservering(int tijd, string datum, int personen, Klant bezoeker, Gerechten[] gerechten)
+            public Reservering(int tijd, string datum, int personen, string bezoeker, Gerechten[] gerechten)
             {
                 this.Tijd = tijd;
                 this.Datum = datum;
@@ -314,7 +317,7 @@ namespace TheFatDuckRestaurant
             }
             public void Info()
             {
-                Console.WriteLine("Klant:\t\t" + this.Bezoeker.Naam);
+                Console.WriteLine("Klant:\t\t" + this.Bezoeker);
                 Console.WriteLine("Tijd:\t\t" + TijdString());
                 Console.WriteLine("Datum:\t\t" + this.Datum);
                 Console.WriteLine("Personen:\t" + this.Personen);
