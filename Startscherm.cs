@@ -22,9 +22,13 @@ namespace TheFatDuckRestaurant
     {
         public static string jsonString = File.ReadAllText("gebruikers.json");
         public static string MenujsonString = File.ReadAllText("menu.json");
+        public static string TafelsjsonString = File.ReadAllText("Tafels.json");
+
         public Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
         public ReserveerLijst reserveerLijst = JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json"));
         public Menu menu = JsonSerializer.Deserialize<Menu>(MenujsonString);
+        public TafelArray tafels = JsonSerializer.Deserialize<TafelArray>(TafelsjsonString);
+
         public Gebruiker gebruiker = new Gebruiker("", "", "", "");
 
         public void StartFunctie()
