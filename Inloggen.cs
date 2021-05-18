@@ -261,7 +261,7 @@ namespace TheFatDuckRestaurant
                 {
                     nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
                 }
-                Klant nieuweKlant = new Klant(naamInput, password, adres, woonplaats, 0); //nieuwe klant word aangemaakt
+                Klant nieuweKlant = new Klant(naamInput, password, adres, woonplaats); //nieuwe klant word aangemaakt
                 nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
                 Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
                 var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
@@ -398,7 +398,7 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                     for(int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
                     { 
-                        Console.WriteLine($"{i+1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker.Naam} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
+                        Console.WriteLine($"{i+1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
                     }
                     Console.WriteLine();
                     if (huidigePaginaNR + 1 < hoeveelheidPaginas)
@@ -493,13 +493,8 @@ namespace TheFatDuckRestaurant
 
     public class Klant : Gebruiker
     {
-        public int AantalReserveringen { get; set; }
-        
-        public Klant(string naam, string wachtwoord, string adres, string woonplaats, int reserveringen) : base(naam, wachtwoord, adres, woonplaats)
-        {
-            this.AantalReserveringen = reserveringen;
-        }
-    public Klant() { } //Empty constructor voor json.
+        public Klant(string naam, string wachtwoord, string adres, string woonplaats) : base(naam, wachtwoord, adres, woonplaats) { }
+    public Klant() { }
 
     public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
     {
@@ -523,18 +518,33 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return;
         }
-        Reservering[] KlantReserveringen = new Reservering[this.AantalReserveringen];
-        int j = 0;
-        for (int i = 0; i < Reserveerlijst.Reserveringen.Length; i++)
-        {
-            if (Reserveerlijst.Reserveringen[i].Bezoeker.Naam == this.Naam)
-            {
-                KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
-            }
-        }
         int huidigePaginaNR = 0;
         while (true)
         {
+            int Aantal = 0;
+            foreach (Reservering reservering in Reserveerlijst.Reserveringen)
+            {
+                if (reservering.Bezoeker == this.Naam)
+                {
+                    Aantal++;
+                }
+            }
+            if (Aantal == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+                Console.ReadKey();
+                return;
+            }
+            Reservering[] KlantReserveringen = new Reservering[Aantal];
+            int j = 0;
+            for (int i = 0; i < Reserveerlijst.Reserveringen.Length; i++)
+            {
+                if (Reserveerlijst.Reserveringen[i].Bezoeker == this.Naam)
+                {
+                    KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
+                }
+            }
             int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
             Console.Clear();
             Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
@@ -556,10 +566,7 @@ namespace TheFatDuckRestaurant
             }
             if (Index < 7 && Index > 0)
             {
-                if (!Reserveerlijst.changeReservering(KlantReserveringen[Index - 1]))
-                {
-                    this.AantalReserveringen -= 1;
-                }
+                Reserveerlijst.changeReservering(KlantReserveringen[Index - 1]);
             }
             else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
             {
@@ -654,7 +661,7 @@ namespace TheFatDuckRestaurant
         }
     }
 
-    public override void bekijkReserveringen()
+    /*public override void bekijkReserveringen()
     {
         Console.Clear();
         Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -665,7 +672,7 @@ namespace TheFatDuckRestaurant
             return;
         }
         return; //functionaliteit voor als er wel reserveringen zijn gemaakt.
-    }
+    }*/
 }
 
 
