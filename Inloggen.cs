@@ -304,6 +304,7 @@ namespace TheFatDuckRestaurant
                 Console.ReadKey();
                 return nieuweKlant;
             }
+            return gebruiker; //nodige return.
         }
         public Medewerker registreerMedewerker()
         {
