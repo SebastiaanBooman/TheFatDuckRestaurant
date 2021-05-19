@@ -262,24 +262,24 @@ namespace TheFatDuckRestaurant
             }
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+            Console.WriteLine("Voer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
             string password = Console.ReadLine();
             while (!ValidatePassword(password))
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
                 password = Console.ReadLine();
             }
 
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw adres in:");
+            Console.WriteLine("Voer een adres in:");
             string adres = Console.ReadLine(); //TODO: Check voor adres met requirements
 
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw woonplaats in:");
+            Console.WriteLine("Voer een woonplaats in:");
             string woonplaats = Console.ReadLine(); //TODO: Check voor woonplaats met requirements
 
             Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
@@ -288,22 +288,23 @@ namespace TheFatDuckRestaurant
 
         public Gebruiker registreerKlant(Gebruiker gebruiker)
         {
-            var jsonOptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
+
             Tuple<string, string, string, string> klantInformatie = registreer();
 
             if(klantInformatie == null)
                 return gebruiker;
 
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
             Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
 
             for (int i = 0; i < Klanten.Length; i++)
             {
-                nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
+                nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude klanten als Klant object in de nieuwe lijst
             }
-            Klant nieuweKlant = new Klant(klantInformatie.Item1, klantInformatie.Item2, klantInformatie.Item3, klantInformatie.Item4); //nieuwe klant word aangemaakt
+            Klant nieuweKlant = new Klant(klantInformatie.Item1, klantInformatie.Item2, klantInformatie.Item3, klantInformatie.Item4); //nieuwe klant wordt aangemaakt
             nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
             Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
             var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
@@ -316,9 +317,34 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return nieuweKlant;
         }
-        public Medewerker registreerMedewerker()
+        public void registreerMedewerker() //void omdat alleen een eigenaar een medewerker account aan kan maken, de medewerker wordt dus alleen maar toegevoegd aan de lijst van medewerkers.
         {
-            return null;
+            Tuple<string, string, string, string> medewerkerInformatie = registreer();
+
+            if (medewerkerInformatie == null)
+                return;
+
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            Medewerker[] nieuweMedewerkerLijst = new Medewerker[Medewerkers.Length + 1];
+
+            for(int i = 0; i < Medewerkers.Length; i++)
+            {
+                nieuweMedewerkerLijst[i] = Medewerkers[i]; //Voert alle oude medewerkers als Medewerker object in de nieuwe lijst
+            }
+            Medewerker nieuweMedewerker = new Medewerker(medewerkerInformatie.Item1, medewerkerInformatie.Item2, medewerkerInformatie.Item3, medewerkerInformatie.Item4); //nieuwe medewerker wordt aangemaakt.
+            nieuweMedewerkerLijst[nieuweMedewerkerLijst.Length - 1] = nieuweMedewerker; //voegt nieuwe medewerker toe aan lijst
+            Medewerkers = nieuweMedewerkerLijst;
+            var toSerializeMedewerker = JsonSerializer.Serialize(this, jsonOptions);
+            File.WriteAllText("gebruikers.json", toSerializeMedewerker);
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine($"Medewerker {medewerkerInformatie.Item1} toegevoegd aan de lijst van medewerkers!\nKlik op een toets om terug te gaan");
+            Console.ReadKey();
+            return;
         }
 
         public Gebruiker logOut()
