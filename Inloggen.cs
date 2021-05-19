@@ -218,20 +218,50 @@ namespace TheFatDuckRestaurant
             Console.WriteLine(ASCIIART.RegistrerenArt());
             Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
             var naamInput = Console.ReadLine();
+            bool uniekeNaam = false;
             Console.Clear();
-
-            if (naamInput != "0")
+            while (!uniekeNaam)
             {
-                foreach (var klant in Klanten)
+                bool uniekKlant = true;
+                bool uniekMedewerker = true;
+                bool uniekEigenaar = true; //3 booleans voor iedere array.
+                if (naamInput != "0")
                 {
-                    while (klant.Naam == naamInput)
+                    foreach (var klant in Klanten) //Checkt per klant in de Klanten array of de naam al bestaat
+                    {
+                        if (klant.Naam == naamInput)
+                        {
+                            uniekKlant = false;
+                            break;
+                        }
+                    }
+                    foreach (var medewerker in Medewerkers) //Checkt per medewerker in de Medewerkers array of de naam al bestaat
+                    {
+                        if (medewerker.Naam == naamInput)
+                        {
+                            uniekMedewerker = false;
+                            break;
+                        }
+                    }
+                    if (Eigenaar.Naam == naamInput)
+                        uniekEigenaar = false;
+
+                    if(uniekEigenaar == false || uniekKlant == false || uniekMedewerker == false)
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.RegistrerenArt());
-                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
+                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere\n0: Terug");
                         naamInput = Console.ReadLine();
                     }
+                    else
+                    {
+                        uniekeNaam = true;
+                    }
                 }
+                if (naamInput == "0")
+                    return gebruiker; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
+
+
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
                 Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
@@ -273,11 +303,6 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine($"Welkom nieuwe klant: {naamInput}!\nKlik op een toets om verder te gaan");
                 Console.ReadKey();
                 return nieuweKlant;
-            }
-
-            else
-            {
-                return gebruiker; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
             }
         }
         public Medewerker registreerMedewerker()
