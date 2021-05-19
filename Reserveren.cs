@@ -499,6 +499,7 @@ namespace TheFatDuckRestaurant
             this.Aantal = aantal;
         }
         
+        [JsonIgnore]
         public double TotaalPrijs
         {
             get => this.Prijs * this.Aantal;
