@@ -408,7 +408,7 @@ namespace TheFatDuckRestaurant
                     {
                         Dag += sym;
                     }
-                    else if (Char.IsLetter(sym))
+                    else if (Char.IsLetter(sym) && Dag != "")
                     {
                         Maand += sym;
                     }
@@ -418,7 +418,7 @@ namespace TheFatDuckRestaurant
                 {
                     if (CheckDag(DagInt, Maand.ToLower(), DateTime.Now.Year))
                     {
-                        return $"{Dag} {Maand}";
+                        return $"{WeekDag(DagInt,Maand)} {Dag} {Maand}";
                     }
                 }
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -426,6 +426,48 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("Enter: Ga terug naar het vorige scherm");
                 Console.ReadKey();
                 return null;
+            }
+            private string WeekDag(int Dag, string maand)
+            {
+                int Maand = MaandInt(Dag, maand);
+                int HuidigeDag = DateTime.Now.Day;
+                int HuidigeMaand = DateTime.Now.Month;
+                DateTime date;
+                if(Maand < HuidigeMaand)
+                {
+                    date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
+                }
+                else if(Maand == HuidigeMaand && Dag < HuidigeDag)
+                {
+                    date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
+                }
+                else
+                {
+                    date = new DateTime(DateTime.Now.Year, Maand, Dag);
+                }
+                string WeekDay = "" + date.DayOfWeek;
+                return DaytoDag(WeekDay.ToLower());
+            }
+            private string DaytoDag(string Day)
+            {
+                return Day == "monday" ? "Maandag" :
+                    Day == "tuesday" ? "Dinsdag" :
+                    Day == "wednesday" ? "Woensdag" :
+                    Day == "thursday" ? "Donderdag" :
+                    Day == "friday" ? "Vrijdag" :
+                    Day == "saturday" ? "Zaterdag" : "Zondag";
+            }
+            private int MaandInt(int dag, string maand)
+            {
+                string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
+                for (int i = 0; i < Maanden.Length; i++)
+                {
+                    if (maand == Maanden[i])
+                    {
+                        return i + 1;
+                    }
+                }
+                return 0;
             }
             private bool CheckMaand(string maand)
             {
