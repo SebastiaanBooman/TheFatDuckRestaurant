@@ -560,7 +560,7 @@ namespace TheFatDuckRestaurant
 
     public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
     {
-        menu.BekijkMenuKlant();
+        menu.BekijkMenuGebruiker();
         //menu.Bekijkmenu -> Gebruiker
         //menu.ReserveerMenu -> Klant
         //menu.PasAanMenu -> Medewerker

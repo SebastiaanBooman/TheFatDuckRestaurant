@@ -55,7 +55,7 @@ namespace TheFatDuckRestaurant
                     case '5':
                         if(gebruiker as Klant != null)
                         {
-                            if (reserveerLijst.createReservering(gebruiker.Naam))
+                            if (reserveerLijst.createReservering(gebruiker.Naam, menu))
                             {
                                 updateGebruikers(this.gebruikers);
                                 updateReserveerlijst(this.reserveerLijst);
