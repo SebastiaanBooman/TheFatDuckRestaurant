@@ -547,6 +547,7 @@ namespace TheFatDuckRestaurant
             }
             int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
             Console.Clear();
+            Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
             for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < KlantReserveringen.Length; i++)
             {
@@ -566,7 +567,12 @@ namespace TheFatDuckRestaurant
             }
             if (Index < 7 && Index > 0)
             {
-                Reserveerlijst.changeReservering(KlantReserveringen[Index - 1]);
+                try
+                {
+                    KlantReserveringen[Index - 1 + huidigePaginaNR * 7].Info();
+                }
+                catch { }
+                //Reserveerlijst.changeReservering(KlantReserveringen[Index - 1]);
             }
             else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
             {

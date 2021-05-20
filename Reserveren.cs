@@ -102,7 +102,7 @@ namespace TheFatDuckRestaurant
             }
             private bool AddReservering(Reservering reservering)
             {
-                if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0)
+                if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling.Count != 0 && reservering.Bestelling != null))
                 {
                     Reservering[] newReserveringen;
                     if (this.Reserveringen != null)
@@ -128,6 +128,7 @@ namespace TheFatDuckRestaurant
                 Message += reservering.Datum == "" ? "U heeft nog geen datum ingevuld\x0a" : "";
                 Message += reservering.Tijd == 0 ? "U heeft nog geen tijd ingevuld\x0a" : "";
                 Message += reservering.Personen == 0 ? "U heeft nog niet het aantal personen aangegeven\x0a" : "";
+                Message += (reservering.Bestelling == null) ? "U heeft nog geen gerechten gekozen\x0a" : "";
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                 Console.WriteLine(Message + "\x0a" + "Enter: Ga terug naar het vorige scherm");
                 Console.ReadKey();
@@ -204,7 +205,7 @@ namespace TheFatDuckRestaurant
                             break;
                         
                         case '2':
-                            if (this.Bestelling == null)
+                            if (this.Bestelling == null || this.Bestelling.Count == 0)
                             {
                                 Console.Clear();
                                 Console.WriteLine(ASCIIART.ReserverenArt());
@@ -220,6 +221,7 @@ namespace TheFatDuckRestaurant
                                     int hoeveelheidPaginas = (int)Math.Ceiling(this.Bestelling.Count / 7.0);
                                     Console.Clear();
                                     Console.WriteLine(ASCIIART.ReserverenArt());
+                                    Console.WriteLine("Dit zijn de huidige gerechten die u heeft besteld\nToets op het getal naast het gerecht om het te verwijderen uit uw reservering\n");
                                     Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                                     for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < this.Bestelling.Count; i++)
                                     {
@@ -237,24 +239,26 @@ namespace TheFatDuckRestaurant
                                     {
                                         return;
                                     }
-                                    /*
+                                    
                                     if (Index < 8 && Index > 0)
                                     {
-                                        
-                                        //Laat informatie (ingrediënten, prijs, etc.) zien over het gekozen gerecht (this.Gerechten[Index - 1 + huidigePaginaNR * 7])
-                                        Console.WriteLine("<Bekijk het gekozen gerecht>");
-                                        Console.WriteLine("\n1: Verwijder het gerecht van de bestelling\n0: Ga terug naar het vorige scherm");
+                                        string tempName = this.Bestelling[Index - 1 + huidigePaginaNR * 7].Naam;
+                                        Console.Clear();
+                                        Console.WriteLine(ASCIIART.ReserverenArt());
+                                        Console.WriteLine($"Weet u zeker dat u {tempName} wilt verwijderen?\n\n1: Verwijder het gerecht uit uw reservering\n0: Ga terug naar het vorige scherm");
                                         char userInput = Console.ReadKey().KeyChar;
                                         Console.Clear();
                                         switch(userInput)
                                         {
                                             case '1':
-                                                removeGerecht(this.Gerechten[Index - 1 + huidigePaginaNR * 7]);
-                                                Console.WriteLine("Het gerecht is verwijderd!\n\nEnter: Ga terug naar het vorige scherm");
+                                                this.Bestelling.RemoveAt(Index - 1 + huidigePaginaNR * 7);
+                                                Console.WriteLine(ASCIIART.ReserverenArt());
+                                                Console.WriteLine($"{tempName} is verwijderd uit uw reservering!\n\n0: Ga terug naar het vorige scherm");
+                                                Console.ReadKey();
                                                 break;
                                         }
                                     }
-                                    */
+                                    
                                     else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
                                     {
                                         huidigePaginaNR++;
@@ -280,34 +284,19 @@ namespace TheFatDuckRestaurant
             {
                 this.Bestelling = menu.BekijkMenuKlant(this.Bestelling);
             }
-
-            /*
-            private void removeGerecht(Gerechten gerecht)
-            {
-                Gerechten[] nieuwegerechten = new Gerechten[this.Gerechten.Length - 1];
-                bool Removed = false;
-                int i = 0;
-                foreach(Gerechten Gerecht in this.Gerechten)
-                {
-                    if(gerecht != Gerecht || Removed)
-                    {
-                        nieuwegerechten[i++] = Gerecht;
-                    }
-                    else
-                    {
-                        Removed = true;
-                    }
-                }
-                this.Gerechten = nieuwegerechten;
-            }
-            */
+            
             public void Info()
             {
+                Console.WriteLine(ASCIIART.ReserverenArt());
                 Console.WriteLine("Klant:\t\t" + this.Bezoeker);
                 Console.WriteLine("Tijd:\t\t" + TijdString());
                 Console.WriteLine("Datum:\t\t" + this.Datum);
                 Console.WriteLine("Personen:\t" + this.Personen);
-                Console.WriteLine("Menu:\t\t" + "<gerechten>");
+                Console.WriteLine("Gerechten:");
+                foreach (var bestellingItem in this.Bestelling)
+                    Console.WriteLine($"- {bestellingItem.Naam}: ({bestellingItem.Aantal}x), {bestellingItem.TotaalPrijs} euro");
+                Console.Write("\n0: Terug");
+                Console.ReadKey();
             }
             public char Create(string addition)
             {
@@ -316,7 +305,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("1: Datum\t\t" + (this.Datum == "" ? "U heeft nog geen datum gekozen" : $"({this.Datum})"));
                 Console.WriteLine("2: Tijd\t\t\t" + (this.Tijd == 0 ? "U heeft nog geen tijd gekozen" : $"({TijdString()})"));
                 Console.WriteLine("3: Aantal personen\t" + (this.Personen == 0 ? "U heeft nog niet het aantal personen aangegeven" : $"({this.Personen} personen)"));
-                Console.WriteLine("4: Gerechten\t\t" + (this.Bestelling == null ? "U heeft nog geen gerechten gekozen" : $"{this.Bestelling.Count} verschillende gerechten"));
+                Console.WriteLine("4: Gerechten\t\t" + ((this.Bestelling == null || this.Bestelling.Count == 0) ? "U heeft nog geen gerechten gekozen" : $"{this.Bestelling.Count} verschillende gerechten"));
                 Console.WriteLine($"\n5: Bevestig de reservering\n0: {addition} de reservering");
                 char Input = Console.ReadKey().KeyChar;
                 Console.Clear();
