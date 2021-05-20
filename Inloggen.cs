@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.MainClass;
 using static TheFatDuckRestaurant.Reserveren;
-using static TheFatDuckRestaurant.Bestelling;
 using static TheFatDuckRestaurant.ASCIIART;
 using static TheFatDuckRestaurant.Menu;
 using System.Text.RegularExpressions;
