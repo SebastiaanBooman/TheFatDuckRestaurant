@@ -102,7 +102,7 @@ namespace TheFatDuckRestaurant
             }
             private bool AddReservering(Reservering reservering)
             {
-                if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0)
+                if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling.Count != 0 && reservering.Bestelling != null))
                 {
                     Reservering[] newReserveringen;
                     if (this.Reserveringen != null)
@@ -128,6 +128,7 @@ namespace TheFatDuckRestaurant
                 Message += reservering.Datum == "" ? "U heeft nog geen datum ingevuld\x0a" : "";
                 Message += reservering.Tijd == 0 ? "U heeft nog geen tijd ingevuld\x0a" : "";
                 Message += reservering.Personen == 0 ? "U heeft nog niet het aantal personen aangegeven\x0a" : "";
+                Message += (reservering.Bestelling == null) ? "U heeft nog geen gerechten gekozen\x0a" : "";
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                 Console.WriteLine(Message + "\x0a" + "Enter: Ga terug naar het vorige scherm");
                 Console.ReadKey();
@@ -281,11 +282,16 @@ namespace TheFatDuckRestaurant
             
             public void Info()
             {
+                Console.WriteLine(ASCIIART.ReserverenArt());
                 Console.WriteLine("Klant:\t\t" + this.Bezoeker);
                 Console.WriteLine("Tijd:\t\t" + TijdString());
                 Console.WriteLine("Datum:\t\t" + this.Datum);
                 Console.WriteLine("Personen:\t" + this.Personen);
-                Console.WriteLine("Menu:\t\t" + "<gerechten>");
+                Console.WriteLine("Gerechten:");
+                foreach (var bestellingItem in this.Bestelling)
+                    Console.WriteLine($"- {bestellingItem.Naam}: ({bestellingItem.Aantal}x), {bestellingItem.TotaalPrijs} euro");
+                Console.Write("\n0: Terug");
+                Console.ReadKey();
             }
             public char Create(string addition)
             {
