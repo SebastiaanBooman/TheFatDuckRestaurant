@@ -311,7 +311,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("1: Datum\t\t" + (this.Datum == "" ? "U heeft nog geen datum gekozen" : $"({this.Datum})"));
                 Console.WriteLine("2: Tijd\t\t\t" + (this.Tijd == 0 ? "U heeft nog geen tijd gekozen" : $"({TijdString()})"));
                 Console.WriteLine("3: Aantal personen\t" + (this.Personen == 0 ? "U heeft nog niet het aantal personen aangegeven" : $"({this.Personen} personen)"));
-                Console.WriteLine("4: Gerechten\t\t" + (this.Bestelling == null ? "U heeft nog geen gerechten gekozen" : "Jawel"));
+                Console.WriteLine("4: Gerechten\t\t" + (this.Bestelling == null ? "U heeft nog geen gerechten gekozen" : $"{this.Bestelling.Count} verschillende gerechten"));
                 Console.WriteLine($"\n5: Bevestig de reservering\n0: {addition} de reservering");
                 char Input = Console.ReadKey().KeyChar;
                 Console.Clear();

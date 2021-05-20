@@ -26,7 +26,11 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("1: Voorgerechten\x0A");
             Console.WriteLine("2: Hoofdgerechten\x0A");
             Console.WriteLine("3: Nagerechten\x0A\x0a");
-            Console.WriteLine("0: Terug");
+
+            if (typeGebruiker == "Klant")
+                Console.WriteLine("0: Terug naar reservering");
+            else
+                Console.WriteLine("0: Terug");
         }
 
         public Bestelling laadSpecifiekMenu(Gerechten[] typeGerecht, string typeGebruiker)
@@ -187,7 +191,7 @@ namespace TheFatDuckRestaurant
 
                     Console.Clear();
                     Console.WriteLine(ReserverenArt());
-                    Console.WriteLine($"{bekijkMenu.Naam} is succesvol toegevoegd aan uw reservering!\nWil u doorgaan met het menu bekijken/Items toevoegen?\n\n1: Doorgaan\n0: Terug naar reservering");
+                    Console.WriteLine($"{bekijkMenu.Naam} ({bekijkMenu.Aantal}x) is succesvol toegevoegd aan uw reservering!\nWil u doorgaan met het menu bekijken/Items toevoegen?\n\n1: Doorgaan\n0: Terug naar reservering");
                     ConsoleKeyInfo toetsUser = Console.ReadKey();
                     char toetsUserChar = toetsUser.KeyChar;
 
