@@ -68,7 +68,7 @@ namespace TheFatDuckRestaurant
                         //reserveerLijst = gebruiker.Reserveer(menu, reserveerLijst); //veranderd de reserveerLijst als er wordt gereserveerd door een gebruiker, ook als een medewerker/eigenaar de reserveringen wilt inzien/koppelen/aanpassen
                         break;
                     case '6':
-                        //daily revenue
+                        (gebruiker as Medewerker).DailyRevenue(this.reserveerLijst.Reserveringen);
                         break;
                     case '7':
                         //clickstream van klanten
