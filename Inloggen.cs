@@ -65,8 +65,8 @@ namespace TheFatDuckRestaurant
                             return gebruiker;
                         break;
                     case '4':
-                        gebruiker = registreer(gebruiker);
-                        if(gebruiker as Klant != null)
+                        gebruiker = registreerKlant(gebruiker);
+                        if (gebruiker as Klant != null)
                             return gebruiker;
                         break;
                     case '0':
@@ -80,11 +80,11 @@ namespace TheFatDuckRestaurant
         }
         public Gebruiker logIn(string gebruikerType)
         {
-            Func< Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>
-            {
-                string Input = Console.ReadLine();
-                return Tuple.Create(Input == gebruikerObject.Wachtwoord || Input == "0", Input);
-            };
+            Func<Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>
+           {
+               string Input = Console.ReadLine();
+               return Tuple.Create(Input == gebruikerObject.Wachtwoord || Input == "0", Input);
+           };
             bool passed = false;
             while (!passed)
             {
@@ -92,16 +92,16 @@ namespace TheFatDuckRestaurant
                 bool NaamBestaat = false;
                 Klant klantObject = null;
                 Medewerker medewerkerObject = null;
-                Eigenaar eigenaarObject = null; 
+                Eigenaar eigenaarObject = null;
 
                 Console.Clear();
                 Console.WriteLine(ASCIIART.LoginArt());
                 Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
                 string GegevenNaam = Console.ReadLine();
-                if(GegevenNaam == "0")
+                if (GegevenNaam == "0")
                     return new Gebruiker("", "", "", "");
-                
-                if(gebruikerType == "Klant")
+
+                if (gebruikerType == "Klant")
                 {
                     foreach (Klant klant in Klanten)
                     {
@@ -112,7 +112,7 @@ namespace TheFatDuckRestaurant
                         }
                     }
                 }
-                else if(gebruikerType == "Medewerker")
+                else if (gebruikerType == "Medewerker")
                 {
                     foreach (Medewerker medewerker in Medewerkers)
                     {
@@ -126,7 +126,7 @@ namespace TheFatDuckRestaurant
                 }
                 else
                 {
-                    if(GegevenNaam == Eigenaar.Naam)
+                    if (GegevenNaam == Eigenaar.Naam)
                     {
                         NaamBestaat = true;
                         eigenaarObject = Eigenaar;
@@ -138,11 +138,11 @@ namespace TheFatDuckRestaurant
                     Console.Clear();
                     Console.WriteLine(ASCIIART.LoginArt());
                     Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in:");
-                    if(gebruikerType == "Klant")
-                       Password = CheckWachtwoord(klantObject);
-                    else if(gebruikerType == "Medewerker")
+                    if (gebruikerType == "Klant")
+                        Password = CheckWachtwoord(klantObject);
+                    else if (gebruikerType == "Medewerker")
                     {
-                       Password = CheckWachtwoord(medewerkerObject);
+                        Password = CheckWachtwoord(medewerkerObject);
                     }
                     else
                     {
@@ -153,7 +153,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in:\x0A\x0A" + "0: Terug");
-                        if(klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
+                        if (klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
                             Password = CheckWachtwoord(klantObject);
                         else
                         {
@@ -166,9 +166,9 @@ namespace TheFatDuckRestaurant
                         Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("U bent ingelogd!\x0A\x0A" + "0: Naar het startscherm");
                         Console.ReadLine();
-                        if(klantObject != null)
+                        if (klantObject != null)
                             return klantObject;
-                        else if(medewerkerObject != null)
+                        else if (medewerkerObject != null)
                             return medewerkerObject;
                         else
                         {
@@ -185,12 +185,12 @@ namespace TheFatDuckRestaurant
                     {
                         return new Gebruiker("", "", "", "");
                     }
-                    }
                 }
+            }
             return null;
         }
 
-        public Gebruiker registreer(Gebruiker gebruiker)
+        public Tuple<string, string, string, string> registreer() //Returned een Tuple met naam,wachtwoord,adres en woonplaats voor registreerKlant en registreerMedewerker functies.
         {
 
             // Lambda om te checken of het een geldig wachtwoord is. Gebruikt RegEx
@@ -210,79 +210,141 @@ namespace TheFatDuckRestaurant
                 return match.Success;
             };
 
-            var jsonOptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
             Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
             var naamInput = Console.ReadLine();
-            Console.Clear();
-
-            if (naamInput != "0")
+            bool uniekeNaam = false;
+            while (!uniekeNaam)
             {
-                foreach (var klant in Klanten)
+                bool uniekKlant = true;
+                bool uniekMedewerker = true;
+                bool uniekEigenaar = true; //3 booleans voor iedere array.
+
+                if (naamInput != "0")
                 {
-                    while (klant.Naam == naamInput)
+                    foreach (var klant in Klanten) //Checkt per klant in de Klanten array of de naam al bestaat
+                    {
+                        if (klant.Naam == naamInput)
+                        {
+                            uniekKlant = false;
+                            break;
+                        }
+                    }
+                    foreach (var medewerker in Medewerkers) //Checkt per medewerker in de Medewerkers array of de naam al bestaat
+                    {
+                        if (medewerker.Naam == naamInput)
+                        {
+                            uniekMedewerker = false;
+                            break;
+                        }
+                    }
+                    if (Eigenaar.Naam == naamInput)
+                        uniekEigenaar = false;
+
+                    if (uniekEigenaar == false || uniekKlant == false || uniekMedewerker == false)
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.RegistrerenArt());
-                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
+                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere\n0: Terug");
                         naamInput = Console.ReadLine();
                     }
+                    else
+                    {
+                        uniekeNaam = true;
+                    }
                 }
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                string password = Console.ReadLine();
-                while (!ValidatePassword(password))
+                if (naamInput == "0")
                 {
-                    Console.Clear();
-                    Console.WriteLine(ASCIIART.RegistrerenArt());
-                    Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                    password = Console.ReadLine();
+                    Tuple<string, string, string, string> Tuple = null; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
+                    return Tuple;
                 }
-
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw adres in:");
-                string adres = Console.ReadLine(); //TODO: Check voor adres met requirements
-
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw woonplaats in:");
-                string woonplaats = Console.ReadLine(); //TODO: Check voor woonplaats met requirements
-
-
-                Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
-
-                for (int i = 0; i < Klanten.Length; i++)
-                {
-                    nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
-                }
-                Klant nieuweKlant = new Klant(naamInput, password, adres, woonplaats); //nieuwe klant word aangemaakt
-                nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
-                Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
-                var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
-                File.WriteAllText("gebruikers.json", toSerializeKlant);
-
-
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine($"Welkom nieuwe klant: {naamInput}!\nKlik op een toets om verder te gaan");
-                Console.ReadKey();
-                return nieuweKlant;
             }
-
-            else
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+            string password = Console.ReadLine();
+            while (!ValidatePassword(password))
             {
-                return gebruiker; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                password = Console.ReadLine();
             }
+
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer een adres in:");
+            string adres = Console.ReadLine(); //TODO: Check voor adres met requirements
+
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer een woonplaats in:");
+            string woonplaats = Console.ReadLine(); //TODO: Check voor woonplaats met requirements
+
+            Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
+            return returnTuple;
         }
-        public Medewerker registreerMedewerker()
+
+        public Gebruiker registreerKlant(Gebruiker gebruiker)
         {
-            return null;
+
+            Tuple<string, string, string, string> klantInformatie = registreer();
+
+            if(klantInformatie == null)
+                return gebruiker;
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
+
+            for (int i = 0; i < Klanten.Length; i++)
+            {
+                nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude klanten als Klant object in de nieuwe lijst
+            }
+            Klant nieuweKlant = new Klant(klantInformatie.Item1, klantInformatie.Item2, klantInformatie.Item3, klantInformatie.Item4); //nieuwe klant wordt aangemaakt
+            nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
+            Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
+            var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
+            File.WriteAllText("gebruikers.json", toSerializeKlant);
+
+
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine($"Welkom nieuwe klant: {klantInformatie.Item1}!\nKlik op een toets om verder te gaan");
+            Console.ReadKey();
+            return nieuweKlant;
+        }
+        public void registreerMedewerker() //void omdat alleen een eigenaar een medewerker account aan kan maken, de medewerker wordt dus alleen maar toegevoegd aan de lijst van medewerkers.
+        {
+            Tuple<string, string, string, string> medewerkerInformatie = registreer();
+
+            if (medewerkerInformatie == null)
+                return;
+
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            Medewerker[] nieuweMedewerkerLijst = new Medewerker[Medewerkers.Length + 1];
+
+            for(int i = 0; i < Medewerkers.Length; i++)
+            {
+                nieuweMedewerkerLijst[i] = Medewerkers[i]; //Voert alle oude medewerkers als Medewerker object in de nieuwe lijst
+            }
+            Medewerker nieuweMedewerker = new Medewerker(medewerkerInformatie.Item1, medewerkerInformatie.Item2, medewerkerInformatie.Item3, medewerkerInformatie.Item4); //nieuwe medewerker wordt aangemaakt.
+            nieuweMedewerkerLijst[nieuweMedewerkerLijst.Length - 1] = nieuweMedewerker; //voegt nieuwe medewerker toe aan lijst
+            Medewerkers = nieuweMedewerkerLijst;
+            var toSerializeMedewerker = JsonSerializer.Serialize(this, jsonOptions);
+            File.WriteAllText("gebruikers.json", toSerializeMedewerker);
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine($"Medewerker {medewerkerInformatie.Item1} toegevoegd aan de lijst van medewerkers!\nKlik op een toets om terug te gaan");
+            Console.ReadKey();
+            return;
         }
 
         public Gebruiker logOut()
