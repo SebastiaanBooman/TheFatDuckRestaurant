@@ -4,6 +4,7 @@ using System.IO;
 using static TheFatDuckRestaurant.Menu;
 //using static TheFatDuckRestaurant.Inloggen;
 using static TheFatDuckRestaurant.Reserveren;
+using static TheFatDuckRestaurant.Clickstream;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -31,6 +32,8 @@ namespace TheFatDuckRestaurant
 
         public Gebruiker gebruiker = new Gebruiker("", "", "", "");
 
+        public Clickstream clickstream = new Clickstream();
+
         public void StartFunctie()
         {
             bool passed = false;
@@ -57,8 +60,10 @@ namespace TheFatDuckRestaurant
                         {
                             if (reserveerLijst.createReservering(gebruiker.Naam, menu))
                             {
+                                clickstream.addClickstream(reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length-1].Datum, reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length-1].Tijd);
                                 updateGebruikers(this.gebruikers);
                                 updateReserveerlijst(this.reserveerLijst);
+                                //clickstream.bekijkClicks(1100);
                             }
                         }
                         else if(gebruiker as Medewerker != null)

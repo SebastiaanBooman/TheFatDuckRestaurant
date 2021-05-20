@@ -166,6 +166,11 @@ namespace TheFatDuckRestaurant
             };
             File.WriteAllText("gebruikers.json", JsonSerializer.Serialize(gebruikers, JSONoptions));
         }
+        public static string TijdString(int tijd)
+        {
+            string tstring = tijd / 100 + ":" + tijd % 100;
+            return tstring.Length < 5 ? tstring + "0" : tstring;
+        }
         public class Reservering //Nieuwe file
         {
             public int Tijd { get; set; }
