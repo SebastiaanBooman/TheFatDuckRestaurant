@@ -96,9 +96,7 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 kiesMenuOpties(typeGebruiker);
                 if (verkeerdeInput)
-                {
                     Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of 0");
-                }
 
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
@@ -372,15 +370,11 @@ namespace TheFatDuckRestaurant
                                 }
                             }
                             else
-                            {
                                 Console.WriteLine("<Nog geen ingredienten.>");
-                            }
                             Console.WriteLine("\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
                             var userInputIngredienten = Console.ReadLine();
                             if (userInputIngredienten == "0")
-                            {
                                 passedSpecifiek = true;
-                            }
                             else
                             {
                                 if (ingredienten_ != null)
@@ -430,7 +424,6 @@ namespace TheFatDuckRestaurant
                         char userInputFinaleChar = userInputFinale.KeyChar;
                         if (userInputFinaleChar == '0')
                             return null;
-
                         break;
                 }
             }

@@ -55,8 +55,8 @@ namespace TheFatDuckRestaurant
                     case '5': //Reserveren als klant
                         if (reserveerLijst.createReservering(gebruiker.Naam, menu))
                         {
-                        updateGebruikers(this.gebruikers);
-                        updateReserveerlijst(this.reserveerLijst);
+                        SaveGebruikers(this.gebruikers);
+                        SaveReserveerlijst(this.reserveerLijst);
                         }
                         break;
                     case '6':
@@ -68,10 +68,8 @@ namespace TheFatDuckRestaurant
                     case '8':
                         shutOff= true; // Applicatie afsluiten als eigenaar
                         break;
-                    case '9': //Reserveringen bekijken als klant, tafels koppelen als medewerker
-                        gebruiker.bekijkReserveringen(reserveerLijst);
-                        updateGebruikers(this.gebruikers);
-                        updateReserveerlijst(this.reserveerLijst);
+                    case '9': //Reserveringen bekijken als klant
+                        reserveerLijst.BekijkReserveringenKlant(gebruiker.Naam);
                         break;
                     case 'A':
                         gebruiker.bekijkAccount();
@@ -79,10 +77,14 @@ namespace TheFatDuckRestaurant
                     case 'B':
                         gebruikers.registreerMedewerker();
                         break;
+                    case 'C': // tafels koppelen als medewerker
+                        reserveerLijst.BekijkReserveringenMedewerker(tafels);
+                        break;
+
                 }
             }
         }
-        public void theFatDuckInformatie()
+        private void theFatDuckInformatie()
         {
             bool verkeerdeInput = false;
             while (true)
@@ -93,14 +95,28 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("0: Terug naar startscherm");
                 if (verkeerdeInput)
                     Console.WriteLine("VerkeerdeInput, probeer 0");
-
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
                 if (userInputChar == '0')
                     return;
-
                 verkeerdeInput = true;
             }
+        }
+        private void SaveReserveerlijst(ReserveerLijst reserveerlijst)
+        {
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            File.WriteAllText("reserveringen.json", JsonSerializer.Serialize(reserveerlijst, JSONoptions));
+        }
+        private void SaveGebruikers(Gebruikers gebruikers)
+        {
+            var JSONoptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            File.WriteAllText("gebruikers.json", JsonSerializer.Serialize(gebruikers, JSONoptions));
         }
     }
 }

@@ -135,13 +135,9 @@ namespace TheFatDuckRestaurant
                     if (gebruikerType == "Klant")
                         Password = CheckWachtwoord(klantObject);
                     else if (gebruikerType == "Medewerker")
-                    {
                         Password = CheckWachtwoord(medewerkerObject);
-                    }
                     else
-                    {
                         Password = CheckWachtwoord(eigenaarObject);
-                    }
                     while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
                     {
                         Console.Clear();
@@ -150,9 +146,7 @@ namespace TheFatDuckRestaurant
                         if (klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
                             Password = CheckWachtwoord(klantObject);
                         else
-                        {
                             Password = CheckWachtwoord(medewerkerObject);
-                        }
                     }
                     if (Password.Item2 != "0") //sluit het inlogscherm af wanneer 'terug' was getypt
                     {
@@ -165,9 +159,7 @@ namespace TheFatDuckRestaurant
                         else if (medewerkerObject != null)
                             return medewerkerObject;
                         else
-                        {
                             return eigenaarObject;
-                        }
                     }
                 }
                 else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer '0' is ingevoerd
@@ -176,9 +168,7 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine(ASCIIART.LoginArt());
                     Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
                     if (Console.ReadKey().KeyChar == '0')
-                    {
                         return new Gebruiker("", "", "", "");
-                    }
                 }
             }
         }
@@ -243,9 +233,7 @@ namespace TheFatDuckRestaurant
                         naamInput = Console.ReadLine();
                     }
                     else
-                    {
                         uniekeNaam = true;
-                    }
                 }
                 if (naamInput == "0")
                 {
@@ -389,11 +377,7 @@ namespace TheFatDuckRestaurant
         return reserveerLijst;
         }
 
-        public virtual void bekijkReserveringen(TheFatDuckRestaurant.ReserveerLijst Reserveerlijst)
-        {
-        }
-
-        public virtual string bekijkDailyRevenue()
+    public virtual string bekijkDailyRevenue()
         {
         return null;
         }
@@ -453,11 +437,6 @@ namespace TheFatDuckRestaurant
         //menu.PasAanMenu -> Medewerker
         return menu;
     }
-
-    public override void bekijkReserveringen(TheFatDuckRestaurant.ReserveerLijst Reserveerlijst)
-    {
-        Reserveerlijst.BekijkReserveringenKlant(this.Naam);
-    }
     public override char startScherm()
         {
             bool verkeerdeInput = false;
@@ -474,10 +453,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("6: Bezichtig uw reserveringen");
 
                 if (verkeerdeInput)
-                {
                     Console.WriteLine("Verkeerde input, probeer 1,2,3,4 of 5");
-                    verkeerdeInput = false;
-                }
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -514,10 +490,7 @@ namespace TheFatDuckRestaurant
             Console.WriteLine($"1: Account Reserveringen\x0a");
             Console.WriteLine("0: Return");
             if (verkeerdeInput)
-            {
                 Console.WriteLine("Verkeerde Input! Probeer 1 of 0");
-                verkeerdeInput = false;
-            }
 
             char userInput = Console.ReadKey().KeyChar;
             switch (userInput)
@@ -580,7 +553,7 @@ namespace TheFatDuckRestaurant
                     case '3':
                         return '4';
                     case '4':
-                        return '9';
+                        return 'C';
                     case '5':
                         return '7';
                     case '6':
@@ -593,10 +566,6 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-    public override void bekijkReserveringen(TheFatDuckRestaurant.ReserveerLijst Reserveerlijst)
-    {
-        Reserveerlijst.BekijkReserveringenMedewerker();
-    }
 }
 
     public class Eigenaar : Medewerker

@@ -13,8 +13,8 @@ namespace TheFatDuckRestaurant
             public ReserveerLijst() { }
             public Reservering[] Reserveringen { get; set; }
 
-            public void BekijkReserveringenMedewerker()
-        {
+            public ReserveerLijst BekijkReserveringenMedewerker(TafelArray tafels)
+            {
             if (Reserveringen == null)
                 Reserveringen = new Reservering[0];
             if (Reserveringen.Length == 0)
@@ -22,7 +22,7 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 Console.WriteLine("Er zijn nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
                 Console.ReadKey();
-                return;
+                return this;
             }
             while (true)
             {
@@ -34,18 +34,14 @@ namespace TheFatDuckRestaurant
                 foreach (char sym in datum)
                 {
                     if (Char.IsLetter(sym))
-                    {
                         Char.ToLower(sym);
-                    }
                     datumLower += sym;
                 }
                 int Aantal = 0;
                 foreach (TheFatDuckRestaurant.Reservering reservering in Reserveringen)
                 {
                     if (reservering.Datum == datumLower)
-                    {
                         Aantal++;
-                    }
                 }
 
                 if (Aantal > 0)
@@ -56,9 +52,7 @@ namespace TheFatDuckRestaurant
                     foreach (TheFatDuckRestaurant.Reservering reservering in Reserveringen)
                     {
                         if (reservering.Datum == datumLower)
-                        {
                             RelevanteReserveringen[j++] = reservering;
-                        }
                     }
                     while (true)
                     {
@@ -78,23 +72,19 @@ namespace TheFatDuckRestaurant
                         int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
                         Console.Clear();
                         if (Index == 0)
-                        {
-                            return;
-                        }
+                            return this;
                         if (Index > 0 && Index < 8)
                         {
                             RelevanteReserveringen[Index - 1].Info();
-                            Console.WriteLine("\n1: Tafels koppelen aan reservering");
-                            Console.ReadLine();
+                            Console.WriteLine("\nA: Tafels koppelen aan reservering");
+                            char userInput = Console.ReadKey().KeyChar;
+                            if (userInput == 'A')
+                                RelevanteReserveringen[Index - 1].AddTafels(tafels);
                         }
                         else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                        {
                             huidigePaginaNR++;
-                        }
                         else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                        {
                             huidigePaginaNR--;
-                        }
                         else
                         {
                             Console.WriteLine("Dit is geen geldige input");
@@ -127,9 +117,7 @@ namespace TheFatDuckRestaurant
                 foreach (Reservering reservering in Reserveringen)
                 {
                     if (reservering.Bezoeker == klantNaam)
-                    {
                         Aantal++;
-                    }
                 }
                 if (Aantal == 0)
                 {
@@ -143,9 +131,7 @@ namespace TheFatDuckRestaurant
                 for (int i = 0; i < Reserveringen.Length; i++)
                 {
                     if (Reserveringen[i].Bezoeker == klantNaam)
-                    {
                         KlantReserveringen[j++] = Reserveringen[i];
-                    }
                 }
                 int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
                 Console.Clear();
@@ -163,21 +149,13 @@ namespace TheFatDuckRestaurant
                 int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
                 Console.Clear();
                 if (Index == 0)
-                {
                     return;
-                }
                 if (Index < 7 && Index > 0)
-                {
-                    changeReservering(KlantReserveringen[Index - 1]);
-                }
+                    changeReservering(KlantReserveringen[Index - 1]); //TODO: Opties om reserveringen aan te passen die zijn gemaakt.
                 else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                {
                     huidigePaginaNR++;
-                }
                 else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                {
                     huidigePaginaNR--;
-                }
                 else
                 {
                     Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
@@ -200,9 +178,7 @@ namespace TheFatDuckRestaurant
                 for (int i = 0, j = 0; i < this.Reserveringen.Length; i++)
                 {
                     if (this.Reserveringen[i] != reservering)
-                    {
                         newReserveringen[j++] = this.Reserveringen[i];
-                    }
                 }
                 this.Reserveringen = newReserveringen;
             }
@@ -219,9 +195,7 @@ namespace TheFatDuckRestaurant
                             if(NieuweDatum != null)
                             {
                                 if(NieuweReservering.Personen <= VrijePlaatsen(NieuweReservering.Tijd, NieuweDatum))
-                                {
                                     NieuweReservering.Datum = NieuweDatum;
-                                }
                                 else
                                 {
                                     Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -235,9 +209,7 @@ namespace TheFatDuckRestaurant
                             if (NieuweTijd != 0)
                             {
                                 if (NieuweReservering.Personen <= VrijePlaatsen(NieuweTijd, NieuweReservering.Datum))
-                                {
                                     NieuweReservering.Tijd = NieuweTijd;
-                                }
                                 else
                                 {
                                     Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -255,9 +227,7 @@ namespace TheFatDuckRestaurant
                             break;
                         case '5':
                             if (AddReservering(NieuweReservering))
-                            {
                                 return true;
-                            }
                             break;
                         case '0':
                             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -289,9 +259,7 @@ namespace TheFatDuckRestaurant
                         newReserveringen[Reserveringen.Length] = reservering;
                     }
                     else
-                    {
                         newReserveringen = new Reservering[] { reservering };
-                    }
                     this.Reserveringen = newReserveringen;
                     Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                     Console.WriteLine("U heeft gereserveerd!\x0a\x0a" + "Enter: Ga terug naar het startscherm");
@@ -315,31 +283,12 @@ namespace TheFatDuckRestaurant
                     if (this.Reserveringen[i].Datum == datum && this.Reserveringen[i].Tijd > tijd - 200 && this.Reserveringen[i].Tijd < tijd + 200)
                     {
                         if(Reserveringen[i].Personen % 2 == 1)
-                        {
                             MaxPersonen--;
-                        }
                         MaxPersonen -= Reserveringen[i].Personen;
                     }
                 }
                 return MaxPersonen;
             }
-
-        public static void updateReserveerlijst(ReserveerLijst reserveerlijst)
-        {
-            var JSONoptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
-            File.WriteAllText("reserveringen.json", JsonSerializer.Serialize(reserveerlijst, JSONoptions));
-        }
-        public static void updateGebruikers(Gebruikers gebruikers)
-        {
-            var JSONoptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
-            File.WriteAllText("gebruikers.json", JsonSerializer.Serialize(gebruikers, JSONoptions));
-        }
     }
 
         public class Reservering //Nieuwe file
@@ -405,9 +354,7 @@ namespace TheFatDuckRestaurant
                                     int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
                                     Console.Clear();
                                     if (Index == 0)
-                                    {
                                         return;
-                                    }
                                     /*
                                     if (Index < 8 && Index > 0)
                                     {
@@ -427,13 +374,9 @@ namespace TheFatDuckRestaurant
                                     }
                                     */
                                     else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                                    {
                                         huidigePaginaNR++;
-                                    }
                                     else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                                    {
                                         huidigePaginaNR--;
-                                    }
                                     else
                                     {
                                         Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
@@ -452,7 +395,7 @@ namespace TheFatDuckRestaurant
                 this.Bestelling = menu.BekijkMenuKlant(this.Bestelling);
             }
 
-            private void addTafels(TafelArray tafels)
+            public void AddTafels(TafelArray tafels)
         {
 
         }
@@ -508,15 +451,11 @@ namespace TheFatDuckRestaurant
                 foreach (char sym in Input)
                 {
                     if (Char.IsDigit(sym))
-                    {
                         PersonenString += sym;
-                    }
                 }
                 int PersonenInt = PersonenString != "" ? Int32.Parse(PersonenString) : 101;
                 if(PersonenInt <= MaxPersonen && PersonenInt > 0)
-                {
                     this.Personen = PersonenInt;
-                }
                 else
                 {
                     Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -535,20 +474,14 @@ namespace TheFatDuckRestaurant
                 foreach(char sym in Input)
                 {
                     if (Char.IsDigit(sym))
-                    {
                         Tijdstring += sym;
-                    }
                 }
                 int TijdInt = Tijdstring != "" ? Int32.Parse(Tijdstring) : 0;
                 TijdInt *= TijdInt < 100 ? 100 : 1;
                 if (TijdInt <= 900 && TijdInt >= 0)
-                {
                     TijdInt += 1200;
-                }
                 if (TijdInt <= 2100 && TijdInt >= 1100 && TijdInt % 100 < 60)
-                {
                     return TijdInt;
-                }
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                 Console.WriteLine("Deze tijd is ongeldig\x0a\x0a");
                 Console.WriteLine("Enter: Ga terug naar het vorige scherm");
@@ -566,21 +499,16 @@ namespace TheFatDuckRestaurant
                 foreach (char sym in NieuweDatum)
                 {
                     if (Char.IsDigit(sym))
-                    {
                         Dag += sym;
-                    }
+
                     else if (Char.IsLetter(sym) && Dag != "")
-                    {
                         Maand += sym;
-                    }
                 }
                 int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
                 if (CheckMaand(Maand.ToLower()) && DagInt > 0 && DagInt < 32)
                 {
                     if (CheckDag(DagInt, Maand.ToLower(), DateTime.Now.Year))
-                    {
                         return $"{WeekDag(DagInt,Maand)} {Dag} {Maand}";
-                    }
                 }
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                 Console.WriteLine("Deze datum bestaat niet\x0a\x0a");
@@ -595,17 +523,11 @@ namespace TheFatDuckRestaurant
                 int HuidigeMaand = DateTime.Now.Month;
                 DateTime date;
                 if(Maand < HuidigeMaand)
-                {
                     date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
-                }
                 else if(Maand == HuidigeMaand && Dag < HuidigeDag)
-                {
                     date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
-                }
                 else
-                {
                     date = new DateTime(DateTime.Now.Year, Maand, Dag);
-                }
                 string WeekDay = "" + date.DayOfWeek;
                 return DaytoDag(WeekDay.ToLower());
             }
@@ -624,9 +546,7 @@ namespace TheFatDuckRestaurant
                 for (int i = 0; i < Maanden.Length; i++)
                 {
                     if (maand == Maanden[i])
-                    {
                         return i + 1;
-                    }
                 }
                 return 0;
             }
@@ -636,24 +556,18 @@ namespace TheFatDuckRestaurant
                 for (int i = 0; i < Maanden.Length; i++)
                 {
                     if (maand == Maanden[i])
-                    {
                         return true;
-                    }
                 }
                 return false;
             }
             private bool CheckDag(int Dag, string Maand, int Jaar)
             {
                 if (Maand == "januari" || Maand == "maart" || Maand == "mei" || Maand == "juli" || Maand == "augustus" || Maand == "oktober" || Maand == "november")
-                {
                     return true;
-                }
                 if (Maand == "februari")
                 {
                     if (Jaar % 4 == 0 && (Jaar % 100 != 0 || Jaar % 400 == 0))
-                    {
                         return Dag < 30 ? true : false;
-                    }
                     return Dag < 29 ? true : false;
                 }
                 return Dag < 31 ? true : false;
@@ -679,7 +593,6 @@ namespace TheFatDuckRestaurant
 
     public class Bestelling
     {
-
         public string Naam { get; set; }
         public double Prijs { get; set; }
         public int Aantal { get; set; }
@@ -697,8 +610,5 @@ namespace TheFatDuckRestaurant
         {
             get => this.Prijs * this.Aantal;
         }
-        
-    
-    
     }
 }
