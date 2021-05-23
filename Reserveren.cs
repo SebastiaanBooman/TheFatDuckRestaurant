@@ -8,12 +8,186 @@ using static TheFatDuckRestaurant.Menu;
 
 namespace TheFatDuckRestaurant
 {
-    public class Reserveren
-    {
         public class ReserveerLijst
         {
             public ReserveerLijst() { }
             public Reservering[] Reserveringen { get; set; }
+
+            public void BekijkReserveringenMedewerker()
+        {
+            if (Reserveringen == null)
+                Reserveringen = new Reservering[0];
+            if (Reserveringen.Length == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Er zijn nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+                Console.ReadKey();
+                return;
+            }
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)");
+                string datum = Console.ReadLine();
+                Console.Clear();
+                string datumLower = "";
+                foreach (char sym in datum)
+                {
+                    if (Char.IsLetter(sym))
+                    {
+                        Char.ToLower(sym);
+                    }
+                    datumLower += sym;
+                }
+                int Aantal = 0;
+                foreach (TheFatDuckRestaurant.Reservering reservering in Reserveringen)
+                {
+                    if (reservering.Datum == datumLower)
+                    {
+                        Aantal++;
+                    }
+                }
+
+                if (Aantal > 0)
+                {
+                    int huidigePaginaNR = 0;
+                    TheFatDuckRestaurant.Reservering[] RelevanteReserveringen = new TheFatDuckRestaurant.Reservering[Aantal];
+                    int j = 0;
+                    foreach (TheFatDuckRestaurant.Reservering reservering in Reserveringen)
+                    {
+                        if (reservering.Datum == datumLower)
+                        {
+                            RelevanteReserveringen[j++] = reservering;
+                        }
+                    }
+                    while (true)
+                    {
+                        int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
+                        Console.Clear();
+                        Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+                        for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
+                        }
+                        Console.WriteLine();
+                        if (huidigePaginaNR + 1 < hoeveelheidPaginas)
+                            Console.WriteLine("8: Volgende pagina");
+                        if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                            Console.WriteLine("9: Vorige pagina");
+                        Console.WriteLine("0: Ga terug naar het startscherm");
+                        int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                        Console.Clear();
+                        if (Index == 0)
+                        {
+                            return;
+                        }
+                        if (Index > 0 && Index < 8)
+                        {
+                            RelevanteReserveringen[Index - 1].Info();
+                            Console.WriteLine("\n1: Tafels koppelen aan reservering");
+                            Console.ReadLine();
+                        }
+                        else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+                        {
+                            huidigePaginaNR++;
+                        }
+                        else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                        {
+                            huidigePaginaNR--;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Dit is geen geldige input");
+                            Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
+                            Console.ReadKey();
+                        }
+                    }
+                }
+                Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
+                Console.WriteLine("Enter: Ga terug naar het startscherm");
+                Console.ReadKey();
+            }
+        }
+        public void BekijkReserveringenKlant(string klantNaam)
+            {
+            if (Reserveringen == null)
+                Reserveringen = new Reservering[0];
+
+            if (Reserveringen.Length == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+                Console.ReadKey();
+                return;
+            }
+            int huidigePaginaNR = 0;
+            while (true)
+            {
+                int Aantal = 0;
+                foreach (Reservering reservering in Reserveringen)
+                {
+                    if (reservering.Bezoeker == klantNaam)
+                    {
+                        Aantal++;
+                    }
+                }
+                if (Aantal == 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+                    Console.ReadKey();
+                    return;
+                }
+                TheFatDuckRestaurant.Reservering[] KlantReserveringen = new TheFatDuckRestaurant.Reservering[Aantal];
+                int j = 0;
+                for (int i = 0; i < Reserveringen.Length; i++)
+                {
+                    if (Reserveringen[i].Bezoeker == klantNaam)
+                    {
+                        KlantReserveringen[j++] = Reserveringen[i];
+                    }
+                }
+                int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
+                Console.Clear();
+                Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+                for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < KlantReserveringen.Length; i++)
+                {
+                    Console.WriteLine($"{i + 1}: {KlantReserveringen[i + huidigePaginaNR * 7].Datum} om {KlantReserveringen[i + huidigePaginaNR * 7].TijdString()} ({KlantReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
+                }
+                Console.WriteLine();
+                if (huidigePaginaNR + 1 < hoeveelheidPaginas)
+                    Console.WriteLine("8: Volgende pagina");
+                if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                    Console.WriteLine("9: Vorige pagina");
+                Console.WriteLine("0: Ga terug naar het startscherm");
+                int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                Console.Clear();
+                if (Index == 0)
+                {
+                    return;
+                }
+                if (Index < 7 && Index > 0)
+                {
+                    changeReservering(KlantReserveringen[Index - 1]);
+                }
+                else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+                {
+                    huidigePaginaNR++;
+                }
+                else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                {
+                    huidigePaginaNR--;
+                }
+                else
+                {
+                    Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                    Console.ReadKey();
+                }
+            }
+        }
+
+
+
             public void changeReservering(Reservering reservering)
             {
                 //removeReservering(reservering);
@@ -149,7 +323,7 @@ namespace TheFatDuckRestaurant
                 }
                 return MaxPersonen;
             }
-        }
+
         public static void updateReserveerlijst(ReserveerLijst reserveerlijst)
         {
             var JSONoptions = new JsonSerializerOptions
@@ -166,6 +340,8 @@ namespace TheFatDuckRestaurant
             };
             File.WriteAllText("gebruikers.json", JsonSerializer.Serialize(gebruikers, JSONoptions));
         }
+    }
+
         public class Reservering //Nieuwe file
         {
             public int Tijd { get; set; }
@@ -276,6 +452,11 @@ namespace TheFatDuckRestaurant
                 this.Bestelling = menu.BekijkMenuKlant(this.Bestelling);
             }
 
+            private void addTafels(TafelArray tafels)
+        {
+
+        }
+
             /*
             private void removeGerecht(Gerechten gerecht)
             {
@@ -302,7 +483,8 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("Tijd:\t\t" + TijdString());
                 Console.WriteLine("Datum:\t\t" + this.Datum);
                 Console.WriteLine("Personen:\t" + this.Personen);
-                Console.WriteLine("Menu:\t\t" + "<gerechten>");
+                Console.WriteLine("Gerechten:\t\t" + "<gerechten>");
+                Console.WriteLine("Tafels:\t\t" + showTafels());
             }
             public char Create(string addition)
             {
@@ -481,8 +663,19 @@ namespace TheFatDuckRestaurant
                 string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;
                 return tstring.Length < 5 ? tstring + "0" : tstring;
             }
+            private string showTafels()
+            {
+                if (this.Tafels == null)
+                    return "Nog geen tafels";
+
+                string returnString = "";
+                foreach(Tafel tafel in Tafels)
+                {
+                    returnString += tafel + "\n";
+                }
+                return returnString;
+            }
         }
-    }
 
     public class Bestelling
     {
