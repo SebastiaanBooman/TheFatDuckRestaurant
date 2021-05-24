@@ -61,8 +61,8 @@ namespace TheFatDuckRestaurant
                             if (reserveerLijst.createReservering(gebruiker.Naam, menu))
                             {
                                 clickstream.addClickstream(reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length-1].Datum, reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length-1].Tijd);
-                                updateGebruikers(this.gebruikers);
-                                updateReserveerlijst(this.reserveerLijst);
+                                SaveGebruikers(this.gebruikers);
+                                SaveReserveerlijst(this.reserveerLijst);
                                 //clickstream.bekijkClicks(1100);
                             }
                         }

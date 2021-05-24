@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using static TheFatDuckRestaurant.Reserveren;
+using static TheFatDuckRestaurant.ReserveerLijst;
 
 namespace TheFatDuckRestaurant
 {

@@ -503,50 +503,80 @@ namespace TheFatDuckRestaurant
                                     Console.ReadKey();
                                     return 0;
                                 }
-                                public string changeDatum()
-                                {
-                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                                    Console.WriteLine((this.Datum == "" ? "Nog geen datum" : $"({this.Datum})") + "\x0aWelke datum wilt u reserveren? (21 juni)");
-                                    string NieuweDatum = Console.ReadLine();
-                                    Console.Clear();
-                                    string Dag = "";
-                                    string Maand = "";
-                                    foreach (char sym in NieuweDatum)
-                                    {
-                                        if (Char.IsDigit(sym))
-                                            Dag += sym;
-
-                                        else if (Char.IsLetter(sym) && Dag != "")
-                                            Maand += sym;
-                                    }
-                                    int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
-                                    if (CheckMaand(Maand.ToLower()) && DagInt > 0 && DagInt < 32)
-                                    {
-                                        if (CheckDag(DagInt, Maand.ToLower(), DateTime.Now.Year))
-                                            return $"{WeekDag(DagInt, Maand)} {Dag} {Maand}";
-                                    }
-                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                                    Console.WriteLine("Deze datum bestaat niet\x0a\x0a");
-                                    Console.WriteLine("Enter: Ga terug naar het vorige scherm");
-                                    Console.ReadKey();
-                                    return null;
-                                }
-                                private string WeekDag(int Dag, string maand)
-                                {
-                                    int Maand = MaandInt(Dag, maand);
-                                    int HuidigeDag = DateTime.Now.Day;
-                                    int HuidigeMaand = DateTime.Now.Month;
-                                    DateTime date;
-                                    if (Maand < HuidigeMaand)
-                                        date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
-                                    else if (Maand == HuidigeMaand && Dag < HuidigeDag)
-                                        date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
-                                    else
-                                        date = new DateTime(DateTime.Now.Year, Maand, Dag);
-                                    string WeekDay = "" + date.DayOfWeek;
-                                    return DaytoDag(WeekDay.ToLower());
-                                }
-                                private string DaytoDag(string Day)
+        public string checkDatum(string Datum, bool reserveren = true)
+        {
+            string Dag = "";
+            string Maand = "";
+            foreach (char sym in Datum)
+            {
+                if (Char.IsDigit(sym))
+                {
+                    Dag += sym;
+                }
+                else if (Char.IsLetter(sym) && Dag != "")
+                {
+                    Maand += sym;
+                }
+            }
+            int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
+            int Jaar = DateTime.Now.Year;
+            if (!reserveren)
+            {
+                bool Passed = false;
+                while (!Passed)
+                {
+                    Console.WriteLine("Voor welk jaar wilt u de opbrengsten bekijken?");
+                    if (int.TryParse(Console.ReadLine(), out Jaar))
+                    {
+                        Passed = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("U heeft geen getal ingevoerd\n\nEnter: Ga terug naar het vorige scherm");
+                        Console.ReadKey();
+                    }
+                }
+                Console.Clear();
+            }
+            if (CheckMaand(Maand.ToLower()) && DagInt > 0 && DagInt < 32)
+            {
+                if (CheckDag(DagInt, Maand.ToLower(), Jaar))
+                {
+                    return $"{WeekDag(DagInt, Maand, Jaar, reserveren)} {Dag} {Maand} {Jaar}";
+                }
+            }
+            Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+            Console.WriteLine("Deze datum bestaat niet\x0a\x0a");
+            Console.WriteLine("Enter: Ga terug naar het vorige scherm");
+            Console.ReadKey();
+            return null;
+        }
+        public string changeDatum()
+        {
+            Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+            Console.WriteLine((this.Datum == "" ? "Nog geen datum" : $"({this.Datum})") + "\x0aWelke datum wilt u reserveren? (21 juni)");
+            string NieuweDatum = Console.ReadLine();
+            Console.Clear();
+            return checkDatum(NieuweDatum);
+        }
+        private string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
+        {
+            int Maand = MaandInt(Dag, maand);
+            int HuidigeDag = DateTime.Now.Day;
+            int HuidigeMaand = DateTime.Now.Month;
+            DateTime date;
+            if ((Maand < HuidigeMaand || (Maand == HuidigeMaand && Dag < HuidigeDag)) && reserveren)
+            {
+                date = new DateTime(Jaar + 1, Maand, Dag);
+            }
+            else
+            {
+                date = new DateTime(Jaar, Maand, Dag);
+            }
+            string WeekDay = "" + date.DayOfWeek;
+            return DaytoDag(WeekDay.ToLower());
+        }
+        private string DaytoDag(string Day)
                                 {
                                     return Day == "monday" ? "Maandag" :
                                         Day == "tuesday" ? "Dinsdag" :

@@ -565,12 +565,11 @@ namespace TheFatDuckRestaurant
                         break;
                 }
             }
-            return '0';
     }
-    public void DailyRevenue(Reservering[] reserveerlijst)
+    public void DailyRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst)
     {
         string Datum = null;
-        Reservering X = new Reservering();
+        TheFatDuckRestaurant.Reservering X = new TheFatDuckRestaurant.Reservering();
         while (Datum == null)
         {
             Console.Clear();
@@ -579,7 +578,7 @@ namespace TheFatDuckRestaurant
         }
         Console.Clear();
         double Revenue = 0;
-        foreach (Reservering reservering in reserveerlijst)
+        foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
         {
             if (Datum == reservering.Datum)
             {
