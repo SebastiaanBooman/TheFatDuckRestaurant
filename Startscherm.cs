@@ -113,6 +113,7 @@ namespace TheFatDuckRestaurant
                         break;
                     case 'C': // tafels koppelen als medewerker
                         reserveerLijst.BekijkReserveringenMedewerker(tafels);
+                        SaveReserveerlijst(this.reserveerLijst);
                         break;
 
                 }
@@ -136,7 +137,7 @@ namespace TheFatDuckRestaurant
                 verkeerdeInput = true;
             }
         }
-        private void SaveReserveerlijst(ReserveerLijst reserveerlijst)
+        public void SaveReserveerlijst(ReserveerLijst reserveerlijst)
         {
             var JSONoptions = new JsonSerializerOptions
             {
