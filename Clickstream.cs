@@ -72,28 +72,24 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        public void bekijkClicks(string dag)
+        public void bekijkClicksD()
         {
             Console.Clear();
             foreach (CSDag Dag in Dagen)
             {
-                if (Dag.Naam == dag)
-                {
-                    Console.WriteLine(dag + $": {Dag.Clicks} reserveringen\n\nEnter: Ga terug naar het vorige scherm");
-                }
+                Console.WriteLine(Dag.Naam + $": {Dag.Clicks} reserveringen\n");
             }
+            Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
         }
-        public void bekijkClicks(int tijd)
+        public void bekijkClicksT()
         {
             Console.Clear();
             foreach (CSTijd Tijd in Tijden)
             {
-                if (tijd > Tijd.Naam - 70 && tijd <= Tijd.Naam + 30)
-                {
-                    Console.WriteLine(TijdString(tijd) + $": {Tijd.Clicks} reserveringen\n\nEnter: Ga terug naar het vorige scherm");
-                }
+                Console.WriteLine(Tijd.Naam + $": {Tijd.Clicks} reserveringen\n");
             }
+            Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
         }
 
