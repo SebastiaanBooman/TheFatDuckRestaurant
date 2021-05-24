@@ -4,6 +4,7 @@ using System.IO;
 using static TheFatDuckRestaurant.Menu;
 //using static TheFatDuckRestaurant.Inloggen;
 using static TheFatDuckRestaurant.ReserveerLijst;
+using static TheFatDuckRestaurant.Clickstream;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -31,6 +32,8 @@ namespace TheFatDuckRestaurant
 
         public Gebruiker gebruiker = new Gebruiker("", "", "", "");
 
+        public Clickstream clickstream = new Clickstream();
+
         public void StartFunctie()
         {
             bool shutOff = false;
@@ -52,17 +55,48 @@ namespace TheFatDuckRestaurant
                     case '4':
                         menu = gebruiker.bekijkMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
                         break;
-                    case '5': //Reserveren als klant
-                        if (reserveerLijst.createReservering(gebruiker.Naam, menu))
+                    case '5':
+                        if(gebruiker as Klant != null)
                         {
-                        SaveGebruikers(this.gebruikers);
-                        SaveReserveerlijst(this.reserveerLijst);
+                            if (reserveerLijst.createReservering(gebruiker.Naam, menu))
+                            {
+                                clickstream.addClickstream(reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length-1].Datum, reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length-1].Tijd);
+                                updateGebruikers(this.gebruikers);
+                                updateReserveerlijst(this.reserveerLijst);
+                                //clickstream.bekijkClicks(1100);
+                            }
+                        }
+                        else if(gebruiker as Medewerker != null)
+                        {
+                            //medewerker tafels koppelen aan reserveringen.
                         }
                         break;
                     case '6':
-                        //daily revenue
+                        (gebruiker as Medewerker).DailyRevenue(this.reserveerLijst.Reserveringen);
                         break;
                     case '7':
+                        char Input = '1';
+                        while (Input != '0')
+                        {
+                            Console.Clear();
+                            Console.WriteLine("1: Bekijk de clickstream per dag van de week\n2: Bekijk de clickstream per uur\n\n0: Ga terug naar het vorige scherm");
+                            Input = Console.ReadKey().KeyChar;
+                            switch (Input)
+                            {
+                                case '1':
+                                    clickstream.bekijkClicksD();
+                                    break;
+                                case '2':
+                                    clickstream.bekijkClicksT();
+                                    break;
+                                case '0':
+                                    break;
+                                default:
+                                    Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                    Console.ReadKey();
+                                    break;
+                            }
+                        }
                         //clickstream van klanten
                         break;
                     case '8':
