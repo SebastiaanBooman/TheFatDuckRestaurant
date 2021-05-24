@@ -396,9 +396,17 @@ namespace TheFatDuckRestaurant
             }
 
             public void AddTafels(TafelArray tafels)
-        {
-
-        }
+            {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Koppel Tafels aan de reservering\n");
+                Console.WriteLine("1: Bekijk alle vrije tafels\n");
+                Console.WriteLine("2: Koppel tafels via ID\n");
+                char userInput = Console.ReadKey().KeyChar;
+                return;
+            }
+            }
 
             /*
             private void removeGerecht(Gerechten gerecht)
@@ -585,7 +593,7 @@ namespace TheFatDuckRestaurant
                 string returnString = "";
                 foreach(Tafel tafel in Tafels)
                 {
-                    returnString += tafel + "\n";
+                    returnString += tafel.ID + "\n";
                 }
                 return returnString;
             }
