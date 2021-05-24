@@ -38,7 +38,7 @@ namespace TheFatDuckRestaurant
                     datumLower += sym;
                 }
                 int Aantal = 0;
-                foreach (TheFatDuckRestaurant.Reservering reservering in Reserveringen)
+                foreach (Reservering reservering in Reserveringen)
                 {
                     if (reservering.Datum == datumLower)
                         Aantal++;
@@ -47,9 +47,9 @@ namespace TheFatDuckRestaurant
                 if (Aantal > 0)
                 {
                     int huidigePaginaNR = 0;
-                    TheFatDuckRestaurant.Reservering[] RelevanteReserveringen = new TheFatDuckRestaurant.Reservering[Aantal];
+                    Reservering[] RelevanteReserveringen = new Reservering[Aantal];
                     int j = 0;
-                    foreach (TheFatDuckRestaurant.Reservering reservering in Reserveringen)
+                    foreach (Reservering reservering in Reserveringen)
                     {
                         if (reservering.Datum == datumLower)
                             RelevanteReserveringen[j++] = reservering;
@@ -292,312 +292,312 @@ namespace TheFatDuckRestaurant
             }
     }
 
-        public class Reservering //Nieuwe file
-        {
-            public int Tijd { get; set; }
-            public string Datum { get; set; }
-            public int Personen { get; set; }
-            public string Bezoeker { get; set; }
-            public List<Bestelling> Bestelling { get; set; }
+    public class Reservering //Nieuwe file
+    {
+        public int Tijd { get; set; }
+        public string Datum { get; set; }
+        public int Personen { get; set; }
+        public string Bezoeker { get; set; }
+        public List<Bestelling> Bestelling { get; set; }
 
-            public Tafel[] Tafels { get; set; }
-            public Reservering() { }
-            public Reservering(int tijd, string datum, int personen, string bezoeker, List<Bestelling> bestelling) //Tafels worden niet doorgegeven bij deze constructor omdat een klant bij het reserveren zelf geen keuze zal hebben. Tafels worden later gekoppeld door medewerkers.
+        public Tafel[] Tafels { get; set; }
+        public Reservering() { }
+        public Reservering(int tijd, string datum, int personen, string bezoeker, List<Bestelling> bestelling) //Tafels worden niet doorgegeven bij deze constructor omdat een klant bij het reserveren zelf geen keuze zal hebben. Tafels worden later gekoppeld door medewerkers.
+        {
+            this.Tijd = tijd;
+            this.Datum = datum;
+            this.Personen = personen;
+            this.Bezoeker = bezoeker;
+            this.Bestelling = bestelling;
+        }
+        public void changeGerechten(Menu menu)
+        {
+            while (true)
             {
-                this.Tijd = tijd;
-                this.Datum = datum;
-                this.Personen = personen;
-                this.Bezoeker = bezoeker;
-                this.Bestelling = bestelling;
-            }
-            public void changeGerechten(Menu menu)
-            {
-                while (true)
+                Console.Clear();
+                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                Console.WriteLine("1: Bekijk het menu\n2: Bekijk uw gekozen gerechten\n\n0: Ga terug naar het vorige scherm");
+                char Input = Console.ReadKey().KeyChar;
+                switch (Input)
                 {
-                    Console.Clear();
-                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                    Console.WriteLine("1: Bekijk het menu\n2: Bekijk uw gekozen gerechten\n\n0: Ga terug naar het vorige scherm");
-                    char Input = Console.ReadKey().KeyChar;
-                    switch (Input)
-                    {
-                        case '1':
-                            addGerechten(menu);
-                            break;
-                        
-                        case '2':
-                            if (this.Bestelling == null || this.Bestelling.Count == 0)
+                    case '1':
+                        addGerechten(menu);
+                        break;
+
+                    case '2':
+                        if (this.Bestelling == null || this.Bestelling.Count == 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine(ASCIIART.ReserverenArt());
+                            Console.WriteLine("U heeft nog geen gerechten gekozen\nBekijk het menu om gerechten toe te voegen");
+                            Console.WriteLine("\n\n0: Ga terug naar het vorige scherm");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            int huidigePaginaNR = 0;
+                            while (true)
                             {
+                                int hoeveelheidPaginas = (int)Math.Ceiling(this.Bestelling.Count / 7.0);
                                 Console.Clear();
                                 Console.WriteLine(ASCIIART.ReserverenArt());
-                                Console.WriteLine("U heeft nog geen gerechten gekozen\nBekijk het menu om gerechten toe te voegen");
-                                Console.WriteLine("\n\n0: Ga terug naar het vorige scherm");
-                                Console.ReadKey();
-                            }
-                            else
-                            {
-                                int huidigePaginaNR = 0;
-                                while (true)
+                                Console.WriteLine("Dit zijn de huidige gerechten die u heeft besteld\nToets op het getal naast het gerecht om het te verwijderen uit uw reservering\n");
+                                Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+                                for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < this.Bestelling.Count; i++)
                                 {
-                                    int hoeveelheidPaginas = (int)Math.Ceiling(this.Bestelling.Count / 7.0);
+                                    Console.WriteLine($"{i + 1}: {this.Bestelling[i + huidigePaginaNR * 7].Naam}: {this.Bestelling[i + huidigePaginaNR * 7].Aantal}x, {this.Bestelling[i + huidigePaginaNR * 7].TotaalPrijs} euro");
+                                }
+                                Console.WriteLine();
+                                if (huidigePaginaNR + 1 < hoeveelheidPaginas)
+                                    Console.WriteLine("8: Volgende pagina");
+                                if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                                    Console.WriteLine("9: Vorige pagina");
+                                Console.WriteLine("0: Ga terug naar het vorige scherm");
+                                int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                                Console.Clear();
+                                if (Index == 0)
+                                    return;
+                                if (Index < 8 && Index > 0)
+                                {
+                                    string tempName = this.Bestelling[Index - 1 + huidigePaginaNR * 7].Naam;
                                     Console.Clear();
                                     Console.WriteLine(ASCIIART.ReserverenArt());
-                                    Console.WriteLine("Dit zijn de huidige gerechten die u heeft besteld\nToets op het getal naast het gerecht om het te verwijderen uit uw reservering\n");
-                                    Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
-                                    for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < this.Bestelling.Count; i++)
-                                    {
-                                        Console.WriteLine($"{i + 1}: {this.Bestelling[i + huidigePaginaNR * 7].Naam}: {this.Bestelling[i + huidigePaginaNR * 7].Aantal}x, {this.Bestelling[i + huidigePaginaNR * 7].TotaalPrijs} euro");
-                                    }
-                                    Console.WriteLine();
-                                    if (huidigePaginaNR + 1 < hoeveelheidPaginas)
-                                        Console.WriteLine("8: Volgende pagina");
-                                    if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                                        Console.WriteLine("9: Vorige pagina");
-                                    Console.WriteLine("0: Ga terug naar het vorige scherm");
-                                    int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                                    Console.WriteLine($"Weet u zeker dat u {tempName} wilt verwijderen?\n\n1: Verwijder het gerecht uit uw reservering\n0: Ga terug naar het vorige scherm");
+                                    char userInput = Console.ReadKey().KeyChar;
                                     Console.Clear();
-                                    if (Index == 0)
-                                        return;
-                                    /*
-                                    if (Index < 8 && Index > 0)
+                                    switch(userInput)
                                     {
-                                        string tempName = this.Bestelling[Index - 1 + huidigePaginaNR * 7].Naam;
-                                        Console.Clear();
-                                        Console.WriteLine(ASCIIART.ReserverenArt());
-                                        Console.WriteLine($"Weet u zeker dat u {tempName} wilt verwijderen?\n\n1: Verwijder het gerecht uit uw reservering\n0: Ga terug naar het vorige scherm");
-                                        char userInput = Console.ReadKey().KeyChar;
-                                        Console.Clear();
-                                        switch(userInput)
-                                        {
-                                            case '1':
-                                                this.Bestelling.RemoveAt(Index - 1 + huidigePaginaNR * 7);
-                                                Console.WriteLine(ASCIIART.ReserverenArt());
-                                                Console.WriteLine($"{tempName} is verwijderd uit uw reservering!\n\n0: Ga terug naar het vorige scherm");
-                                                Console.ReadKey();
-                                                break;
-                                        }
+                                        case '1':
+                                            this.Bestelling.RemoveAt(Index - 1 + huidigePaginaNR * 7);
+                                            Console.WriteLine(ASCIIART.ReserverenArt());
+                                            Console.WriteLine($"{tempName} is verwijderd uit uw reservering!\n\n0: Ga terug naar het vorige scherm");
+                                            Console.ReadKey();
+                                            break;
                                     }
-                                    
-                                    else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                                        huidigePaginaNR++;
-                                    else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                                        huidigePaginaNR--;
+                                }
+
+                                else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+                                    huidigePaginaNR++;
+                                else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                                    huidigePaginaNR--;
+                                else
+                                {
+                                    Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                    Console.ReadKey();
+                                }
+                            }
+                        }
+                        break;
+                    case '0':
+                        return;
+                }
+            }
+        }
+        private void addGerechten(Menu menu)
+        {
+            this.Bestelling = menu.BekijkMenuKlant(this.Bestelling);
+        }
+
+        public void AddTafels(TafelArray tafels)
+    {
+
+    }
+
+        
+       /* private void removeGerecht(Gerechten gerecht)
+        {
+            Gerechten[] nieuwegerechten = new Gerechten[this.Gerechten.Length - 1];
+            bool Removed = false;
+            int i = 0;
+            foreach(Gerechten Gerecht in this.Gerechten)
+            {
+                if(gerecht != Gerecht || Removed)
+                {
+                    nieuwegerechten[i++] = Gerecht;
+                }
+                else
+                {
+                    Removed = true;
+                }
+            }
+            this.Gerechten = nieuwegerechten;
+        } */
+        
+                                public void Info()
+                                {
+                                    Console.WriteLine(ASCIIART.ReserverenArt());
+                                    Console.WriteLine("Klant:\t\t" + this.Bezoeker);
+                                    Console.WriteLine("Tijd:\t\t" + TijdString());
+                                    Console.WriteLine("Datum:\t\t" + this.Datum);
+                                    Console.WriteLine("Personen:\t" + this.Personen);
+                                    Console.WriteLine("Gerechten:");
+                                    foreach (var bestellingItem in this.Bestelling)
+                                        Console.WriteLine($"- {bestellingItem.Naam}: ({bestellingItem.Aantal}x), {bestellingItem.TotaalPrijs} euro");
+                                    Console.Write("\n0: Terug");
+                                    Console.ReadKey();
+                                }
+                                public char Create(string addition)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                                    Console.WriteLine("1: Datum\t\t" + (this.Datum == "" ? "U heeft nog geen datum gekozen" : $"({this.Datum})"));
+                                    Console.WriteLine("2: Tijd\t\t\t" + (this.Tijd == 0 ? "U heeft nog geen tijd gekozen" : $"({TijdString()})"));
+                                    Console.WriteLine("3: Aantal personen\t" + (this.Personen == 0 ? "U heeft nog niet het aantal personen aangegeven" : $"({this.Personen} personen)"));
+                                    Console.WriteLine("4: Gerechten\t\t" + ((this.Bestelling == null || this.Bestelling.Count == 0) ? "U heeft nog geen gerechten gekozen" : $"{this.Bestelling.Count} verschillende gerechten"));
+                                    Console.WriteLine($"\n5: Bevestig de reservering\n0: {addition} de reservering");
+                                    char Input = Console.ReadKey().KeyChar;
+                                    Console.Clear();
+                                    return Input;
+                                }
+                                public void changePersonen(int MaxPersonen)
+                                {
+                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                                    Console.WriteLine((this.Personen == 0 ? "Nog geen aantal personen" : $"({this.Personen})") + "\x0a" + $"Er zijn {MaxPersonen} plaatsen vrij\x0aVoor hoeveel personen wilt u reserveren?");
+                                    string Input = Console.ReadLine();
+                                    string PersonenString = "";
+                                    foreach (char sym in Input)
+                                    {
+                                        if (Char.IsDigit(sym))
+                                            PersonenString += sym;
+                                    }
+                                    int PersonenInt = PersonenString != "" ? Int32.Parse(PersonenString) : 101;
+                                    if (PersonenInt <= MaxPersonen && PersonenInt > 0)
+                                        this.Personen = PersonenInt;
                                     else
                                     {
-                                        Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                        Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                                        Console.WriteLine("Er zijn niet genoeg plaatsen beschikbaar om deze tijd\x0a\x0a");
+                                        Console.WriteLine("Enter: Ga terug naar het vorige scherm");
                                         Console.ReadKey();
                                     }
                                 }
+                                public int changeTijd()
+                                {
+                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                                    Console.WriteLine((Tijd == 0 ? "Nog geen tijd" : $"({TijdString()})") + "\x0aWelke tijd wilt u reserveren? (11:00 - 21:00)");
+                                    string Input = Console.ReadLine();
+                                    Console.Clear();
+                                    string Tijdstring = "";
+                                    foreach (char sym in Input)
+                                    {
+                                        if (Char.IsDigit(sym))
+                                            Tijdstring += sym;
+                                    }
+                                    int TijdInt = Tijdstring != "" ? Int32.Parse(Tijdstring) : 0;
+                                    TijdInt *= TijdInt < 100 ? 100 : 1;
+                                    if (TijdInt <= 900 && TijdInt >= 0)
+                                        TijdInt += 1200;
+                                    if (TijdInt <= 2100 && TijdInt >= 1100 && TijdInt % 100 < 60)
+                                        return TijdInt;
+                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                                    Console.WriteLine("Deze tijd is ongeldig\x0a\x0a");
+                                    Console.WriteLine("Enter: Ga terug naar het vorige scherm");
+                                    Console.ReadKey();
+                                    return 0;
+                                }
+                                public string changeDatum()
+                                {
+                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                                    Console.WriteLine((this.Datum == "" ? "Nog geen datum" : $"({this.Datum})") + "\x0aWelke datum wilt u reserveren? (21 juni)");
+                                    string NieuweDatum = Console.ReadLine();
+                                    Console.Clear();
+                                    string Dag = "";
+                                    string Maand = "";
+                                    foreach (char sym in NieuweDatum)
+                                    {
+                                        if (Char.IsDigit(sym))
+                                            Dag += sym;
+
+                                        else if (Char.IsLetter(sym) && Dag != "")
+                                            Maand += sym;
+                                    }
+                                    int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
+                                    if (CheckMaand(Maand.ToLower()) && DagInt > 0 && DagInt < 32)
+                                    {
+                                        if (CheckDag(DagInt, Maand.ToLower(), DateTime.Now.Year))
+                                            return $"{WeekDag(DagInt, Maand)} {Dag} {Maand}";
+                                    }
+                                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
+                                    Console.WriteLine("Deze datum bestaat niet\x0a\x0a");
+                                    Console.WriteLine("Enter: Ga terug naar het vorige scherm");
+                                    Console.ReadKey();
+                                    return null;
+                                }
+                                private string WeekDag(int Dag, string maand)
+                                {
+                                    int Maand = MaandInt(Dag, maand);
+                                    int HuidigeDag = DateTime.Now.Day;
+                                    int HuidigeMaand = DateTime.Now.Month;
+                                    DateTime date;
+                                    if (Maand < HuidigeMaand)
+                                        date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
+                                    else if (Maand == HuidigeMaand && Dag < HuidigeDag)
+                                        date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
+                                    else
+                                        date = new DateTime(DateTime.Now.Year, Maand, Dag);
+                                    string WeekDay = "" + date.DayOfWeek;
+                                    return DaytoDag(WeekDay.ToLower());
+                                }
+                                private string DaytoDag(string Day)
+                                {
+                                    return Day == "monday" ? "Maandag" :
+                                        Day == "tuesday" ? "Dinsdag" :
+                                        Day == "wednesday" ? "Woensdag" :
+                                        Day == "thursday" ? "Donderdag" :
+                                        Day == "friday" ? "Vrijdag" :
+                                        Day == "saturday" ? "Zaterdag" : "Zondag";
+                                }
+                                private int MaandInt(int dag, string maand)
+                                {
+                                    string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
+                                    for (int i = 0; i < Maanden.Length; i++)
+                                    {
+                                        if (maand == Maanden[i])
+                                            return i + 1;
+                                    }
+                                    return 0;
+                                }
+                                private bool CheckMaand(string maand)
+                                {
+                                    string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
+                                    for (int i = 0; i < Maanden.Length; i++)
+                                    {
+                                        if (maand == Maanden[i])
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                                private bool CheckDag(int Dag, string Maand, int Jaar)
+                                {
+                                    if (Maand == "januari" || Maand == "maart" || Maand == "mei" || Maand == "juli" || Maand == "augustus" || Maand == "oktober" || Maand == "november")
+                                        return true;
+                                    if (Maand == "februari")
+                                    {
+                                        if (Jaar % 4 == 0 && (Jaar % 100 != 0 || Jaar % 400 == 0))
+                                            return Dag < 30 ? true : false;
+                                        return Dag < 29 ? true : false;
+                                    }
+                                    return Dag < 31 ? true : false;
+                                }
+                                public string TijdString()
+                                {
+                                    string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;
+                                    return tstring.Length < 5 ? tstring + "0" : tstring;
+                                }
+                                private string showTafels()
+                                {
+                                    if (this.Tafels == null)
+                                        return "Nog geen tafels";
+
+                                    string returnString = "";
+                                    foreach (Tafel tafel in Tafels)
+                                    {
+                                        returnString += tafel + "\n";
+                                    }
+                                    return returnString;
+                                }
                             }
-                            break;
-                        case '0':
-                            return;
-                    }
-                }
-            }
-            private void addGerechten(Menu menu)
-            {
-                this.Bestelling = menu.BekijkMenuKlant(this.Bestelling);
-            }
-
-            public void AddTafels(TafelArray tafels)
-        {
-
-        }
-
-            /*
-            private void removeGerecht(Gerechten gerecht)
-            {
-                Gerechten[] nieuwegerechten = new Gerechten[this.Gerechten.Length - 1];
-                bool Removed = false;
-                int i = 0;
-                foreach(Gerechten Gerecht in this.Gerechten)
-                {
-                    if(gerecht != Gerecht || Removed)
-                    {
-                        nieuwegerechten[i++] = Gerecht;
-                    }
-                    else
-                    {
-                        Removed = true;
-                    }
-                }
-                this.Gerechten = nieuwegerechten;
-            }
-            */
-            public void Info()
-            {
-                Console.WriteLine(ASCIIART.ReserverenArt());
-                Console.WriteLine("Klant:\t\t" + this.Bezoeker);
-                Console.WriteLine("Tijd:\t\t" + TijdString());
-                Console.WriteLine("Datum:\t\t" + this.Datum);
-                Console.WriteLine("Personen:\t" + this.Personen);
-                Console.WriteLine("Gerechten:");
-                foreach (var bestellingItem in this.Bestelling)
-                    Console.WriteLine($"- {bestellingItem.Naam}: ({bestellingItem.Aantal}x), {bestellingItem.TotaalPrijs} euro");
-                Console.Write("\n0: Terug");
-                Console.ReadKey();
-            }
-            public char Create(string addition)
-            {
-                Console.Clear();
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                Console.WriteLine("1: Datum\t\t" + (this.Datum == "" ? "U heeft nog geen datum gekozen" : $"({this.Datum})"));
-                Console.WriteLine("2: Tijd\t\t\t" + (this.Tijd == 0 ? "U heeft nog geen tijd gekozen" : $"({TijdString()})"));
-                Console.WriteLine("3: Aantal personen\t" + (this.Personen == 0 ? "U heeft nog niet het aantal personen aangegeven" : $"({this.Personen} personen)"));
-                Console.WriteLine("4: Gerechten\t\t" + ((this.Bestelling == null || this.Bestelling.Count == 0) ? "U heeft nog geen gerechten gekozen" : $"{this.Bestelling.Count} verschillende gerechten"));
-                Console.WriteLine($"\n5: Bevestig de reservering\n0: {addition} de reservering");
-                char Input = Console.ReadKey().KeyChar;
-                Console.Clear();
-                return Input;
-            }
-            public void changePersonen(int MaxPersonen)
-            {
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                Console.WriteLine((this.Personen == 0 ? "Nog geen aantal personen" : $"({this.Personen})") + "\x0a" + $"Er zijn {MaxPersonen} plaatsen vrij\x0aVoor hoeveel personen wilt u reserveren?");
-                string Input = Console.ReadLine();
-                string PersonenString = "";
-                foreach (char sym in Input)
-                {
-                    if (Char.IsDigit(sym))
-                        PersonenString += sym;
-                }
-                int PersonenInt = PersonenString != "" ? Int32.Parse(PersonenString) : 101;
-                if(PersonenInt <= MaxPersonen && PersonenInt > 0)
-                    this.Personen = PersonenInt;
-                else
-                {
-                    Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                    Console.WriteLine("Er zijn niet genoeg plaatsen beschikbaar om deze tijd\x0a\x0a");
-                    Console.WriteLine("Enter: Ga terug naar het vorige scherm");
-                    Console.ReadKey();
-                }
-            }
-            public int changeTijd()
-            {
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                Console.WriteLine((Tijd == 0 ? "Nog geen tijd" : $"({TijdString()})") + "\x0aWelke tijd wilt u reserveren? (11:00 - 21:00)");
-                string Input = Console.ReadLine();
-                Console.Clear();
-                string Tijdstring = "";
-                foreach(char sym in Input)
-                {
-                    if (Char.IsDigit(sym))
-                        Tijdstring += sym;
-                }
-                int TijdInt = Tijdstring != "" ? Int32.Parse(Tijdstring) : 0;
-                TijdInt *= TijdInt < 100 ? 100 : 1;
-                if (TijdInt <= 900 && TijdInt >= 0)
-                    TijdInt += 1200;
-                if (TijdInt <= 2100 && TijdInt >= 1100 && TijdInt % 100 < 60)
-                    return TijdInt;
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                Console.WriteLine("Deze tijd is ongeldig\x0a\x0a");
-                Console.WriteLine("Enter: Ga terug naar het vorige scherm");
-                Console.ReadKey();
-                return 0;
-            }
-            public string changeDatum()
-            {
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                Console.WriteLine((this.Datum == "" ? "Nog geen datum" : $"({this.Datum})") + "\x0aWelke datum wilt u reserveren? (21 juni)");
-                string NieuweDatum = Console.ReadLine();
-                Console.Clear();
-                string Dag = "";
-                string Maand = "";
-                foreach (char sym in NieuweDatum)
-                {
-                    if (Char.IsDigit(sym))
-                        Dag += sym;
-
-                    else if (Char.IsLetter(sym) && Dag != "")
-                        Maand += sym;
-                }
-                int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
-                if (CheckMaand(Maand.ToLower()) && DagInt > 0 && DagInt < 32)
-                {
-                    if (CheckDag(DagInt, Maand.ToLower(), DateTime.Now.Year))
-                        return $"{WeekDag(DagInt,Maand)} {Dag} {Maand}";
-                }
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                Console.WriteLine("Deze datum bestaat niet\x0a\x0a");
-                Console.WriteLine("Enter: Ga terug naar het vorige scherm");
-                Console.ReadKey();
-                return null;
-            }
-            private string WeekDag(int Dag, string maand)
-            {
-                int Maand = MaandInt(Dag, maand);
-                int HuidigeDag = DateTime.Now.Day;
-                int HuidigeMaand = DateTime.Now.Month;
-                DateTime date;
-                if(Maand < HuidigeMaand)
-                    date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
-                else if(Maand == HuidigeMaand && Dag < HuidigeDag)
-                    date = new DateTime(DateTime.Now.Year + 1, Maand, Dag);
-                else
-                    date = new DateTime(DateTime.Now.Year, Maand, Dag);
-                string WeekDay = "" + date.DayOfWeek;
-                return DaytoDag(WeekDay.ToLower());
-            }
-            private string DaytoDag(string Day)
-            {
-                return Day == "monday" ? "Maandag" :
-                    Day == "tuesday" ? "Dinsdag" :
-                    Day == "wednesday" ? "Woensdag" :
-                    Day == "thursday" ? "Donderdag" :
-                    Day == "friday" ? "Vrijdag" :
-                    Day == "saturday" ? "Zaterdag" : "Zondag";
-            }
-            private int MaandInt(int dag, string maand)
-            {
-                string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
-                for (int i = 0; i < Maanden.Length; i++)
-                {
-                    if (maand == Maanden[i])
-                        return i + 1;
-                }
-                return 0;
-            }
-            private bool CheckMaand(string maand)
-            {
-                string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
-                for (int i = 0; i < Maanden.Length; i++)
-                {
-                    if (maand == Maanden[i])
-                        return true;
-                }
-                return false;
-            }
-            private bool CheckDag(int Dag, string Maand, int Jaar)
-            {
-                if (Maand == "januari" || Maand == "maart" || Maand == "mei" || Maand == "juli" || Maand == "augustus" || Maand == "oktober" || Maand == "november")
-                    return true;
-                if (Maand == "februari")
-                {
-                    if (Jaar % 4 == 0 && (Jaar % 100 != 0 || Jaar % 400 == 0))
-                        return Dag < 30 ? true : false;
-                    return Dag < 29 ? true : false;
-                }
-                return Dag < 31 ? true : false;
-            }
-            public string TijdString()
-            {
-                string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;
-                return tstring.Length < 5 ? tstring + "0" : tstring;
-            }
-            private string showTafels()
-            {
-                if (this.Tafels == null)
-                    return "Nog geen tafels";
-
-                string returnString = "";
-                foreach(Tafel tafel in Tafels)
-                {
-                    returnString += tafel + "\n";
-                }
-                return returnString;
-            }
-        }
+                        }
 
     public class Bestelling
     {
@@ -619,4 +619,3 @@ namespace TheFatDuckRestaurant
             get => this.Prijs * this.Aantal;
         }
     }
-}
