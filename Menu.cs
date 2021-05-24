@@ -178,7 +178,7 @@ namespace TheFatDuckRestaurant
 
                     Console.Clear();
                     Console.WriteLine(ReserverenArt());
-                    Console.WriteLine($"{bekijkMenu.Naam} is succesvol toegevoegd aan uw reservering!\nWil u doorgaan met het menu bekijken/Items toevoegen?\n\n1: Doorgaan\n0: Terug naar reservering");
+                    Console.WriteLine($"{bekijkMenu.Naam} ({bekijkMenu.Aantal}x) is succesvol toegevoegd aan uw reservering!\nWil u doorgaan met het menu bekijken/Items toevoegen?\n\n1: Doorgaan\n0: Terug naar reservering");
                     ConsoleKeyInfo toetsUser = Console.ReadKey();
                     char toetsUserChar = toetsUser.KeyChar;
 
@@ -375,7 +375,7 @@ namespace TheFatDuckRestaurant
                             var userInputIngredienten = Console.ReadLine();
                             if (userInputIngredienten == "0")
                                 passedSpecifiek = true;
-                            else
+                            else if(userInputIngredienten != "")
                             {
                                 if (ingredienten_ != null)
                                 {
