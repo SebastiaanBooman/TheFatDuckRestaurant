@@ -93,6 +93,20 @@ namespace TheFatDuckRestaurant
             string ASCIILogoAll = ASCIIReserverenL1 + ASCIIDuckL1 + ASCIIReserverenL2 + ASCIIDuckL2 + ASCIIReserverenL3 + ASCIIDuckL3 + ASCIIReserverenL4 + ASCIIDuckL4 + ASCIIReserverenL5 + ASCIIDuckL5 + ASCIIReserverenL6 + ASCIIDuckL6;
             return ASCIILogoAll;
         }
+        public static string ReserveringenArt()
+        {
+            string ASCIIReserveringenL1 = "  _____                                    _                        ";
+            string ASCIIReserveringenL2 = " |  __ \\                                  (_)                       ";
+            string ASCIIReserveringenL3 = " | |__) |___  ___  ___ _ ____   _____ _ __ _ _ __   __ _  ___ _ __  ";
+            string ASCIIReserveringenL4 = " |  _  // _ \\/ __|/ _ \\ '__\\ \\ / / _ \\ '__| | '_ \\ / _` |/ _ \\ '_ \\ ";
+            string ASCIIReserveringenL5 = " | | \\ \\  __/\\__ \\  __/ |   \\ V /  __/ |  | | | | | (_| |  __/ | | |";
+            string ASCIIReserveringenL6 = " |_|  \\_\\___||___/\\___|_|    \\_/ \\___|_|  |_|_| |_|\\__, |\\___|_| |_|";
+            string ASCIIReserveringenL7 = "                                                    __/ |           \n";
+            string ASCIIReserveringenL8 = "                                                   |___/            \n";
+
+            string ASCIILogoAll = ASCIIReserveringenL1 + ASCIIDuckL1 + ASCIIReserveringenL2 + ASCIIDuckL2 + ASCIIReserveringenL3 + ASCIIDuckL3 + ASCIIReserveringenL4 + ASCIIDuckL4 + ASCIIReserveringenL5 + ASCIIDuckL5 + ASCIIReserveringenL6 + ASCIIDuckL6 + ASCIIReserveringenL7 + ASCIIReserveringenL8;
+            return ASCIILogoAll;
+        }
         public static string RegistrerenArt()
         {
             string ASCIIRegistrerenL1 = "  _____            _     _                           ";

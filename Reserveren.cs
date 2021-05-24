@@ -27,6 +27,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
+                Console.WriteLine(ASCIIART.ReserveringenArt());
                 Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)");
                 string datum = Console.ReadLine();
                 Console.Clear();
@@ -58,6 +59,7 @@ namespace TheFatDuckRestaurant
                     {
                         int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
                         Console.Clear();
+                        Console.WriteLine(ASCIIART.ReserveringenArt());
                         Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                         for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
                         {
