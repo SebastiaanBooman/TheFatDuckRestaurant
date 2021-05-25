@@ -79,6 +79,7 @@ namespace TheFatDuckRestaurant
                         while (Input != '0')
                         {
                             Console.Clear();
+                            Console.WriteLine(ASCIIART.ReserveringenArt());
                             Console.WriteLine("1: Bekijk de clickstream per dag van de week\n2: Bekijk de clickstream per uur\n\n0: Ga terug naar het vorige scherm");
                             Input = Console.ReadKey().KeyChar;
                             switch (Input)

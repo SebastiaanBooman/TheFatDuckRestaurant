@@ -60,22 +60,37 @@ namespace TheFatDuckRestaurant
                 {
                     case '1':
                         Console.Clear();
-                        int totalePlekken = BerekenTafelsDieNogGekoppeldMoetenWorden(aantalMensen, gereserveerdeTafels); //-> de hoeveelheid plekken die nog gereserveerd moeten worden
+                        int plekkenDieNogMoetenWordenGekoppeld = BerekenTafelsDieNogGekoppeldMoetenWorden(aantalMensen, gereserveerdeTafels);
                         if (gereserveerdeTafels == null)
                             gereserveerdeTafels = new List<Tafel>();
                         foreach (Tafel tafel in Tafels)
                         {
-                            if (totalePlekken > 0)
+                            if (plekkenDieNogMoetenWordenGekoppeld > 0)
                             {
                                 if (tafel.Gereserveerd != true)
                                 {
-                                    Console.WriteLine($"Tafel {tafel.ID} toegevoegd aan reservering");
-                                    totalePlekken -= tafel.Plekken;
-                                    gereserveerdeTafels.Add(tafel);
-                                    tafel.Gereserveerd = true;
+                                    if(plekkenDieNogMoetenWordenGekoppeld <= 2)
+                                    {
+                                        if(tafel.Plekken == 2) //zorgt ervoor dat er alleen tafels van 2 worden gebruikt waardien mogelijk
+                                        {
+                                            Console.WriteLine($"Tafel {tafel.ID} toegevoegd aan reservering, {tafel.Plekken} plekken");
+                                            plekkenDieNogMoetenWordenGekoppeld -= tafel.Plekken;
+                                            gereserveerdeTafels.Add(tafel);
+                                            tafel.Gereserveerd = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Tafel {tafel.ID} toegevoegd aan reservering, {tafel.Plekken} plekken");
+                                        plekkenDieNogMoetenWordenGekoppeld -= tafel.Plekken;
+                                        gereserveerdeTafels.Add(tafel);
+                                        tafel.Gereserveerd = true;
+                                    }
                                 }
                             }
                         }
+                        if (plekkenDieNogMoetenWordenGekoppeld > 0) //Als er geen tafels van 2 zijn voor de laatste 2 of 1 persoon van een reservering dan laat het systeem dat weten.
+                            Console.WriteLine($"{plekkenDieNogMoetenWordenGekoppeld} Plekken zijn niet succesvol gekoppeld omdat er geen tafels van 2 personen meer vrij zijn.\n");
                         SaveTafels(this);
                         Console.WriteLine("Toets op een knop om verder te gaan");
                         Console.ReadLine();

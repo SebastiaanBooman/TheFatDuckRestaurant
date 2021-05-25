@@ -407,6 +407,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
+                Console.WriteLine(ASCIIART.TafelsArt());
                 Console.WriteLine("Koppel Tafels aan de reservering\n");
                 Console.WriteLine("1: Bekijk alle vrije tafels\n");
                 Console.WriteLine("2: Koppel tafels via ID\n");
