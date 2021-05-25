@@ -422,9 +422,10 @@ namespace TheFatDuckRestaurant
                         char specifiekeInput = Console.ReadKey().KeyChar;
                         break;
                     case '2':
+                        this.Tafels = tafels.KoppelenDoorMedewerker(this.Personen, this.Tafels); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.
                         break;
                     case '3':
-                        this.Tafels = tafels.AutomatischKoppelen(this.Personen, this.Tafels);
+                        this.Tafels = tafels.AutomatischKoppelen(this.Personen, this.Tafels); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.
                         break;
                     case '0':
                         return;

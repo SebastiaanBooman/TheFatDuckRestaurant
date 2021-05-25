@@ -133,5 +133,17 @@ namespace TheFatDuckRestaurant
             string ASCIILogoAll = ASCIIAccountL1 + ASCIIDuckL1 + ASCIIAccountL2 + ASCIIDuckL2 + ASCIIAccountL3 + ASCIIDuckL3 + ASCIIAccountL4 + ASCIIDuckL4 + ASCIIAccountL5 + ASCIIDuckL5 + ASCIIAccountL6 + ASCIIDuckL6;
             return ASCIILogoAll;
         }
+        public static string TafelsArt()
+        {
+            string ASCIITafelL1 = "  _______     __     _     ";
+            string ASCIITafelL2 = " |__   __|   / _|   | |    ";
+            string ASCIITafelL3 = "    | | __ _| |_ ___| |___ ";
+            string ASCIITafelL4 = "    | |/ _` |  _/ _ \\ / __|";
+            string ASCIITafelL5 = "    | | (_| | ||  __/ \\__ \\";
+            string ASCIITafelL6 = "    |_|\\__,_|_| \\___|_|___/";
+
+            string ASCIILogoAll = ASCIITafelL1 + ASCIIDuckL1 + ASCIITafelL2 + ASCIIDuckL2 + ASCIITafelL3 + ASCIIDuckL3 + ASCIITafelL4 + ASCIIDuckL4 + ASCIITafelL5 + ASCIIDuckL5 + ASCIITafelL6 + ASCIIDuckL6;
+            return ASCIILogoAll;
+        }
     }
 }
