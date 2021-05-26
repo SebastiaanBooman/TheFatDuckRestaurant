@@ -419,14 +419,14 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case '1':
-                        tafels.BekijkVrijeTafels();
+                        tafels.BekijkVrijeTafels($"{this.Tijd}{this.Datum}");
                         char specifiekeInput = Console.ReadKey().KeyChar;
                         break;
                     case '2':
-                        this.Tafels = tafels.KoppelenDoorMedewerker(this.Personen, this.Tafels); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.
+                        this.Tafels = tafels.KoppelenDoorMedewerker(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}"); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.
                         break;
                     case '3':
-                        this.Tafels = tafels.AutomatischKoppelen(this.Personen, this.Tafels); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.
+                        this.Tafels = tafels.AutomatischKoppelen(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}"); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.
                         break;
                     case '0':
                         return;
