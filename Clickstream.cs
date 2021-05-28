@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using static TheFatDuckRestaurant.Reserveren;
+using static TheFatDuckRestaurant.ReserveerLijst;
 
 namespace TheFatDuckRestaurant
 {
@@ -75,6 +75,7 @@ namespace TheFatDuckRestaurant
         public void bekijkClicksD()
         {
             Console.Clear();
+            Console.WriteLine(ASCIIART.ReserveringenArt());
             foreach (CSDag Dag in Dagen)
             {
                 Console.WriteLine(Dag.Naam + $": {Dag.Clicks} reserveringen\n");
@@ -85,6 +86,7 @@ namespace TheFatDuckRestaurant
         public void bekijkClicksT()
         {
             Console.Clear();
+            Console.WriteLine(ASCIIART.ReserveringenArt());
             foreach (CSTijd Tijd in Tijden)
             {
                 Console.WriteLine(Tijd.Naam + $": {Tijd.Clicks} reserveringen\n");
