@@ -566,17 +566,17 @@ namespace TheFatDuckRestaurant
                 }
             }
     }
-    public void DailyRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst)
+    public void DailyRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst, string Datum)
     {
-        string Datum = null;
+        /*string Datum = null;
         TheFatDuckRestaurant.Reservering X = new TheFatDuckRestaurant.Reservering();
         while (Datum == null)
         {
             Console.Clear();
-            Console.WriteLine("Voor welke datum wilt u de opbrengst bekijken? (21 juni)");
+            Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)");
             Datum = X.checkDatum(Console.ReadLine(), false);
         }
-        Console.Clear();
+        Console.Clear();*/
         double Revenue = 0;
         foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
         {

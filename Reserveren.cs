@@ -174,7 +174,7 @@ namespace TheFatDuckRestaurant
             //GERECHTEN
             //createReservering(reservering.Bezoeker, reservering.Tijd, reservering.Datum, reservering.Personen, null, "Verwijder");
         }
-        private void removeReservering(Reservering reservering)
+        public void removeReservering(Reservering reservering)
         {
             Reservering[] newReserveringen = new Reservering[this.Reserveringen.Length - 1];
             for (int i = 0, j = 0; i < this.Reserveringen.Length; i++)
@@ -540,11 +540,16 @@ namespace TheFatDuckRestaurant
         {
             string Dag = "";
             string Maand = "";
+            string jaar = "";
             foreach (char sym in Datum)
             {
-                if (Char.IsDigit(sym))
+                if (Char.IsDigit(sym) && Maand == "")
                 {
                     Dag += sym;
+                }
+                else if (Char.IsDigit(sym) && Maand != "")
+                {
+                    jaar += sym;
                 }
                 else if (Char.IsLetter(sym) && Dag != "")
                 {
@@ -552,27 +557,17 @@ namespace TheFatDuckRestaurant
                 }
             }
             int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
-            int Jaar = DateTime.Now.Year;
-            if (!reserveren)
-            {
-                bool Passed = false;
-                while (!Passed)
-                {
-                    Console.WriteLine("Voor welk jaar wilt u de opbrengsten bekijken?");
-                    if (int.TryParse(Console.ReadLine(), out Jaar))
-                    {
-                        Passed = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("U heeft geen getal ingevoerd\n\nEnter: Ga terug naar het vorige scherm");
-                        Console.ReadKey();
-                    }
-                }
-                Console.Clear();
-            }
+            int.TryParse(jaar, out int Jaar);
+            if(Jaar <= 0) { Jaar = DateTime.Now.Year; }
             if (CheckMaand(Maand.ToLower()) && DagInt > 0 && DagInt < 32)
             {
+                if (reserveren)
+                {
+                    if (MaandInt(Maand.ToLower()) < DateTime.Now.Month || (MaandInt(Maand.ToLower()) == DateTime.Now.Month && DagInt < DateTime.Now.Day))
+                    {
+                        Jaar += 1;
+                    }
+                }
                 if (CheckDag(DagInt, Maand.ToLower(), Jaar))
                 {
                     return $"{WeekDag(DagInt, Maand, Jaar, reserveren)} {Dag} {Maand} {Jaar}";
@@ -594,7 +589,7 @@ namespace TheFatDuckRestaurant
         }
         private string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
         {
-            int Maand = MaandInt(Dag, maand);
+            int Maand = MaandInt(maand);
             int HuidigeDag = DateTime.Now.Day;
             int HuidigeMaand = DateTime.Now.Month;
             DateTime date;
@@ -618,7 +613,7 @@ namespace TheFatDuckRestaurant
                                         Day == "friday" ? "Vrijdag" :
                                         Day == "saturday" ? "Zaterdag" : "Zondag";
                                 }
-                                private int MaandInt(int dag, string maand)
+                                private int MaandInt(string maand)
                                 {
                                     string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
                                     for (int i = 0; i < Maanden.Length; i++)
