@@ -209,6 +209,55 @@ namespace TheFatDuckRestaurant
             }
         }
 
+        public List<Tafel> ontKoppelenDoorMedewerker(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
+        {
+            return gereserveerdeTafels;
+        }
+
+        public List<Tafel> allesAutomatischOntkoppelen(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
+        {
+            while (true)
+            {
+                bool wrongInput = false;
+                Console.WriteLine($"alle tafels van de reservering worden automatisch ontkoppeld, weet u dit zeker?\n");
+                Console.WriteLine($"1: Ja\n");
+                Console.WriteLine($"0: Nee\n");
+                if (wrongInput)
+                    Console.WriteLine("Wrong Input! Probeer 1 of 0");
+                char userInput = Console.ReadKey().KeyChar;
+                switch (userInput)
+                {
+                    case '1':
+                        Console.Clear();
+                        if (gereserveerdeTafels == null)
+                            gereserveerdeTafels = new List<Tafel>();
+                        foreach (Tafel tafel in Tafels)
+                        {
+                            if (tafel.Gereserveerd == null)
+                                tafel.Gereserveerd = new List<string>();
+
+                            foreach (string data in tafel.Gereserveerd)
+                            {
+                                if (data == tijdEnDatum)
+                                {
+                                    tafel.Gereserveerd.Remove(data);
+                                    Console.WriteLine($"Tafel {tafel.ID} is ontkoppeld van de reservering");
+                                }
+                            }
+                        }
+                        SaveTafels(this);
+                        Console.WriteLine("Toets op een knop om verder te gaan");
+                        Console.ReadLine();
+                        return gereserveerdeTafels;
+                    case '0':
+                        return gereserveerdeTafels;
+                    default:
+                        wrongInput = true;
+                        break;
+                }
+            }
+        }
+
         public void SaveTafels(TafelArray tafels)
         {
             var JSONoptions = new JsonSerializerOptions
