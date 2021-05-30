@@ -238,6 +238,7 @@ namespace TheFatDuckRestaurant
                     else
                         uniekeNaam = true;
                 }
+            }
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
                 Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
@@ -256,11 +257,11 @@ namespace TheFatDuckRestaurant
                     Tuple<string, string, string, string> Tuple = null; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
                     return Tuple;
                 }*/
-            }
-            Console.Clear();
+
+            /*Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
             Console.WriteLine("Voer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-            string password = Console.ReadLine();
+            string password = Console.ReadLine();*/
             while (!ValidatePassword(password))
             {
                 Console.Clear();
@@ -290,6 +291,7 @@ namespace TheFatDuckRestaurant
                 Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
                 return returnTuple;
             }
+            return null;
         }
 
         public Gebruiker registreerKlant(Gebruiker gebruiker)
