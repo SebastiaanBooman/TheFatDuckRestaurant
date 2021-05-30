@@ -8,6 +8,7 @@ using static TheFatDuckRestaurant.Reserveren;
 using static TheFatDuckRestaurant.ASCIIART;
 using static TheFatDuckRestaurant.Menu;
 using System.Text.RegularExpressions;
+using System.Security;
 
 namespace TheFatDuckRestaurant
 {
@@ -168,23 +169,6 @@ namespace TheFatDuckRestaurant
         public Gebruiker registreer(Gebruiker gebruiker)
         {
 
-            // Lambda om te checken of het een geldig wachtwoord is. Gebruikt RegEx
-            //      1       2               3                   4                5      6
-            // @"   ^  (?=.+?[A-Z])    (?=.+?[0-9])    (?=.+?[^a-zA-Z0-9])     .{8,}    $"
-            // 1 is de start van de string (input)
-            // 2 is een check of er ergens in de string 1 of meer hoofdletters zijn.
-            // 3 is een check of er ergens in de string 1 of meer cijfers zijn.
-            // 4 is een check of er ergens in de string 1 of meer characters zijn dat geen kleine letter, hoofdletter of getal is
-            // 5 is een check of de string minimaal 8 tot meer characters heeft
-            // 6 is het einde van de string (input)
-
-            Func<string, bool> ValidatePassword = (input) =>
-            {
-                Regex regex = new Regex(@"^(?=.+?[A-Z])(?=.+?[0-9])(?=.+?[^a-zA-Z0-9_@.-]).{8,}$");
-                Match match = regex.Match(input);
-                return match.Success;
-            };
-
             var jsonOptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
@@ -210,24 +194,40 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
                 Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                string password = Console.ReadLine();
-                while (!ValidatePassword(password))
+                SecureString pass1 = VarComponents.MaskStringInput();
+                string password = new System.Net.NetworkCredential(string.Empty, pass1).Password;
+                while (!VarComponents.IsPassword(password))
                 {
                     Console.Clear();
                     Console.WriteLine(ASCIIART.RegistrerenArt());
                     Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                    password = Console.ReadLine();
+                    SecureString pass2 = VarComponents.MaskStringInput();
+                    password = new System.Net.NetworkCredential(string.Empty, pass2).Password;
                 }
 
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
                 Console.WriteLine("Voer uw adres in:");
-                string adres = Console.ReadLine(); //TODO: Check voor adres met requirements
+                string adres = Console.ReadLine();
+                while (!VarComponents.IsAdres(adres))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerd adres\x0A\x0A\x0AVoer uw adres in (straatnaam en huisnummer):");
+                    adres = Console.ReadLine();
+                }
 
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
                 Console.WriteLine("Voer uw woonplaats in:");
-                string woonplaats = Console.ReadLine(); //TODO: Check voor woonplaats met requirements
+                string woonplaats = Console.ReadLine();
+                while (!VarComponents.IsWoonplaats(woonplaats))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerde woonplaats\x0A\x0A\x0Awoonplaats in:");
+                    woonplaats = Console.ReadLine();
+                }
 
 
                 Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
