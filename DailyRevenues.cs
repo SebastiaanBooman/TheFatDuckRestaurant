@@ -16,6 +16,8 @@ namespace TheFatDuckRestaurant
                 {
                     if (dailyrevenue.Datum == Datum)
                     {
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.OpbrengstenArt());
                         Console.WriteLine($"De opbrengst van {Datum} is {dailyrevenue.Revenue} euro\n\nEnter: Ga terug naar het vorige scherm");
                         Console.ReadKey();
                         return true;
