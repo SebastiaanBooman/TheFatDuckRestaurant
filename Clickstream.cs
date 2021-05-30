@@ -11,7 +11,8 @@ namespace TheFatDuckRestaurant
     {
         public CSDag[] Dagen { get; set; }
         public CSTijd[] Tijden { get; set; }
-        public Clickstream()//1 keer doen om het json bestand te schrijven
+        public Clickstream() { }
+        /*public Clickstream()//1 keer doen om het json bestand te schrijven
         {
             Dagen = new CSDag[]
             {
@@ -37,7 +38,7 @@ namespace TheFatDuckRestaurant
                 new CSTijd(2000,0),
                 new CSTijd(2100,0)
             };
-        }
+        }*/
         public void addClickstream(string Datum, int tijd)
         {
             string DigitCheck = "";
@@ -100,6 +101,7 @@ namespace TheFatDuckRestaurant
     {
         public string Naam { get; set; }
         public int Clicks { get; set; }
+        public CSDag() { }
         public CSDag(string naam, int clicks)
         {
             Naam = naam;
@@ -110,6 +112,7 @@ namespace TheFatDuckRestaurant
     {
         public int Naam { get; set; }
         public int Clicks { get; set; }
+        public CSTijd() { }
         public CSTijd(int naam, int clicks)
         {
             Naam = naam;
