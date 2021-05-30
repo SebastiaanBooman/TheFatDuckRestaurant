@@ -75,7 +75,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         if (Index == 0)
                             return this;
-                        if (Index > 0 && Index < 8)
+                        if (Index > 0 && Index < 8) //TO DO: Als er nog tafels gekoppeld moeten worden (Personen - tafelhoeveelheid is groter dan 0) toon optie voor tafels koppelen) Als er meer dan 1 tafel al is gekoppeld moet er een optie zijn om tafels te ontkoppelen
                         {
                             RelevanteReserveringen[Index - 1].Info();
                             Console.WriteLine("\nA: Tafels koppelen aan reservering");

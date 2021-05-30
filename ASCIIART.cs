@@ -145,5 +145,19 @@ namespace TheFatDuckRestaurant
             string ASCIILogoAll = ASCIITafelL1 + ASCIIDuckL1 + ASCIITafelL2 + ASCIIDuckL2 + ASCIITafelL3 + ASCIIDuckL3 + ASCIITafelL4 + ASCIIDuckL4 + ASCIITafelL5 + ASCIIDuckL5 + ASCIITafelL6 + ASCIIDuckL6;
             return ASCIILogoAll;
         }
+        public static string OpbrengstenArt()
+        {
+            string ASCIIOpbrengstenL1 = "   ____        _                              _             ";
+            string ASCIIOpbrengstenL2 = "  / __ \\      | |                            | |            ";
+            string ASCIIOpbrengstenL3 = " | |  | |_ __ | |__  _ __ ___ _ __   __ _ ___| |_ ___ _ __  ";
+            string ASCIIOpbrengstenL4 = " | |  | | '_ \\| '_ \\| '__/ _ \\ '_ \\ / _` / __| __/ _ \\ '_ \\ ";
+            string ASCIIOpbrengstenL5 = " | |__| | |_) | |_) | | |  __/ | | | (_| \\__ \\ ||  __/ | | |";
+            string ASCIIOpbrengstenL6 = "  \\____/| .__/|_.__/|_|  \\___|_| |_|\\__, |___/\\__\\___|_| |_|";
+            string ASCIIOpbrengstenL7 = "        | |                          __/ |                  \n";
+            string ASCIIOpbrengstenL8 = "        |_|                         |___/                   \n";
+
+            string ASCIILogoAll = ASCIIOpbrengstenL1 + ASCIIDuckL1 + ASCIIOpbrengstenL2 + ASCIIDuckL2 + ASCIIOpbrengstenL3 + ASCIIDuckL3 + ASCIIOpbrengstenL4 + ASCIIDuckL4 + ASCIIOpbrengstenL5 + ASCIIDuckL5 + ASCIIOpbrengstenL6 + ASCIIDuckL6 + ASCIIOpbrengstenL7 + ASCIIOpbrengstenL8;
+            return ASCIILogoAll;
+        }
     }
 }
