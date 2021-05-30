@@ -93,6 +93,20 @@ namespace TheFatDuckRestaurant
             string ASCIILogoAll = ASCIIReserverenL1 + ASCIIDuckL1 + ASCIIReserverenL2 + ASCIIDuckL2 + ASCIIReserverenL3 + ASCIIDuckL3 + ASCIIReserverenL4 + ASCIIDuckL4 + ASCIIReserverenL5 + ASCIIDuckL5 + ASCIIReserverenL6 + ASCIIDuckL6;
             return ASCIILogoAll;
         }
+        public static string ReserveringenArt()
+        {
+            string ASCIIReserveringenL1 = "  _____                                    _                        ";
+            string ASCIIReserveringenL2 = " |  __ \\                                  (_)                       ";
+            string ASCIIReserveringenL3 = " | |__) |___  ___  ___ _ ____   _____ _ __ _ _ __   __ _  ___ _ __  ";
+            string ASCIIReserveringenL4 = " |  _  // _ \\/ __|/ _ \\ '__\\ \\ / / _ \\ '__| | '_ \\ / _` |/ _ \\ '_ \\ ";
+            string ASCIIReserveringenL5 = " | | \\ \\  __/\\__ \\  __/ |   \\ V /  __/ |  | | | | | (_| |  __/ | | |";
+            string ASCIIReserveringenL6 = " |_|  \\_\\___||___/\\___|_|    \\_/ \\___|_|  |_|_| |_|\\__, |\\___|_| |_|";
+            string ASCIIReserveringenL7 = "                                                    __/ |           \n";
+            string ASCIIReserveringenL8 = "                                                   |___/            \n";
+
+            string ASCIILogoAll = ASCIIReserveringenL1 + ASCIIDuckL1 + ASCIIReserveringenL2 + ASCIIDuckL2 + ASCIIReserveringenL3 + ASCIIDuckL3 + ASCIIReserveringenL4 + ASCIIDuckL4 + ASCIIReserveringenL5 + ASCIIDuckL5 + ASCIIReserveringenL6 + ASCIIDuckL6 + ASCIIReserveringenL7 + ASCIIReserveringenL8;
+            return ASCIILogoAll;
+        }
         public static string RegistrerenArt()
         {
             string ASCIIRegistrerenL1 = "  _____            _     _                           ";
@@ -117,6 +131,32 @@ namespace TheFatDuckRestaurant
             string ASCIIAccountL6 = " /_/    \\_\\___\\___\\___/ \\__,_|_| |_|\\__|";
 
             string ASCIILogoAll = ASCIIAccountL1 + ASCIIDuckL1 + ASCIIAccountL2 + ASCIIDuckL2 + ASCIIAccountL3 + ASCIIDuckL3 + ASCIIAccountL4 + ASCIIDuckL4 + ASCIIAccountL5 + ASCIIDuckL5 + ASCIIAccountL6 + ASCIIDuckL6;
+            return ASCIILogoAll;
+        }
+        public static string TafelsArt()
+        {
+            string ASCIITafelL1 = "  _______     __     _     ";
+            string ASCIITafelL2 = " |__   __|   / _|   | |    ";
+            string ASCIITafelL3 = "    | | __ _| |_ ___| |___ ";
+            string ASCIITafelL4 = "    | |/ _` |  _/ _ \\ / __|";
+            string ASCIITafelL5 = "    | | (_| | ||  __/ \\__ \\";
+            string ASCIITafelL6 = "    |_|\\__,_|_| \\___|_|___/";
+
+            string ASCIILogoAll = ASCIITafelL1 + ASCIIDuckL1 + ASCIITafelL2 + ASCIIDuckL2 + ASCIITafelL3 + ASCIIDuckL3 + ASCIITafelL4 + ASCIIDuckL4 + ASCIITafelL5 + ASCIIDuckL5 + ASCIITafelL6 + ASCIIDuckL6;
+            return ASCIILogoAll;
+        }
+        public static string OpbrengstenArt()
+        {
+            string ASCIIOpbrengstenL1 = "   ____        _                              _             ";
+            string ASCIIOpbrengstenL2 = "  / __ \\      | |                            | |            ";
+            string ASCIIOpbrengstenL3 = " | |  | |_ __ | |__  _ __ ___ _ __   __ _ ___| |_ ___ _ __  ";
+            string ASCIIOpbrengstenL4 = " | |  | | '_ \\| '_ \\| '__/ _ \\ '_ \\ / _` / __| __/ _ \\ '_ \\ ";
+            string ASCIIOpbrengstenL5 = " | |__| | |_) | |_) | | |  __/ | | | (_| \\__ \\ ||  __/ | | |";
+            string ASCIIOpbrengstenL6 = "  \\____/| .__/|_.__/|_|  \\___|_| |_|\\__, |___/\\__\\___|_| |_|";
+            string ASCIIOpbrengstenL7 = "        | |                          __/ |                  \n";
+            string ASCIIOpbrengstenL8 = "        |_|                         |___/                   \n";
+
+            string ASCIILogoAll = ASCIIOpbrengstenL1 + ASCIIDuckL1 + ASCIIOpbrengstenL2 + ASCIIDuckL2 + ASCIIOpbrengstenL3 + ASCIIDuckL3 + ASCIIOpbrengstenL4 + ASCIIDuckL4 + ASCIIOpbrengstenL5 + ASCIIDuckL5 + ASCIIOpbrengstenL6 + ASCIIDuckL6 + ASCIIOpbrengstenL7 + ASCIIOpbrengstenL8;
             return ASCIILogoAll;
         }
     }

@@ -1,0 +1,174 @@
+{
+  "Tafels": [
+    {
+      "ID": "1A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "1B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "2A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "2B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "3A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "3B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "4A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "4B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "5A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "5B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "6A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "6B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "7A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "7B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "8A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "8B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "9A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "9B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "9B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "10A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "10B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "11A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "11B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "12A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "12B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "13A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "13B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "14A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "14B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "15A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "15B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "16A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "16B",
+      "Plekken": 2,
+      "Gereserveerd": null
+    },
+    {
+      "ID": "17A",
+      "Plekken": 4,
+      "Gereserveerd": null
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+﻿{
+  "Dagen": [
+    {
+      "Naam": "maandag",
+      "Clicks": 0
+    },
+    {
+      "Naam": "dinsdag",
+      "Clicks": 0
+    },
+    {
+      "Naam": "woensdag",
+      "Clicks": 0
+    },
+    {
+      "Naam": "donderdag",
+      "Clicks": 0
+    },
+    {
+      "Naam": "vrijdag",
+      "Clicks": 0
+    },
+    {
+      "Naam": "zaterdag",
+      "Clicks": 0
+    },
+    {
+      "Naam": "zondag",
+      "Clicks": 0
+    }
+  ],
+  "Tijden": [
+    {
+      "Naam": 1100,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1200,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1300,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1400,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1500,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1600,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1700,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1800,
+      "Clicks": 0
+    },
+    {
+      "Naam": 1900,
+      "Clicks": 0
+    },
+    {
+      "Naam": 2000,
+      "Clicks": 0
+    },
+    {
+      "Naam": 2100,
+      "Clicks": 0
+    }
+  ]
+}

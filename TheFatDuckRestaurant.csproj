@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Debug\netcoreapp3.1\reserveringen.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Menu.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
@@ -22,6 +18,17 @@
     <None Update="menu.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="reserveringen.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Tafels.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\netcoreapp3.1\ClickStream.json" />
+    <None Include="bin\Debug\netcoreapp3.1\DailyRevenues.json" />
   </ItemGroup>
 
 </Project>
