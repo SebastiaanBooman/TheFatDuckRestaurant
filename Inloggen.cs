@@ -8,6 +8,7 @@ using static TheFatDuckRestaurant.ReserveerLijst;
 using static TheFatDuckRestaurant.ASCIIART;
 using static TheFatDuckRestaurant.Menu;
 using System.Text.RegularExpressions;
+using System.Security;
 
 namespace TheFatDuckRestaurant
 {
@@ -175,7 +176,10 @@ namespace TheFatDuckRestaurant
 
         public Tuple<string, string, string, string> registreer() //Returned een Tuple met naam,wachtwoord,adres en woonplaats voor registreerKlant en registreerMedewerker functies.
         {
-
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
             // Lambda om te checken of het een geldig wachtwoord is. Gebruikt RegEx
             //      1       2               3                   4                5      6
             // @"   ^  (?=.+?[A-Z])    (?=.+?[0-9])    (?=.+?[^a-zA-Z0-9])     .{8,}    $"
@@ -186,13 +190,12 @@ namespace TheFatDuckRestaurant
             // 5 is een check of de string minimaal 8 tot meer characters heeft
             // 6 is het einde van de string (input)
 
-            Func<string, bool> ValidatePassword = (input) =>
+            /*Func<string, bool> ValidatePassword = (input) =>
             {
                 Regex regex = new Regex(@"^(?=.+?[A-Z])(?=.+?[0-9])(?=.+?[^a-zA-Z0-9_@.-]).{8,}$");
                 Match match = regex.Match(input);
                 return match.Success;
-            };
-
+            };*/
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
             Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
@@ -235,11 +238,24 @@ namespace TheFatDuckRestaurant
                     else
                         uniekeNaam = true;
                 }
-                if (naamInput == "0")
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                SecureString pass1 = VarComponents.MaskStringInput();
+                string password = new System.Net.NetworkCredential(string.Empty, pass1).Password;
+                while (!VarComponents.IsPassword(password))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                    SecureString pass2 = VarComponents.MaskStringInput();
+                    password = new System.Net.NetworkCredential(string.Empty, pass2).Password;
+                }
+                /*if (naamInput == "0")
                 {
                     Tuple<string, string, string, string> Tuple = null; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
                     return Tuple;
-                }
+                }*/
             }
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
@@ -249,19 +265,27 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                password = Console.ReadLine();
-            }
+                Console.WriteLine("Voer uw adres in:");
+                string adres = Console.ReadLine();
+                while (!VarComponents.IsAdres(adres))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerd adres\x0A\x0A\x0AVoer uw adres in (straatnaam en huisnummer):");
+                    adres = Console.ReadLine();
+                }
 
-            Console.Clear();
-            Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer een adres in:");
-            string adres = Console.ReadLine(); //TODO: Check voor adres met requirements
-
-            Console.Clear();
-            Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer een woonplaats in:");
-            string woonplaats = Console.ReadLine(); //TODO: Check voor woonplaats met requirements
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw woonplaats in:");
+                string woonplaats = Console.ReadLine();
+                while (!VarComponents.IsWoonplaats(woonplaats))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerde woonplaats\x0A\x0A\x0Awoonplaats in:");
+                    woonplaats = Console.ReadLine();
+                }
 
             Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
             return returnTuple;
