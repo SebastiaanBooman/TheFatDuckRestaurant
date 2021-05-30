@@ -190,12 +190,12 @@ namespace TheFatDuckRestaurant
             // 5 is een check of de string minimaal 8 tot meer characters heeft
             // 6 is het einde van de string (input)
 
-            /*Func<string, bool> ValidatePassword = (input) =>
+            Func<string, bool> ValidatePassword = (input) =>
             {
                 Regex regex = new Regex(@"^(?=.+?[A-Z])(?=.+?[0-9])(?=.+?[^a-zA-Z0-9_@.-]).{8,}$");
                 Match match = regex.Match(input);
                 return match.Success;
-            };*/
+            };
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
             Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
@@ -287,8 +287,9 @@ namespace TheFatDuckRestaurant
                     woonplaats = Console.ReadLine();
                 }
 
-            Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
-            return returnTuple;
+                Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
+                return returnTuple;
+            }
         }
 
         public Gebruiker registreerKlant(Gebruiker gebruiker)
