@@ -90,30 +90,8 @@ namespace TheFatDuckRestaurant
                             (gebruiker as Medewerker).DailyRevenue(this.reserveerLijst.Reserveringen, Datum);
                         }
                         break;
-                    case '7': //TODO: Deze input moet in Clickstream.cs komen en niet hier
-                        char Input = '1';
-                        while (Input != '0')
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.ReserveringenArt());
-                            Console.WriteLine("1: Bekijk de clickstream per dag van de week\n2: Bekijk de clickstream per uur\n\n0: Ga terug naar het vorige scherm");
-                            Input = Console.ReadKey().KeyChar;
-                            switch (Input)
-                            {
-                                case '1':
-                                    clickstream.bekijkClicksD();
-                                    break;
-                                case '2':
-                                    clickstream.bekijkClicksT();
-                                    break;
-                                case '0':
-                                    break;
-                                default:
-                                    Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
-                                    Console.ReadKey();
-                                    break;
-                            }
-                        }
+                    case '7':
+                        clickstream.bekijkClicks();
                         //clickstream van klanten
                         break;
                     case '8':

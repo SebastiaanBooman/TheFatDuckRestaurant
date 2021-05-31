@@ -28,9 +28,10 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.ReserveringenArt());
-                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)");
+                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)\n\nEnter: Ga terug naar het vorige scherm");
                 string datum = Console.ReadLine();
                 Console.Clear();
+                if(datum == "") { return this; }
                 string datumLower = "";
                 foreach (char sym in datum)
                 {
@@ -96,7 +97,7 @@ namespace TheFatDuckRestaurant
                     }
                 }
                 Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
-                Console.WriteLine("Enter: Ga terug naar het startscherm");
+                Console.WriteLine("Enter: Ga terug naar het vorige scherm");
                 Console.ReadKey();
             }
         }
