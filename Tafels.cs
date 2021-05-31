@@ -211,7 +211,26 @@ namespace TheFatDuckRestaurant
 
         public List<Tafel> ontKoppelenDoorMedewerker(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
         {
-            return gereserveerdeTafels;
+            while (true)
+            {
+                Console.Clear();
+                //ASCII ART Ontkoppelen.
+                Console.WriteLine("1: Alles ontkoppelen");
+                Console.WriteLine("2: Ontkoppelen met tafel ID");
+                Console.WriteLine("0: Terug");
+                char userInput = Console.ReadKey().KeyChar;
+                switch (userInput)
+                {
+                    case '1':
+                        allesAutomatischOntkoppelen(aantalMensen, gereserveerdeTafels, tijdEnDatum);
+                        break;
+                    case '2':
+                        //Functie om los te ontkoppelen met tafel ID
+                        break;
+                    case '0':
+                        return gereserveerdeTafels;
+                }
+            }
         }
 
         public List<Tafel> allesAutomatischOntkoppelen(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
