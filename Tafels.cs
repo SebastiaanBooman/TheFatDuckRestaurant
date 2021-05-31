@@ -46,6 +46,8 @@ namespace TheFatDuckRestaurant
         public int BerekenTafelsDieNogGekoppeldMoetenWorden(int aantalMensen, List<Tafel> gereserveerdeTafels)
         {
             int totaleGereserveerdePlekken = 0;
+            if (gereserveerdeTafels == null)
+                gereserveerdeTafels = new List<Tafel>();
             foreach (Tafel tafel in gereserveerdeTafels)
             {
                 totaleGereserveerdePlekken += tafel.Plekken;
@@ -155,7 +157,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(ASCIIART.TafelsArt());
+                Console.WriteLine(ASCIIART.TafelsKoppelenArt());
                 if (BerekenTafelsDieNogGekoppeldMoetenWorden(aantalMensen, gereserveerdeTafels) <= 0) //0 megenomen omdat dat aangeeft dat er precies genoeg tafels zijn gekoppeld.
                 {
                     Console.WriteLine("Er zijn genoeg tafels gekoppeld aan deze reservering. Klik op een toets om terug te gaan");
@@ -214,7 +216,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
-                //ASCII ART Ontkoppelen.
+                Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
                 Console.WriteLine("1: Alles ontkoppelen");
                 Console.WriteLine("2: Ontkoppelen met tafel ID");
                 Console.WriteLine("0: Terug");
@@ -222,10 +224,10 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case '1':
-                        allesAutomatischOntkoppelen(aantalMensen, gereserveerdeTafels, tijdEnDatum);
+                        gereserveerdeTafels = allesAutomatischOntkoppelen(aantalMensen, gereserveerdeTafels, tijdEnDatum);
                         break;
                     case '2':
-                        //Functie om los te ontkoppelen met tafel ID
+                        gereserveerdeTafels = ontKoppelenMetID(aantalMensen, gereserveerdeTafels, tijdEnDatum);
                         break;
                     case '0':
                         return gereserveerdeTafels;
@@ -273,6 +275,41 @@ namespace TheFatDuckRestaurant
                     default:
                         wrongInput = true;
                         break;
+                }
+            }
+        }
+
+        public List<Tafel> ontKoppelenMetID(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
+                Console.WriteLine("Voer het ID van de tafel in die u wilt ontkoppelen\n\nKlik op 0 en klik enter om terug te gaan");
+                string userInput = Console.ReadLine();
+                if (userInput == "0")
+                    return gereserveerdeTafels;
+                bool tafelSuccesvolOntkoppeld = false;
+                foreach(Tafel tafel in gereserveerdeTafels)
+                {
+                    if(tafel.ID == userInput)
+                    {
+                        foreach(string datum in tafel.Gereserveerd)
+                        {
+                            if(datum == tijdEnDatum)
+                            {
+                                tafel.Gereserveerd.Remove(datum);
+                                tafelSuccesvolOntkoppeld = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!tafelSuccesvolOntkoppeld)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Tafel {userInput} is niet gevonden voor deze reservering.\n\nKlik op een toets om terug te gaan");
+                    Console.ReadKey();
                 }
             }
         }

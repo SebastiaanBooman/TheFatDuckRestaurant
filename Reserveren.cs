@@ -20,7 +20,8 @@ namespace TheFatDuckRestaurant
             if (Reserveringen.Length == 0)
             {
                 Console.Clear();
-                Console.WriteLine("Er zijn nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+                Console.WriteLine(ASCIIART.ReserveringenArt());
+                Console.WriteLine("Er zijn nog geen reserveringen gemaakt\x0a\x0a" + "Klik op een toets om terug te gaan");
                 Console.ReadKey();
                 return this;
             }
@@ -95,8 +96,9 @@ namespace TheFatDuckRestaurant
                         }
                     }
                 }
+                Console.WriteLine(ASCIIART.ReserveringenArt());
                 Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
-                Console.WriteLine("Enter: Ga terug naar het startscherm");
+                Console.WriteLine("Klik op een toets om terug te gaan");
                 Console.ReadKey();
             }
         }
