@@ -4,10 +4,11 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static TheFatDuckRestaurant.MainClass;
-using static TheFatDuckRestaurant.Reserveren;
+using static TheFatDuckRestaurant.ReserveerLijst;
 using static TheFatDuckRestaurant.ASCIIART;
 using static TheFatDuckRestaurant.Menu;
 using System.Text.RegularExpressions;
+using System.Security;
 
 namespace TheFatDuckRestaurant
 {
@@ -28,8 +29,7 @@ namespace TheFatDuckRestaurant
         public Gebruiker accountManager(Gebruiker gebruiker)
         {
             bool verkeerdeInput = false;
-            bool passed = false;
-            while (!passed)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.LoginArt());
@@ -40,10 +40,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("0: Terug\x0a");
 
                 if (verkeerdeInput)
-                {
                     Console.WriteLine("Verkeerde input, probeer 1,2,3");
-                    verkeerdeInput = false;
-                }
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -65,8 +62,8 @@ namespace TheFatDuckRestaurant
                             return gebruiker;
                         break;
                     case '4':
-                        gebruiker = registreer(gebruiker);
-                        if(gebruiker as Klant != null)
+                        gebruiker = registreerKlant(gebruiker);
+                        if (gebruiker as Klant != null)
                             return gebruiker;
                         break;
                     case '0':
@@ -76,32 +73,30 @@ namespace TheFatDuckRestaurant
                         break;
                 }
             }
-            return null;
         }
         public Gebruiker logIn(string gebruikerType)
         {
-            Func< Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>
-            {
-                string Input = Console.ReadLine();
-                return Tuple.Create(Input == gebruikerObject.Wachtwoord || Input == "0", Input);
-            };
-            bool passed = false;
-            while (!passed)
+            Func<Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>
+           {
+               string Input = Console.ReadLine();
+               return Tuple.Create(Input == gebruikerObject.Wachtwoord || Input == "0", Input);
+           };
+            while (true)
             {
                 //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
                 bool NaamBestaat = false;
                 Klant klantObject = null;
                 Medewerker medewerkerObject = null;
-                Eigenaar eigenaarObject = null; 
+                Eigenaar eigenaarObject = null;
 
                 Console.Clear();
                 Console.WriteLine(ASCIIART.LoginArt());
                 Console.WriteLine("Voer uw gebruikersnaam in\x0A\x0A" + "0: Terug");
                 string GegevenNaam = Console.ReadLine();
-                if(GegevenNaam == "0")
+                if (GegevenNaam == "0")
                     return new Gebruiker("", "", "", "");
-                
-                if(gebruikerType == "Klant")
+
+                if (gebruikerType == "Klant")
                 {
                     foreach (Klant klant in Klanten)
                     {
@@ -112,7 +107,7 @@ namespace TheFatDuckRestaurant
                         }
                     }
                 }
-                else if(gebruikerType == "Medewerker")
+                else if (gebruikerType == "Medewerker")
                 {
                     foreach (Medewerker medewerker in Medewerkers)
                     {
@@ -126,7 +121,7 @@ namespace TheFatDuckRestaurant
                 }
                 else
                 {
-                    if(GegevenNaam == Eigenaar.Naam)
+                    if (GegevenNaam == Eigenaar.Naam)
                     {
                         NaamBestaat = true;
                         eigenaarObject = Eigenaar;
@@ -138,42 +133,34 @@ namespace TheFatDuckRestaurant
                     Console.Clear();
                     Console.WriteLine(ASCIIART.LoginArt());
                     Console.WriteLine($"Gebruikersnaam: {GegevenNaam}\x0A\x0AVoer uw wachtwoord in:");
-                    if(gebruikerType == "Klant")
-                       Password = CheckWachtwoord(klantObject);
-                    else if(gebruikerType == "Medewerker")
-                    {
-                       Password = CheckWachtwoord(medewerkerObject);
-                    }
+                    if (gebruikerType == "Klant")
+                        Password = CheckWachtwoord(klantObject);
+                    else if (gebruikerType == "Medewerker")
+                        Password = CheckWachtwoord(medewerkerObject);
                     else
-                    {
                         Password = CheckWachtwoord(eigenaarObject);
-                    }
                     while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in:\x0A\x0A" + "0: Terug");
-                        if(klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
+                        if (klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
                             Password = CheckWachtwoord(klantObject);
                         else
-                        {
                             Password = CheckWachtwoord(medewerkerObject);
-                        }
                     }
                     if (Password.Item2 != "0") //sluit het inlogscherm af wanneer 'terug' was getypt
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("U bent ingelogd!\x0A\x0A" + "0: Naar het startscherm");
-                        Console.ReadLine();
-                        if(klantObject != null)
+                        Console.ReadKey();
+                        if (klantObject != null)
                             return klantObject;
-                        else if(medewerkerObject != null)
+                        else if (medewerkerObject != null)
                             return medewerkerObject;
                         else
-                        {
                             return eigenaarObject;
-                        }
                     }
                 }
                 else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer '0' is ingevoerd
@@ -182,17 +169,17 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine(ASCIIART.LoginArt());
                     Console.WriteLine("Verkeerde gebruikersnaam.\x0A\x0A" + "Enter: Probeer opnieuw in te loggen\x0A\x0A" + "0: Terug");
                     if (Console.ReadKey().KeyChar == '0')
-                    {
                         return new Gebruiker("", "", "", "");
-                    }
-                    }
                 }
-            return null;
+            }
         }
 
-        public Gebruiker registreer(Gebruiker gebruiker)
+        public Tuple<string, string, string, string> registreer() //Returned een Tuple met naam,wachtwoord,adres en woonplaats voor registreerKlant en registreerMedewerker functies.
         {
-
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
             // Lambda om te checken of het een geldig wachtwoord is. Gebruikt RegEx
             //      1       2               3                   4                5      6
             // @"   ^  (?=.+?[A-Z])    (?=.+?[0-9])    (?=.+?[^a-zA-Z0-9])     .{8,}    $"
@@ -209,87 +196,169 @@ namespace TheFatDuckRestaurant
                 Match match = regex.Match(input);
                 return match.Success;
             };
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
+            var naamInput = Console.ReadLine();
+            bool uniekeNaam = false;
+            while (!uniekeNaam)
+            {
+                bool uniekKlant = true;
+                bool uniekMedewerker = true;
+                bool uniekEigenaar = true; //3 booleans voor iedere array.
+
+                if (naamInput != "0")
+                {
+                    foreach (var klant in Klanten) //Checkt per klant in de Klanten array of de naam al bestaat
+                    {
+                        if (klant.Naam == naamInput)
+                        {
+                            uniekKlant = false;
+                            break;
+                        }
+                    }
+                    foreach (var medewerker in Medewerkers) //Checkt per medewerker in de Medewerkers array of de naam al bestaat
+                    {
+                        if (medewerker.Naam == naamInput)
+                        {
+                            uniekMedewerker = false;
+                            break;
+                        }
+                    }
+                    if (Eigenaar.Naam == naamInput)
+                        uniekEigenaar = false;
+
+                    if (uniekEigenaar == false || uniekKlant == false || uniekMedewerker == false)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.RegistrerenArt());
+                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere\n0: Terug");
+                        naamInput = Console.ReadLine();
+                    }
+                    else
+                        uniekeNaam = true;
+                }
+            }
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                SecureString pass1 = VarComponents.MaskStringInput();
+                string password = new System.Net.NetworkCredential(string.Empty, pass1).Password;
+                while (!VarComponents.IsPassword(password))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                    SecureString pass2 = VarComponents.MaskStringInput();
+                    password = new System.Net.NetworkCredential(string.Empty, pass2).Password;
+                }
+                /*if (naamInput == "0")
+                {
+                    Tuple<string, string, string, string> Tuple = null; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
+                    return Tuple;
+                }*/
+
+            /*Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+            string password = Console.ReadLine();*/
+            while (!ValidatePassword(password))
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw adres in:");
+                string adres = Console.ReadLine();
+                while (!VarComponents.IsAdres(adres))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerd adres\x0A\x0A\x0AVoer uw adres in (straatnaam en huisnummer):");
+                    adres = Console.ReadLine();
+                }
+
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Voer uw woonplaats in:");
+                string woonplaats = Console.ReadLine();
+                while (!VarComponents.IsWoonplaats(woonplaats))
+                {
+                    Console.Clear();
+                    Console.WriteLine(ASCIIART.RegistrerenArt());
+                    Console.WriteLine("Verkeerde woonplaats\x0A\x0A\x0Awoonplaats in:");
+                    woonplaats = Console.ReadLine();
+                }
+
+                Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
+                return returnTuple;
+            }
+            return null;
+        }
+
+        public Gebruiker registreerKlant(Gebruiker gebruiker)
+        {
+
+            Tuple<string, string, string, string> klantInformatie = registreer();
+
+            if(klantInformatie == null)
+                return gebruiker;
 
             var jsonOptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
+            Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
+
+            for (int i = 0; i < Klanten.Length; i++)
+            {
+                nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude klanten als Klant object in de nieuwe lijst
+            }
+            Klant nieuweKlant = new Klant(klantInformatie.Item1, klantInformatie.Item2, klantInformatie.Item3, klantInformatie.Item4); //nieuwe klant wordt aangemaakt
+            nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
+            Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
+            var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
+            File.WriteAllText("gebruikers.json", toSerializeKlant);
+
+
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
-            var naamInput = Console.ReadLine();
-            Console.Clear();
-
-            if (naamInput != "0")
-            {
-                foreach (var klant in Klanten)
-                {
-                    while (klant.Naam == naamInput)
-                    {
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.RegistrerenArt());
-                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere");
-                        naamInput = Console.ReadLine();
-                    }
-                }
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                string password = Console.ReadLine();
-                while (!ValidatePassword(password))
-                {
-                    Console.Clear();
-                    Console.WriteLine(ASCIIART.RegistrerenArt());
-                    Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                    password = Console.ReadLine();
-                }
-
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw adres in:");
-                string adres = Console.ReadLine(); //TODO: Check voor adres met requirements
-
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw woonplaats in:");
-                string woonplaats = Console.ReadLine(); //TODO: Check voor woonplaats met requirements
-
-
-                Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
-
-                for (int i = 0; i < Klanten.Length; i++)
-                {
-                    nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude gebruikers als Gebruiker object in de nieuwe lijst
-                }
-                Klant nieuweKlant = new Klant(naamInput, password, adres, woonplaats); //nieuwe klant word aangemaakt
-                nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
-                Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
-                var toSerializeKlant = JsonSerializer.Serialize(this, jsonOptions);
-                File.WriteAllText("gebruikers.json", toSerializeKlant);
-
-
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine($"Welkom nieuwe klant: {naamInput}!\nKlik op een toets om verder te gaan");
-                Console.ReadKey();
-                return nieuweKlant;
-            }
-
-            else
-            {
-                return gebruiker; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
-            }
+            Console.WriteLine($"Welkom nieuwe klant: {klantInformatie.Item1}!\nKlik op een toets om verder te gaan");
+            Console.ReadKey();
+            return nieuweKlant;
         }
-        public Medewerker registreerMedewerker()
+        public void registreerMedewerker() //void omdat alleen een eigenaar een medewerker account aan kan maken, de medewerker wordt dus alleen maar toegevoegd aan de lijst van medewerkers.
         {
-            return null;
+            Tuple<string, string, string, string> medewerkerInformatie = registreer();
+
+            if (medewerkerInformatie == null)
+                return;
+
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            Medewerker[] nieuweMedewerkerLijst = new Medewerker[Medewerkers.Length + 1];
+
+            for(int i = 0; i < Medewerkers.Length; i++)
+            {
+                nieuweMedewerkerLijst[i] = Medewerkers[i]; //Voert alle oude medewerkers als Medewerker object in de nieuwe lijst
+            }
+            Medewerker nieuweMedewerker = new Medewerker(medewerkerInformatie.Item1, medewerkerInformatie.Item2, medewerkerInformatie.Item3, medewerkerInformatie.Item4); //nieuwe medewerker wordt aangemaakt.
+            nieuweMedewerkerLijst[nieuweMedewerkerLijst.Length - 1] = nieuweMedewerker; //voegt nieuwe medewerker toe aan lijst
+            Medewerkers = nieuweMedewerkerLijst;
+            var toSerializeMedewerker = JsonSerializer.Serialize(this, jsonOptions);
+            File.WriteAllText("gebruikers.json", toSerializeMedewerker);
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine($"Medewerker {medewerkerInformatie.Item1} toegevoegd aan de lijst van medewerkers!\nKlik op een toets om terug te gaan");
+            Console.ReadKey();
+            return;
         }
 
         public Gebruiker logOut()
         {
-            bool passed = false;
             bool wrongInput = false;
-            while (!passed)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.LogoutArt());
@@ -301,7 +370,6 @@ namespace TheFatDuckRestaurant
                     return new Gebruiker("", "", "","");
                 wrongInput = true;
             }
-            return null;
         }
     }
 
@@ -331,115 +399,12 @@ namespace TheFatDuckRestaurant
             //menu.PasAanMenu -> Medewerker
             return menu;
         }
-        public virtual ReserveerLijst reserveer(TheFatDuckRestaurant.Menu menu, ReserveerLijst reserveerLijst)
+        public virtual TheFatDuckRestaurant.ReserveerLijst reserveer(TheFatDuckRestaurant.Menu menu, TheFatDuckRestaurant.ReserveerLijst reserveerLijst)
         {
         return reserveerLijst;
         }
 
-    public virtual void bekijkReserveringen(ReserveerLijst Reserveerlijst)
-    {
-        if (Reserveerlijst.Reserveringen == null)
-        {
-            Reserveerlijst.Reserveringen = new Reservering[0];
-        }
-        if (Reserveerlijst.Reserveringen.Length == 0)
-        {
-            Console.Clear();
-            Console.WriteLine("Er zijn nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
-            Console.ReadKey();
-            return;
-        }
-        while (true)
-        {
-            Console.Clear();
-            Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)");
-            string datum = Console.ReadLine();
-            Console.Clear();
-            string datumLower = "";
-            foreach (char sym in datum)
-            {
-                if (Char.IsLetter(sym))
-                {
-                    Char.ToLower(sym);
-                }
-                datumLower += sym;
-            }
-            int Aantal = 0;
-            foreach (Reservering reservering in Reserveerlijst.Reserveringen)
-            {
-                if (reservering.Datum == datumLower)
-                {
-                    Aantal++;
-                }
-            }
-
-            if(Aantal > 0)
-            {
-                int huidigePaginaNR = 0;
-                //double TotalRevenue = 0.0;
-                Reservering[] RelevanteReserveringen = new Reservering[Aantal];
-                int j = 0;
-                foreach (Reservering reservering in Reserveerlijst.Reserveringen)
-                {
-                    if (reservering.Datum == datumLower)
-                    {
-                        RelevanteReserveringen[j++] = reservering;
-                        /*foreach(Gerecht gerecht in reservering)
-                         * {
-                         *  TotalRevenue += gerecht.Prijs;
-                         * }
-                         */
-                    }
-                }
-                while (true)
-                {
-                    int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
-                    Console.Clear();
-                    Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
-                    for(int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
-                    { 
-                        Console.WriteLine($"{i+1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
-                    }
-                    Console.WriteLine();
-                    if (huidigePaginaNR + 1 < hoeveelheidPaginas)
-                        Console.WriteLine("8: Volgende pagina");
-                    if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                        Console.WriteLine("9: Vorige pagina");
-                    Console.WriteLine("0: Ga terug naar het startscherm");
-                    //Console.WriteLine(TotalRevenue + " euro");
-                    int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
-                    Console.Clear();
-                    if (Index == 0)
-                    {
-                        return;
-                    }
-                    if (Index > 0 && Index < 8)
-                    {
-                        RelevanteReserveringen[Index - 1].Info();
-                    }
-                    else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                    {
-                        huidigePaginaNR++;
-                    }
-                    else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                    {
-                        huidigePaginaNR--;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Dit is geen geldige input");
-                        Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
-                        Console.ReadKey();
-                    }
-                }
-            }
-            Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
-            Console.WriteLine("Enter: Ga terug naar het startscherm");
-            Console.ReadKey();
-        }
-    }
-
-        public virtual string bekijkDailyRevenue()
+    public virtual string bekijkDailyRevenue()
         {
         return null;
         }
@@ -456,8 +421,7 @@ namespace TheFatDuckRestaurant
         public virtual char startScherm()
         {
             bool verkeerdeInput = false;
-            bool passed = false;
-            while (!passed)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
@@ -467,10 +431,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("3: Bezichtig het menu\x0a");
 
                 if (verkeerdeInput)
-                {
                     Console.WriteLine("Verkeerde input, probeer 1,2,3");
-                    verkeerdeInput = false;
-                }
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -487,7 +448,6 @@ namespace TheFatDuckRestaurant
                         break;
                 }
             }
-            return '0'; 
         }
     }
 
@@ -504,96 +464,10 @@ namespace TheFatDuckRestaurant
         //menu.PasAanMenu -> Medewerker
         return menu;
     }
-
-    public override void bekijkReserveringen(ReserveerLijst Reserveerlijst)
-    {
-        if (Reserveerlijst.Reserveringen == null)
-        {
-            Reserveerlijst.Reserveringen = new Reservering[0];
-        }
-        if (Reserveerlijst.Reserveringen.Length == 0)
-        {
-            Console.Clear();
-            Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
-            Console.ReadKey();
-            return;
-        }
-        int huidigePaginaNR = 0;
-        while (true)
-        {
-            int Aantal = 0;
-            foreach (Reservering reservering in Reserveerlijst.Reserveringen)
-            {
-                if (reservering.Bezoeker == this.Naam)
-                {
-                    Aantal++;
-                }
-            }
-            if (Aantal == 0)
-            {
-                Console.Clear();
-                Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
-                Console.ReadKey();
-                return;
-            }
-            Reservering[] KlantReserveringen = new Reservering[Aantal];
-            int j = 0;
-            for (int i = 0; i < Reserveerlijst.Reserveringen.Length; i++)
-            {
-                if (Reserveerlijst.Reserveringen[i].Bezoeker == this.Naam)
-                {
-                    KlantReserveringen[j++] = Reserveerlijst.Reserveringen[i];
-                }
-            }
-            int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
-            Console.Clear();
-            Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-            Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
-            for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < KlantReserveringen.Length; i++)
-            {
-                Console.WriteLine($"{i+1}: {KlantReserveringen[i + huidigePaginaNR * 7].Datum} om {KlantReserveringen[i + huidigePaginaNR * 7].TijdString()} ({KlantReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
-            }
-            Console.WriteLine();
-            if (huidigePaginaNR + 1 < hoeveelheidPaginas)
-                Console.WriteLine("8: Volgende pagina");
-            if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                Console.WriteLine("9: Vorige pagina");
-            Console.WriteLine("0: Ga terug naar het startscherm");
-            int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
-            Console.Clear();
-            if (Index == 0)
-            {
-                return;
-            }
-            if (Index < 7 && Index > 0)
-            {
-                try
-                {
-                    KlantReserveringen[Index - 1 + huidigePaginaNR * 7].Info();
-                }
-                catch { }
-                //Reserveerlijst.changeReservering(KlantReserveringen[Index - 1]);
-            }
-            else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-            {
-                huidigePaginaNR++;
-            }
-            else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-            {
-                huidigePaginaNR--;
-            }
-            else
-            {
-                Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
-                Console.ReadKey();
-            }
-        }
-    }
     public override char startScherm()
         {
             bool verkeerdeInput = false;
-            bool passed = false;
-            while (!passed)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
@@ -606,10 +480,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("6: Bezichtig uw reserveringen");
 
                 if (verkeerdeInput)
-                {
                     Console.WriteLine("Verkeerde input, probeer 1,2,3,4 of 5");
-                    verkeerdeInput = false;
-                }
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -632,14 +503,12 @@ namespace TheFatDuckRestaurant
                         break;
                 }
             }
-            return '0';
         }
 
     public override void bekijkAccount()
     {
         bool verkeerdeInput = false;
-        bool passed = false;
-        while (!passed)
+        while (true)
         {
             Console.Clear();
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.AccountArt());
@@ -648,10 +517,7 @@ namespace TheFatDuckRestaurant
             Console.WriteLine($"1: Account Reserveringen\x0a");
             Console.WriteLine("0: Return");
             if (verkeerdeInput)
-            {
                 Console.WriteLine("Verkeerde Input! Probeer 1 of 0");
-                verkeerdeInput = false;
-            }
 
             char userInput = Console.ReadKey().KeyChar;
             switch (userInput)
@@ -666,19 +532,6 @@ namespace TheFatDuckRestaurant
             }
         }
     }
-
-    /*public override void bekijkReserveringen()
-    {
-        Console.Clear();
-        Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-        if (this.AantalReserveringen == 0)
-        {
-            Console.WriteLine("U heeft momenteel geen reserveringen! Klik op een toets om terug te gaan");
-            Console.ReadLine();
-            return;
-        }
-        return; //functionaliteit voor als er wel reserveringen zijn gemaakt.
-    }*/
 }
 
 
@@ -700,8 +553,7 @@ namespace TheFatDuckRestaurant
         public override char startScherm()
         {
             bool verkeerdeInput = false;
-            bool passed = false;
-            while (!passed)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
@@ -715,10 +567,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("0: Applicatie afsluiten\x0a");
 
                 if (verkeerdeInput)
-                {
                     Console.WriteLine("Verkeerde input, probeer 1,2,3,4,5,6 of 0");
-                    verkeerdeInput = false;
-                }
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -731,21 +580,48 @@ namespace TheFatDuckRestaurant
                     case '3':
                         return '4';
                     case '4':
-                        return '9';
+                        return 'C';
                     case '5':
                         return '7';
                     case '6':
                         return '6';
                     case '0':
-                        return '0';
+                        return '8';
                     default:
                         verkeerdeInput = true;
                         break;
                 }
             }
-            return '0';
-        }
     }
+    /*public void DailyRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst, string Datum)
+    {
+        string Datum = null;
+        TheFatDuckRestaurant.Reservering X = new TheFatDuckRestaurant.Reservering();
+        while (Datum == null)
+        {
+            Console.Clear();
+            Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)");
+            Datum = X.checkDatum(Console.ReadLine(), false);
+        }
+        Console.Clear();
+        double Revenue = 0;
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
+        {
+            if (Datum == reservering.Datum)
+            {
+                for (int i = 0; i < reservering.Bestelling.Count; i++)
+                {
+                    Revenue += reservering.Bestelling[i].Prijs * reservering.Bestelling[i].Aantal;
+                }
+            }
+        }
+        string revenue = "" + Revenue;
+        revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
+        Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
+        Console.ReadKey();
+    }*/
+}
 
     public class Eigenaar : Medewerker
     {
@@ -757,8 +633,7 @@ namespace TheFatDuckRestaurant
         public override char startScherm()
         {
             bool verkeerdeInput = false;
-            bool passed = false;
-            while (!passed)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
@@ -797,6 +672,5 @@ namespace TheFatDuckRestaurant
                         break;
                 }
             }
-            return '0';
         }
     }

@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ClickStream.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="gebruikers.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -27,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="bin\Debug\netcoreapp3.1\" />
+    <None Include="bin\Debug\netcoreapp3.1\ClickStream.json" />
+    <None Include="bin\Debug\netcoreapp3.1\DailyRevenues.json" />
   </ItemGroup>
 
 </Project>
