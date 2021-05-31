@@ -15,7 +15,7 @@ namespace TheFatDuckRestaurant
         public Gerechten[] Hoofdgerechten { get; set; }
         public Gerechten[] Nagerechten { get; set; }
 
-        public void kiesMenuOpties(string typeGebruiker)
+        public void kiesMenuOpties(string typeGebruiker) //Print de lijst met typen Gerechten
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.MenuArt());
@@ -29,7 +29,7 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("0: Terug");
         }
 
-        public Bestelling laadSpecifiekMenu(Gerechten[] typeGerecht, string typeGebruiker)
+        public Bestelling laadSpecifiekMenu(Gerechten[] typeGerecht, string typeGebruiker) //Laad de gerechten van het type menu (Voorgerechten, Hoofdgerechten, Nagerechten etc).
         {
             int huidigePaginaNR = 0; //Bij de eerste keer laden van het menu zal de eerste 7 gerechten worden getoont.
             while (true)
@@ -62,14 +62,14 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine("9: Vorige pagina");
 
 
-                if (typeGebruiker == "Medewerker")
+                if (typeGebruiker == "Medewerker") //Als de gebruiker een medewerker is, dan moet er een extra print komen met de optie om het menu aan te passen
                     Console.WriteLine("A: Menu aanpassen");
                 Console.WriteLine("0: Terug");
 
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
 
-                if (typeGebruiker == "Medewerker" && (toetsUserChar == 'A' || toetsUserChar == 'a'))
+                if (typeGebruiker == "Medewerker" && (toetsUserChar == 'A' || toetsUserChar == 'a')) //Indien de gebruiker die het menu opent een Medewerker is, moet hij het menu kunnen aanpassen
                     typeGerecht = MenuAanpassenScherm(typeGerecht);
 
                 else if (huidigePaginaNR + 1 < hoeveelheidPaginas && toetsUserChar == '8')
@@ -80,14 +80,14 @@ namespace TheFatDuckRestaurant
 
                 else if (toetsUserChar == '0')
                     return null;
-                else if (typeGebruiker == "Klant")
+                else if (typeGebruiker == "Klant") //Indien er als klant is ingelogd, moet er bij het klikken op een gerecht de optie worden geprint om het item toe te kunnen voegen aan een reservering
                     return ShowItemReserveringHandler(typeGerecht, toetsUserChar, huidigePaginaNR);
                 else
                     ShowItemHandler(typeGerecht, toetsUserChar, huidigePaginaNR);
             }
         }
 
-        public Bestelling BekijkSpecifiekMenu(string typeGebruiker)
+        public Bestelling BekijkSpecifiekMenu(string typeGebruiker) // Called laadSpecifiekMenu, met de type gebruiker die het menu wil bekijken.
         {
             bool verkeerdeInput = false;
 
@@ -131,7 +131,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void BekijkMenuMedewerker()
+        public void BekijkMenuMedewerker() //Opent het menu met de opties voor een medewerker
         {
             while (true)
             {
@@ -141,7 +141,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void BekijkMenuGebruiker()
+        public void BekijkMenuGebruiker() //Opent het menu met de opties voor een Gebruiker (niet ingelogd) of klant die niet wil reserveren.
         {
             while (true)
             {
@@ -152,12 +152,12 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public List<Bestelling> BekijkMenuKlant(List<Bestelling> bestelling = null)
+        public List<Bestelling> BekijkMenuKlant(List<Bestelling> bestelling = null) //Opent het menu met de opties voor een klant die een item wil toevoegen aan hun reservering
         {
             while (true)
             {
                 Console.Clear();
-                var bekijkMenu = BekijkSpecifiekMenu("Klant");
+                var bekijkMenu = BekijkSpecifiekMenu("Klant"); //Opent het menu en returned een lijst met Bestellingen die zijn gemaakt bij het openen van het menu.
                 if (bekijkMenu != null)
                 {
                     if (bestelling == null)
@@ -190,7 +190,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void ShowItemHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR)
+        public void ShowItemHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
         {
             try
             {
@@ -201,7 +201,7 @@ namespace TheFatDuckRestaurant
             catch{ return; }
         }
 
-        public Bestelling ShowItemReserveringHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR)
+        public Bestelling ShowItemReserveringHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over specifiek gerecht en geeft optie om het item toe te voegen aan je reservering
         {
             try
             {  
@@ -214,7 +214,7 @@ namespace TheFatDuckRestaurant
                     ConsoleKeyInfo toetsUsr = Console.ReadKey();
                     char toetsUsrChar = toetsUsr.KeyChar;
 
-                    if (toetsUsrChar == 'R' || toetsUsrChar == 'r')
+                    if (toetsUsrChar == 'R' || toetsUsrChar == 'r') //
                         while(specifiekPassed != true)
                         {
                             Console.Clear();
