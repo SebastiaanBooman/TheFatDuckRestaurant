@@ -8,7 +8,40 @@ namespace TheFatDuckRestaurant
     {
         public DailyRevenue[] Revenues { get; set; }
         public DailyRevenues() { }
-        public bool bekijkRevenue(string Datum)
+        public void bekijkRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst)
+        {
+            string Datum = "";
+            while (Datum != "0")
+            {
+                Console.Clear();
+                Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)\n\n0: Ga terug naar het startscherm");
+                Datum = Console.ReadLine();
+                Console.Clear();
+                if (Datum != "0")
+                {
+                    if (!oudeRevenue(Datum))
+                    {
+                        double Revenue = 0;
+                        Console.OutputEncoding = System.Text.Encoding.UTF8;
+                        foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
+                        {
+                            if (Datum == reservering.Datum)
+                            {
+                                for (int i = 0; i < reservering.Bestelling.Count; i++)
+                                {
+                                    Revenue += reservering.Bestelling[i].Prijs * reservering.Bestelling[i].Aantal;
+                                }
+                            }
+                        }
+                        string revenue = "" + Revenue;
+                        revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
+                        Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
+                        Console.ReadKey();
+                    }
+                }
+            }
+        }
+        private bool oudeRevenue(string Datum)
         {
             if (Revenues != null)
             {

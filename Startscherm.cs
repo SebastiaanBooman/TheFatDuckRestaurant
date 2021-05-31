@@ -74,21 +74,8 @@ namespace TheFatDuckRestaurant
                             //medewerker tafels koppelen aan reserveringen.
                         }
                         break;
-                    case '6': //TODO: Deze input moet in DailyRevenues.cs komen en niet hier
-                        string Datum = null;
-                        Reservering X = new Reservering();
-                        while (Datum == null)
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.OpbrengstenArt());
-                            Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)");
-                            Datum = X.checkDatum(Console.ReadLine(), false);
-                        }
-                        Console.Clear();
-                        if (!dailyRevenues.bekijkRevenue(Datum))
-                        {
-                            (gebruiker as Medewerker).DailyRevenue(this.reserveerLijst.Reserveringen, Datum);
-                        }
+                    case '6':
+                        dailyRevenues.bekijkRevenue(reserveerLijst.Reserveringen);
                         break;
                     case '7':
                         clickstream.bekijkClicks();
