@@ -154,7 +154,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("U bent ingelogd!\x0A\x0A" + "0: Naar het startscherm");
-                        Console.ReadLine();
+                        Console.ReadKey();
                         if (klantObject != null)
                             return klantObject;
                         else if (medewerkerObject != null)
