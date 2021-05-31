@@ -12,13 +12,16 @@ namespace TheFatDuckRestaurant
         {
             if (Revenues != null)
             {
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
                 foreach (DailyRevenue dailyrevenue in Revenues)
                 {
                     if (dailyrevenue.Datum == Datum)
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.OpbrengstenArt());
-                        Console.WriteLine($"De opbrengst van {Datum} is {dailyrevenue.Revenue} euro\n\nEnter: Ga terug naar het vorige scherm");
+                        string revenue = "" + dailyrevenue.Revenue;
+                        revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length -2] == ',' ? "0" : "");
+                        Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
                         Console.ReadKey();
                         return true;
                     }

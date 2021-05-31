@@ -605,6 +605,7 @@ namespace TheFatDuckRestaurant
         }
         Console.Clear();*/
         double Revenue = 0;
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
         foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
         {
             if (Datum == reservering.Datum)
@@ -615,7 +616,9 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        Console.WriteLine($"De totale opbrengst van {Datum} is {Revenue} euro\n\nEnter: Ga terug naar het startscherm");
+        string revenue = "" + Revenue;
+        revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
+        Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
         Console.ReadKey();
     }
 }
