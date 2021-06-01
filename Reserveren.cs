@@ -32,22 +32,16 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine(ASCIIART.ReserveringenArt());
                 Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)\n\nEnter: Ga terug naar het vorige scherm");
                 string datum = Console.ReadLine();
+                datum.ToLower();
                 Console.Clear();
-                if(datum == "") { return this; }
-                string datumLower = "";
-                foreach (char sym in datum)
-                {
-                    if (Char.IsLetter(sym))
-                        Char.ToLower(sym);
-                    datumLower += sym;
-                }
+                if(datum == "") 
+                    return this;
                 int Aantal = 0;
                 foreach (Reservering reservering in Reserveringen)
                 {
-                    if (reservering.Datum == datumLower)
+                    if (reservering.Datum == datum)
                         Aantal++;
                 }
-
                 if (Aantal > 0)
                 {
                     int huidigePaginaNR = 0;
@@ -55,7 +49,7 @@ namespace TheFatDuckRestaurant
                     int j = 0;
                     foreach (Reservering reservering in Reserveringen)
                     {
-                        if (reservering.Datum == datumLower)
+                        if (reservering.Datum == datum)
                             RelevanteReserveringen[j++] = reservering;
                     }
                     while (true)
@@ -63,7 +57,7 @@ namespace TheFatDuckRestaurant
                         int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
                         Console.Clear();
                         Console.WriteLine(ASCIIART.ReserveringenArt());
-                        Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+                        Console.WriteLine($"{datum}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                         for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
                         {
                             Console.WriteLine($"{i + 1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
@@ -84,35 +78,11 @@ namespace TheFatDuckRestaurant
                             int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
                             if (Index == 0)
                                 return this;
-                            if (Index > 0 && Index < 8) //TO DO: MEERDERE FUNCTIES VAN MAKEN!!!
+                            if (Index > 0 && Index < 8)
                             {
                                 try
                                 {
-                                    bool passedSpecifiek = false;
-                                    bool foutieveInput = false;
-                                    while (!passedSpecifiek)
-                                    {
-                                        Console.Clear();
-                                        RelevanteReserveringen[Index - 1].Info();
-                                        bool heeftTafelsNodig = RelevanteReserveringen[Index - 1].HeeftTafelsNodig();
-                                        bool heeftTafels = RelevanteReserveringen[Index - 1].HeeftTafels();
-                                        if (heeftTafelsNodig)
-                                            Console.WriteLine("\nA: Tafels koppelen");
-                                        if (heeftTafels)
-                                            Console.WriteLine("\nB: Tafels ontkoppelen");
-                                        Console.WriteLine("0: Terug");
-                                        if (foutieveInput)
-                                            Console.WriteLine("Verkeerde Input!");
-                                        char userInput = Console.ReadKey().KeyChar;
-                                        if (userInput == '0')
-                                            passedSpecifiek = true;
-                                        else if (userInput == 'A' && heeftTafelsNodig)
-                                            RelevanteReserveringen[Index - 1].AddTafels(tafels);
-                                        else if (userInput == 'B' && heeftTafels)
-                                            RelevanteReserveringen[Index - 1].RemoveTafels(tafels);
-                                        else
-                                            foutieveInput = true;
-                                    }
+                                    BekijkSpecifiekeReserveringMedewerker(RelevanteReserveringen[Index - 1], tafels);
                                 }
                                 catch (IndexOutOfRangeException)
                                 {
@@ -142,6 +112,36 @@ namespace TheFatDuckRestaurant
                 Console.ReadKey();
             }
         }
+
+        public void BekijkSpecifiekeReserveringMedewerker(Reservering reservering, TafelArray tafels) //Laat een specifieke reservering zien, met de opties om tafels toe te voegen of te verwijderen, als dit mogelijk is.
+        {
+            bool wrongInput = false;
+            while (true)
+            {
+                Console.Clear();
+                reservering.Info();
+                bool heeftTafelsNodig = reservering.HeeftTafelsNodig();
+                bool heeftTafels = reservering.HeeftTafels();
+                if (heeftTafelsNodig)
+                    Console.WriteLine("\nA: Tafels koppelen");
+                if (heeftTafels)
+                    Console.WriteLine("\nB: Tafels ontkoppelen");
+                Console.WriteLine("0: Terug");
+                if (wrongInput)
+                    Console.WriteLine("Verkeerde Input!");
+                char userInput = Console.ReadKey().KeyChar;
+                if (userInput == '0')
+                    return;
+                else if (userInput == 'A' && heeftTafelsNodig)
+                    reservering.AddTafels(tafels);
+                else if (userInput == 'B' && heeftTafels)
+                    reservering.RemoveTafels(tafels);
+                else
+                    wrongInput = true;
+            }
+        }
+
+
         public void BekijkReserveringenKlant(string klantNaam, TafelArray tafels)
         {
             if (Reserveringen == null)
