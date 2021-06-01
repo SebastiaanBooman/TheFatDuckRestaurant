@@ -25,6 +25,7 @@ namespace TheFatDuckRestaurant
                 Console.ReadKey();
                 return this;
             }
+            bool wrongInput = false;
             while (true)
             {
                 Console.Clear();
@@ -73,34 +74,65 @@ namespace TheFatDuckRestaurant
                         if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
                             Console.WriteLine("9: Vorige pagina");
                         Console.WriteLine("0: Ga terug naar het startscherm");
-                        int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
-                        Console.Clear();
-                        if (Index == 0)
-                            return this;
-                        if (Index > 0 && Index < 8) //TO DO: Als er nog tafels gekoppeld moeten worden (Personen - tafelhoeveelheid is groter dan 0) toon optie voor tafels koppelen) Als er meer dan 1 tafel al is gekoppeld moet er een optie zijn om tafels te ontkoppelen
+                        if (wrongInput)
                         {
-                            RelevanteReserveringen[Index - 1].Info();
-                            bool heeftTafelsNodig = RelevanteReserveringen[Index - 1].HeeftTafelsNodig();
-                            bool heeftTafels = RelevanteReserveringen[Index - 1].HeeftTafels();
-                            if (heeftTafelsNodig)
-                                Console.WriteLine("\nA: Tafels koppelen");
-                            if (heeftTafels)
-                                Console.WriteLine("\nB: Tafels ontkoppelen");
-                            char userInput = Console.ReadKey().KeyChar;
-                            if (userInput == 'A' && heeftTafelsNodig)
-                                RelevanteReserveringen[Index - 1].AddTafels(tafels);
-                            else if (userInput == 'B' && heeftTafels)
-                                RelevanteReserveringen[Index - 1].RemoveTafels(tafels);
+                            Console.WriteLine("Verkeerde input!");
+                            wrongInput = false;
                         }
-                        else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                            huidigePaginaNR++;
-                        else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                            huidigePaginaNR--;
-                        else
+                        try
                         {
-                            Console.WriteLine("Dit is geen geldige input");
-                            Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
-                            Console.ReadKey();
+                            int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                            if (Index == 0)
+                                return this;
+                            if (Index > 0 && Index < 8) //TO DO: MEERDERE FUNCTIES VAN MAKEN!!!
+                            {
+                                try
+                                {
+                                    bool passedSpecifiek = false;
+                                    bool foutieveInput = false;
+                                    while (!passedSpecifiek)
+                                    {
+                                        Console.Clear();
+                                        RelevanteReserveringen[Index - 1].Info();
+                                        bool heeftTafelsNodig = RelevanteReserveringen[Index - 1].HeeftTafelsNodig();
+                                        bool heeftTafels = RelevanteReserveringen[Index - 1].HeeftTafels();
+                                        if (heeftTafelsNodig)
+                                            Console.WriteLine("\nA: Tafels koppelen");
+                                        if (heeftTafels)
+                                            Console.WriteLine("\nB: Tafels ontkoppelen");
+                                        Console.WriteLine("0: Terug");
+                                        if (foutieveInput)
+                                            Console.WriteLine("Verkeerde Input!");
+                                        char userInput = Console.ReadKey().KeyChar;
+                                        if (userInput == '0')
+                                            passedSpecifiek = true;
+                                        else if (userInput == 'A' && heeftTafelsNodig)
+                                            RelevanteReserveringen[Index - 1].AddTafels(tafels);
+                                        else if (userInput == 'B' && heeftTafels)
+                                            RelevanteReserveringen[Index - 1].RemoveTafels(tafels);
+                                        else
+                                            foutieveInput = true;
+                                    }
+                                }
+                                catch (IndexOutOfRangeException)
+                                {
+                                    wrongInput = true;
+                                }
+                            }
+                            else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+                                huidigePaginaNR++;
+                            else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                                huidigePaginaNR--;
+                            else
+                            {
+                                Console.WriteLine("Dit is geen geldige input");
+                                Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
+                                Console.ReadKey();
+                            }
+                        }
+                        catch (FormatException)
+                        {
+                            wrongInput = true;
                         }
                     }
                 }
