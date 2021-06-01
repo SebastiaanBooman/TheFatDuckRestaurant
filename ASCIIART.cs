@@ -159,5 +159,34 @@ namespace TheFatDuckRestaurant
             string ASCIILogoAll = ASCIIOpbrengstenL1 + ASCIIDuckL1 + ASCIIOpbrengstenL2 + ASCIIDuckL2 + ASCIIOpbrengstenL3 + ASCIIDuckL3 + ASCIIOpbrengstenL4 + ASCIIDuckL4 + ASCIIOpbrengstenL5 + ASCIIDuckL5 + ASCIIOpbrengstenL6 + ASCIIDuckL6 + ASCIIOpbrengstenL7 + ASCIIOpbrengstenL8;
             return ASCIILogoAll;
         }
+        public static string TafelsKoppelenArt()
+        {
+            string ASCIIKoppelenL1 = "  _______     __     _       _  __                      _            ";
+            string ASCIIKoppelenL2 = " |__   __|   / _|   | |     | |/ /                     | |           ";
+            string ASCIIKoppelenL3 = "    | | __ _| |_ ___| |___  | ' / ___  _ __  _ __   ___| | ___ _ __  ";
+            string ASCIIKoppelenL4 = "    | |/ _` |  _/ _ \\ / __| |  < / _ \\| '_ \\| '_ \\ / _ \\ |/ _ \\ '_ \\ ";
+            string ASCIIKoppelenL5 = "    | | (_| | ||  __/ \\__ \\ | . \\ (_) | |_) | |_) |  __/ |  __/ | | |";
+            string ASCIIKoppelenL6 = "    |_|\\__,_|_| \\___|_|___/ |_|\\_\\___/| .__/| .__/ \\___|_|\\___|_| |_|";
+            string ASCIIKoppelenL7 = "                                      | |   | |                      \n";
+            string ASCIIKoppelenL8 = "                                      |_|   |_|                      \n";
+
+            string ASCIILogoAll = ASCIIKoppelenL1 + ASCIIDuckL1 + ASCIIKoppelenL2 + ASCIIDuckL2 + ASCIIKoppelenL3 + ASCIIDuckL3 + ASCIIKoppelenL4 + ASCIIDuckL4 + ASCIIKoppelenL5 + ASCIIDuckL5 + ASCIIKoppelenL6 + ASCIIDuckL6 + ASCIIKoppelenL7 + ASCIIKoppelenL8;
+            return ASCIILogoAll;
+        }
+        public static string TafelsOntkoppelenArt()
+        {
+            string ASCIIKoppelenL1 = "  _______     __     _        ____        _   _                          _            ";
+            string ASCIIKoppelenL2 = " |__   __|   / _|   | |      / __ \\      | | | |                        | |           ";
+            string ASCIIKoppelenL3 = "    | | __ _| |_ ___| |___  | |  | |_ __ | |_| | _____  _ __  _ __   ___| | ___ _ __  ";
+            string ASCIIKoppelenL4 = "    | |/ _` |  _/ _ \\ / __| | |  | | '_ \\| __| |/ / _ \\| '_ \\| '_ \\ / _ \\ |/ _ \\ '_ \\ ";
+            string ASCIIKoppelenL5 = "    | | (_| | ||  __/ \\__ \\ | |__| | | | | |_|   < (_) | |_) | |_) |  __/ |  __/ | | |";
+            string ASCIIKoppelenL6 = "    |_|\\__,_|_| \\___|_|___/  \\____/|_| |_|\\__|_|\\_\\___/| .__/| .__/ \\___|_|\\___|_| |_|";
+            string ASCIIKoppelenL7 = "                                                       | |   | |                      \n";
+            string ASCIIKoppelenL8 = "                                                       |_|   |_|                      \n";
+
+            string ASCIILogoAll = ASCIIKoppelenL1 + ASCIIDuckL1 + ASCIIKoppelenL2 + ASCIIDuckL2 + ASCIIKoppelenL3 + ASCIIDuckL3 + ASCIIKoppelenL4 + ASCIIDuckL4 + ASCIIKoppelenL5 + ASCIIDuckL5 + ASCIIKoppelenL6 + ASCIIDuckL6 + ASCIIKoppelenL7 + ASCIIKoppelenL8;
+            return ASCIILogoAll;
+
+        }
     }
 }
