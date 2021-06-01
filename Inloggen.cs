@@ -78,7 +78,8 @@ namespace TheFatDuckRestaurant
         {
             Func<Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>
            {
-               string Input = Console.ReadLine();
+               SecureString pass = VarComponents.MaskStringInput();
+               string Input = new System.Net.NetworkCredential(string.Empty, pass).Password;
                return Tuple.Create(Input == gebruikerObject.Wachtwoord || Input == "0", Input);
            };
             while (true)
