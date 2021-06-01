@@ -25,91 +25,94 @@ namespace TheFatDuckRestaurant
                 Console.ReadKey();
                 return this;
             }
-            bool wrongInput = false;
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.ReserveringenArt());
-                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)\n\nEnter: Ga terug naar het vorige scherm");
+                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (Woensdag 2 juni 2021)\n\nEnter: Ga terug naar het vorige scherm");
                 string datum = Console.ReadLine();
                 datum.ToLower();
                 Console.Clear();
                 if(datum == "") 
                     return this;
-                int Aantal = 0;
-                foreach (Reservering reservering in Reserveringen)
+                int AantalRelevanteReserveringen = BerekenRelevanteReserveringen(datum);
+                if (AantalRelevanteReserveringen <= 0)
                 {
-                    if (reservering.Datum == datum)
-                        Aantal++;
+                    Console.WriteLine(ASCIIART.ReserveringenArt());
+                    Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
+                    Console.WriteLine("Klik op een toets om terug te gaan");
+                    Console.ReadKey();
                 }
-                if (Aantal > 0)
+                else
                 {
-                    int huidigePaginaNR = 0;
-                    Reservering[] RelevanteReserveringen = new Reservering[Aantal];
+                    Reservering[] RelevanteReserveringen = new Reservering[AantalRelevanteReserveringen];
                     int j = 0;
                     foreach (Reservering reservering in Reserveringen)
                     {
                         if (reservering.Datum == datum)
                             RelevanteReserveringen[j++] = reservering;
                     }
-                    while (true)
+                     BekijkSpecifiekePaginaMedewerker(RelevanteReserveringen, tafels, datum);
+                    }
+                }
+            }
+
+        public void BekijkSpecifiekePaginaMedewerker(Reservering[] RelevanteReserveringen, TafelArray tafels, string datum)
+        {
+            int huidigePaginaNR = 0;
+            bool wrongInput = false;
+            while (true)
+            {
+                int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
+                Console.Clear();
+                Console.WriteLine(ASCIIART.ReserveringenArt());
+                Console.WriteLine($"{datum}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+                for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
+                {
+                    Console.WriteLine($"{i + 1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
+                }
+                Console.WriteLine();
+                if (huidigePaginaNR + 1 < hoeveelheidPaginas)
+                    Console.WriteLine("8: Volgende pagina");
+                if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                    Console.WriteLine("9: Vorige pagina");
+                Console.WriteLine("0: Ga terug naar het startscherm");
+                if (wrongInput)
+                {
+                    Console.WriteLine("Verkeerde input!");
+                    wrongInput = false;
+                }
+                try
+                {
+                    int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                    if (Index == 0)
+                        return;
+                    if (Index > 0 && Index < 8)
                     {
-                        int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.ReserveringenArt());
-                        Console.WriteLine($"{datum}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
-                        for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
-                        {
-                            Console.WriteLine($"{i + 1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
-                        }
-                        Console.WriteLine();
-                        if (huidigePaginaNR + 1 < hoeveelheidPaginas)
-                            Console.WriteLine("8: Volgende pagina");
-                        if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                            Console.WriteLine("9: Vorige pagina");
-                        Console.WriteLine("0: Ga terug naar het startscherm");
-                        if (wrongInput)
-                        {
-                            Console.WriteLine("Verkeerde input!");
-                            wrongInput = false;
-                        }
                         try
                         {
-                            int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
-                            if (Index == 0)
-                                return this;
-                            if (Index > 0 && Index < 8)
-                            {
-                                try
-                                {
-                                    BekijkSpecifiekeReserveringMedewerker(RelevanteReserveringen[Index - 1], tafels);
-                                }
-                                catch (IndexOutOfRangeException)
-                                {
-                                    wrongInput = true;
-                                }
-                            }
-                            else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                                huidigePaginaNR++;
-                            else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                                huidigePaginaNR--;
-                            else
-                            {
-                                Console.WriteLine("Dit is geen geldige input");
-                                Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
-                                Console.ReadKey();
-                            }
+                            BekijkSpecifiekeReserveringMedewerker(RelevanteReserveringen[Index - 1], tafels);
                         }
-                        catch (FormatException)
+                        catch (IndexOutOfRangeException)
                         {
                             wrongInput = true;
                         }
                     }
+                    else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+                        huidigePaginaNR++;
+                    else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                        huidigePaginaNR--;
+                    else
+                    {
+                        Console.WriteLine("Dit is geen geldige input");
+                        Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
+                        Console.ReadKey();
+                    }
                 }
-                Console.WriteLine(ASCIIART.ReserveringenArt());
-                Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
-                Console.WriteLine("Klik op een toets om terug te gaan");
-                Console.ReadKey();
+                catch (FormatException)
+                {
+                    wrongInput = true;
+                }
             }
         }
 
@@ -141,6 +144,16 @@ namespace TheFatDuckRestaurant
             }
         }
 
+        public int BerekenRelevanteReserveringen(string datum) //Neemt als input een datum string en returnt de hoeveelheid gereserveringen die op die datum een reservering hebben.
+        {
+            int AantalRelevanteReserveringen = 0;
+            foreach (Reservering reservering in Reserveringen)
+            {
+                if (reservering.Datum == datum)
+                    AantalRelevanteReserveringen++;
+            }
+            return AantalRelevanteReserveringen;
+        }
 
         public void BekijkReserveringenKlant(string klantNaam, TafelArray tafels)
         {
