@@ -74,46 +74,11 @@ namespace TheFatDuckRestaurant
                             //medewerker tafels koppelen aan reserveringen.
                         }
                         break;
-                    case '6': //TODO: Deze input moet in DailyRevenues.cs komen en niet hier
-                        string Datum = null;
-                        Reservering X = new Reservering();
-                        while (Datum == null)
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.OpbrengstenArt());
-                            Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)");
-                            Datum = X.checkDatum(Console.ReadLine(), false);
-                        }
-                        Console.Clear();
-                        if (!dailyRevenues.bekijkRevenue(Datum))
-                        {
-                            (gebruiker as Medewerker).DailyRevenue(this.reserveerLijst.Reserveringen, Datum);
-                        }
+                    case '6':
+                        dailyRevenues.bekijkRevenue(reserveerLijst.Reserveringen);
                         break;
-                    case '7': //TODO: Deze input moet in Clickstream.cs komen en niet hier
-                        char Input = '1';
-                        while (Input != '0')
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.ReserveringenArt());
-                            Console.WriteLine("1: Bekijk de clickstream per dag van de week\n2: Bekijk de clickstream per uur\n\n0: Ga terug naar het vorige scherm");
-                            Input = Console.ReadKey().KeyChar;
-                            switch (Input)
-                            {
-                                case '1':
-                                    clickstream.bekijkClicksD();
-                                    break;
-                                case '2':
-                                    clickstream.bekijkClicksT();
-                                    break;
-                                case '0':
-                                    break;
-                                default:
-                                    Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
-                                    Console.ReadKey();
-                                    break;
-                            }
-                        }
+                    case '7':
+                        clickstream.bekijkClicks();
                         //clickstream van klanten
                         break;
                     case '8':

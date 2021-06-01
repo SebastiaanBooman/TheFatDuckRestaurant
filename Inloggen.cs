@@ -154,7 +154,7 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("U bent ingelogd!\x0A\x0A" + "0: Naar het startscherm");
-                        Console.ReadLine();
+                        Console.ReadKey();
                         if (klantObject != null)
                             return klantObject;
                         else if (medewerkerObject != null)
@@ -593,9 +593,9 @@ namespace TheFatDuckRestaurant
                 }
             }
     }
-    public void DailyRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst, string Datum)
+    /*public void DailyRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst, string Datum)
     {
-        /*string Datum = null;
+        string Datum = null;
         TheFatDuckRestaurant.Reservering X = new TheFatDuckRestaurant.Reservering();
         while (Datum == null)
         {
@@ -603,8 +603,9 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)");
             Datum = X.checkDatum(Console.ReadLine(), false);
         }
-        Console.Clear();*/
+        Console.Clear();
         double Revenue = 0;
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
         foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
         {
             if (Datum == reservering.Datum)
@@ -615,9 +616,11 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        Console.WriteLine($"De totale opbrengst van {Datum} is {Revenue} euro\n\nEnter: Ga terug naar het startscherm");
+        string revenue = "" + Revenue;
+        revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
+        Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
         Console.ReadKey();
-    }
+    }*/
 }
 
     public class Eigenaar : Medewerker

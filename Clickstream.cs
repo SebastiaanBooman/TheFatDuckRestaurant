@@ -73,24 +73,68 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        public void bekijkClicksD()
+        public void bekijkClicks()
+        {
+            char Input = '1';
+            while (Input != '0')
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.ReserveringenArt());
+                Console.WriteLine("1: Bekijk de clickstream per dag van de week\n2: Bekijk de clickstream per uur\n\n0: Ga terug naar het vorige scherm");
+                Input = Console.ReadKey().KeyChar;
+                switch (Input)
+                {
+                    case '1':
+                        bekijkClicksD();
+                        break;
+                    case '2':
+                        bekijkClicksT();
+                        break;
+                    case '0':
+                        break;
+                    default:
+                        Console.WriteLine("Dit is geen geldige input\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+        private void bekijkClicksD()
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.ReserveringenArt());
+            int NietAanwezig = 0;
             foreach (CSDag Dag in Dagen)
             {
-                Console.WriteLine(Dag.Naam + $": {Dag.Clicks} reserveringen\n");
+                if (Dag.Clicks > 0)
+                {
+                    Console.WriteLine(Dag.Naam + $": {Dag.Clicks} reserveringen\n");
+                }
+                else { NietAanwezig++; }
+            }
+            if (NietAanwezig == Dagen.Length)
+            {
+                Console.WriteLine("Er zijn nog geen reserveringen gemaakt");
             }
             Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
         }
-        public void bekijkClicksT()
+        private void bekijkClicksT()
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.ReserveringenArt());
+            int NietAanwezig = 0;
             foreach (CSTijd Tijd in Tijden)
             {
-                Console.WriteLine(Tijd.Naam + $": {Tijd.Clicks} reserveringen\n");
+                if (Tijd.Clicks > 0)
+                {
+                    Console.WriteLine(Tijd.Naam + $": {Tijd.Clicks} reserveringen\n");
+                }
+                else { NietAanwezig++; }
+            }
+            if(NietAanwezig == Tijden.Length)
+            {
+                Console.WriteLine("Er zijn nog geen reserveringen gemaakt");
             }
             Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
