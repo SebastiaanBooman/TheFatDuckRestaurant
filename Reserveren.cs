@@ -110,7 +110,7 @@ namespace TheFatDuckRestaurant
                 Console.ReadKey();
             }
         }
-        public void BekijkReserveringenKlant(string klantNaam)
+        public void BekijkReserveringenKlant(string klantNaam, TafelArray tafels)
         {
             if (Reserveringen == null)
                 Reserveringen = new Reservering[0];
@@ -166,7 +166,7 @@ namespace TheFatDuckRestaurant
                 if (Index == 0)
                     return;
                 if (Index < 7 && Index > 0)
-                    changeReservering(KlantReserveringen[Index - 1]); //TODO: Opties om reserveringen aan te passen die zijn gemaakt.
+                    changeReservering(KlantReserveringen[Index - 1], tafels); //TODO: Opties om reserveringen aan te passen die zijn gemaakt.
                 else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
                     huidigePaginaNR++;
                 else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
@@ -181,7 +181,7 @@ namespace TheFatDuckRestaurant
 
 
 
-        public void changeReservering(Reservering reservering)
+        public void changeReservering(Reservering reservering, TafelArray tafels)
         {
 
             while(true)
@@ -208,21 +208,21 @@ namespace TheFatDuckRestaurant
                             break;
                         if (toetsUserBevestigChar == 'r' || toetsUserBevestigChar == 'R')
                         {
-                            removeReservering(reservering);
+                            removeReservering(reservering, tafels);
                             Console.Clear();
                             Console.WriteLine(ASCIIART.ReserverenArt());
                             Console.WriteLine("Uw reservering is succesvol verwijderd\n\n0: Terug");
                             Console.ReadKey();
                             return;
                         }
-
                     }
                 }
             }
             //createReservering(reservering.Bezoeker, reservering.Tijd, reservering.Datum, reservering.Personen, null, "Verwijder");
         }
-        public void removeReservering(Reservering reservering)
+        public void removeReservering(Reservering reservering, TafelArray tafels)
         {
+            reservering.RemoveTafels(tafels, true);
             Reservering[] newReserveringen = new Reservering[this.Reserveringen.Length - 1];
             for (int i = 0, j = 0; i < this.Reserveringen.Length; i++)
             {
@@ -485,11 +485,16 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void RemoveTafels(TafelArray tafels)
+        public void RemoveTafels(TafelArray tafels, bool klantCall = false) //klantCall is een variabele die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.
         {
             bool wrongInput = false;
             while (true)
             {
+                if (klantCall)
+                {
+                    this.Tafels = tafels.allesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}", true);
+                    return;
+                }
                 Console.Clear();
                 Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
                 Console.WriteLine("1: Alles ontkoppelen");
@@ -501,7 +506,7 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case '1':
-                        this.Tafels = tafels.allesAutomatischOntkoppelen(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}");
+                        this.Tafels = tafels.allesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}");
                         break;
                     case '2':
                         this.Tafels = tafels.ontKoppelenMetID(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}");

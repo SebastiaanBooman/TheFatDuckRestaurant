@@ -211,19 +211,25 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        public List<Tafel> allesAutomatischOntkoppelen(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
+        public List<Tafel> allesAutomatischOntkoppelen(List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool klantCall = false) //klantCall is een variabele die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.
         {
             while (true)
             {
                 bool wrongInput = false;
+                char userInput = '6';
                 Console.Clear();
-                Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
-                Console.WriteLine($"alle tafels van de reservering worden automatisch ontkoppeld, weet u dit zeker?\n");
-                Console.WriteLine($"1: Ja\n");
-                Console.WriteLine($"0: Nee\n");
-                if (wrongInput)
-                    Console.WriteLine("Wrong Input! Probeer 1 of 0");
-                char userInput = Console.ReadKey().KeyChar;
+                if (klantCall)
+                    userInput = '1';
+                else
+                {
+                    Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
+                    Console.WriteLine($"alle tafels van de reservering worden automatisch ontkoppeld, weet u dit zeker?\n");
+                    Console.WriteLine($"1: Ja\n");
+                    Console.WriteLine($"0: Nee\n");
+                    if (wrongInput)
+                        Console.WriteLine("Wrong Input! Probeer 1 of 0");
+                    userInput = Console.ReadKey().KeyChar;
+                }
                 switch (userInput)
                 {
                     case '1':
@@ -240,12 +246,15 @@ namespace TheFatDuckRestaurant
                                 if(tafel.Gereserveerd[i] == tijdEnDatum)
                                 {
                                     tafel.Gereserveerd.Remove(tafel.Gereserveerd[i]);
-                                    Console.WriteLine($"Tafel {tafel.ID} is ontkoppeld van de reservering");
+                                    if (!klantCall) //Als een klant zijn reservering verwijderd hoeft deze print niet getoont te worden
+                                        Console.WriteLine($"Tafel {tafel.ID} is ontkoppeld van de reservering");
                                 }
                             }
                         }
                         gereserveerdeTafels.Clear();
                         SaveTafels(this);
+                        if (klantCall)
+                            return gereserveerdeTafels;
                         Console.WriteLine("Toets op een knop om verder te gaan");
                         Console.ReadLine();
                         return gereserveerdeTafels;

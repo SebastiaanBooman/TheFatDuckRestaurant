@@ -85,7 +85,7 @@ namespace TheFatDuckRestaurant
                         shutOff= true; // Applicatie afsluiten als eigenaar
                         break;
                     case '9': //Reserveringen bekijken als klant
-                        reserveerLijst.BekijkReserveringenKlant(gebruiker.Naam);
+                        reserveerLijst.BekijkReserveringenKlant(gebruiker.Naam, tafels);
                         SaveReserveerlijst(this.reserveerLijst);
                         break;
                     case 'A':
@@ -164,7 +164,7 @@ namespace TheFatDuckRestaurant
                         totalRevenue += reservering.Bestelling[i].Prijs;
                     }
                     dailyRevenues.Add(reservering.Datum, totalRevenue);
-                    reserveerLijst.removeReservering(reservering);
+                    reserveerLijst.removeReservering(reservering, tafels);
                 }
             }
             SaveReserveerlijst(reserveerLijst);
