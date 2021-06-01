@@ -19,24 +19,28 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 if (Datum != "0")
                 {
-                    if (!oudeRevenue(Datum))
+                    Datum = CheckDatum.checkDatum(Datum, false);
+                    if (Datum != null)
                     {
-                        double Revenue = 0;
-                        Console.OutputEncoding = System.Text.Encoding.UTF8;
-                        foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
+                        if (!oudeRevenue(Datum))
                         {
-                            if (Datum == reservering.Datum)
+                            double Revenue = 0;
+                            Console.OutputEncoding = System.Text.Encoding.UTF8;
+                            foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
                             {
-                                for (int i = 0; i < reservering.Bestelling.Count; i++)
+                                if (Datum == reservering.Datum)
                                 {
-                                    Revenue += reservering.Bestelling[i].Prijs * reservering.Bestelling[i].Aantal;
+                                    for (int i = 0; i < reservering.Bestelling.Count; i++)
+                                    {
+                                        Revenue += reservering.Bestelling[i].Prijs * reservering.Bestelling[i].Aantal;
+                                    }
                                 }
                             }
+                            string revenue = "" + Revenue;
+                            revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
+                            Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
+                            Console.ReadKey();
                         }
-                        string revenue = "" + Revenue;
-                        revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
-                        Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
-                        Console.ReadKey();
                     }
                 }
             }

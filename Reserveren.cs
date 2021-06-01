@@ -537,7 +537,7 @@ namespace TheFatDuckRestaurant
                                     Console.ReadKey();
                                     return 0;
                                 }
-        public string checkDatum(string Datum, bool reserveren = true)
+        /*public string checkDatum(string Datum, bool reserveren = true)
         {
             string Dag = "";
             string Maand = "";
@@ -579,16 +579,16 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("Enter: Ga terug naar het vorige scherm");
             Console.ReadKey();
             return null;
-        }
+        }*/
         public string changeDatum()
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine((this.Datum == "" ? "Nog geen datum" : $"({this.Datum})") + "\x0aWelke datum wilt u reserveren? (21 juni)");
             string NieuweDatum = Console.ReadLine();
             Console.Clear();
-            return checkDatum(NieuweDatum);
+            return CheckDatum.checkDatum(NieuweDatum);
         }
-        private string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
+        /*private string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
         {
             int Maand = MaandInt(maand);
             int HuidigeDag = DateTime.Now.Day;
@@ -645,7 +645,7 @@ namespace TheFatDuckRestaurant
                                         return Dag < 29 ? true : false;
                                     }
                                     return Dag < 31 ? true : false;
-                                }
+                                }*/
                                 public string TijdString()
                                 {
                                     string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;
