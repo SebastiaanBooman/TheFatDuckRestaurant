@@ -244,6 +244,7 @@ namespace TheFatDuckRestaurant
                                 }
                             }
                         }
+                        gereserveerdeTafels.Clear();
                         SaveTafels(this);
                         Console.WriteLine("Toets op een knop om verder te gaan");
                         Console.ReadLine();
@@ -277,6 +278,7 @@ namespace TheFatDuckRestaurant
                             if(datum == tijdEnDatum)
                             {
                                 tafel.Gereserveerd.Remove(datum);
+                                gereserveerdeTafels.Remove(tafel);
                                 tafelSuccesvolOntkoppeld = true;
                                 Console.Clear();
                                 Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
