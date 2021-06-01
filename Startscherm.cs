@@ -86,6 +86,7 @@ namespace TheFatDuckRestaurant
                         break;
                     case '9': //Reserveringen bekijken als klant
                         reserveerLijst.BekijkReserveringenKlant(gebruiker.Naam);
+                        SaveReserveerlijst(this.reserveerLijst);
                         break;
                     case 'A':
                         gebruiker.bekijkAccount();

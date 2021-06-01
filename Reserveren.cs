@@ -118,6 +118,7 @@ namespace TheFatDuckRestaurant
             if (Reserveringen.Length == 0)
             {
                 Console.Clear();
+                Console.WriteLine(ASCIIART.ReserverenArt());
                 Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
                 Console.ReadKey();
                 return;
@@ -134,7 +135,8 @@ namespace TheFatDuckRestaurant
                 if (Aantal == 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+                    Console.WriteLine(ASCIIART.ReserveringenArt());
+                    Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "0: Ga terug naar het startscherm");
                     Console.ReadKey();
                     return;
                 }
@@ -147,6 +149,7 @@ namespace TheFatDuckRestaurant
                 }
                 int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
                 Console.Clear();
+                Console.WriteLine(ASCIIART.ReserveringenArt());
                 Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                 for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < KlantReserveringen.Length; i++)
                 {
@@ -180,8 +183,42 @@ namespace TheFatDuckRestaurant
 
         public void changeReservering(Reservering reservering)
         {
-            //removeReservering(reservering);
-            //GERECHTEN
+
+            while(true)
+            {
+                Console.Clear();
+                reservering.Info();
+                Console.WriteLine("\nR: Verwijder reservering\n0: Terug");
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
+                if (toetsUserChar == '0')
+                    return;
+                if (toetsUserChar == 'R' || toetsUserChar == 'r')
+                {
+                    while(true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.ReserverenArt());
+                        Console.WriteLine($"Weet u zeker dat u uw reservering voor {reservering.Datum} wil verwijderen?\n\nR: Verwijder reservering\n0: Terug");
+
+                        ConsoleKeyInfo toetsUserBevestig = Console.ReadKey();
+                        char toetsUserBevestigChar = toetsUserBevestig.KeyChar;
+
+                        if (toetsUserBevestigChar == '0')
+                            break;
+                        if (toetsUserBevestigChar == 'r' || toetsUserBevestigChar == 'R')
+                        {
+                            removeReservering(reservering);
+                            Console.Clear();
+                            Console.WriteLine(ASCIIART.ReserverenArt());
+                            Console.WriteLine("Uw reservering is succesvol verwijderd\n\n0: Terug");
+                            Console.ReadKey();
+                            return;
+                        }
+
+                    }
+                }
+            }
             //createReservering(reservering.Bezoeker, reservering.Tijd, reservering.Datum, reservering.Personen, null, "Verwijder");
         }
         public void removeReservering(Reservering reservering)
@@ -258,7 +295,7 @@ namespace TheFatDuckRestaurant
         }
         private bool AddReservering(Reservering reservering)
         {
-            if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling.Count != 0 && reservering.Bestelling != null))
+            if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling != null))
             {
                 Reservering[] newReserveringen;
                 if (this.Reserveringen != null)
