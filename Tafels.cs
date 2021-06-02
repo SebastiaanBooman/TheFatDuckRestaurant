@@ -191,6 +191,8 @@ namespace TheFatDuckRestaurant
                         }
                         if (!alGereserveerd)
                         {
+                            if (gereserveerdeTafels == null)
+                                gereserveerdeTafels = new List<Tafel>();
                             Console.Clear();
                             Console.WriteLine(ASCIIART.TafelsArt());
                             gereserveerdeTafels.Add(tafel);
