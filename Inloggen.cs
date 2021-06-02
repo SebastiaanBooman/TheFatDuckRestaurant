@@ -40,7 +40,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("0: Terug\x0a");
 
                 if (verkeerdeInput)
-                    Console.WriteLine("Verkeerde input, probeer 1,2,3");
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3, 4 of 0");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -309,9 +309,8 @@ namespace TheFatDuckRestaurant
             Klant[] nieuweKlantenLijst = new Klant[Klanten.Length + 1];
 
             for (int i = 0; i < Klanten.Length; i++)
-            {
                 nieuweKlantenLijst[i] = Klanten[i]; //Voert alle oude klanten als Klant object in de nieuwe lijst
-            }
+
             Klant nieuweKlant = new Klant(klantInformatie.Item1, klantInformatie.Item2, klantInformatie.Item3, klantInformatie.Item4); //nieuwe klant wordt aangemaakt
             nieuweKlantenLijst[nieuweKlantenLijst.Length - 1] = nieuweKlant; //voegt nieuwe klant toe aan lijst
             Klanten = nieuweKlantenLijst; //Klanten array van gebruikers wordt aangepast naar de nieuwe lijst die is gemaakt.
@@ -340,9 +339,8 @@ namespace TheFatDuckRestaurant
             Medewerker[] nieuweMedewerkerLijst = new Medewerker[Medewerkers.Length + 1];
 
             for(int i = 0; i < Medewerkers.Length; i++)
-            {
                 nieuweMedewerkerLijst[i] = Medewerkers[i]; //Voert alle oude medewerkers als Medewerker object in de nieuwe lijst
-            }
+
             Medewerker nieuweMedewerker = new Medewerker(medewerkerInformatie.Item1, medewerkerInformatie.Item2, medewerkerInformatie.Item3, medewerkerInformatie.Item4); //nieuwe medewerker wordt aangemaakt.
             nieuweMedewerkerLijst[nieuweMedewerkerLijst.Length - 1] = nieuweMedewerker; //voegt nieuwe medewerker toe aan lijst
             Medewerkers = nieuweMedewerkerLijst;
@@ -394,25 +392,13 @@ namespace TheFatDuckRestaurant
         public virtual TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
         {
             menu.BekijkMenuGebruiker();
-            //menu.Bekijkmenu -> Gebruiker
-            //menu.ReserveerMenu -> Klant
-            //menu.PasAanMenu -> Medewerker
             return menu;
         }
-        public virtual TheFatDuckRestaurant.ReserveerLijst reserveer(TheFatDuckRestaurant.Menu menu, TheFatDuckRestaurant.ReserveerLijst reserveerLijst)
-        {
-        return reserveerLijst;
-        }
+    public virtual TheFatDuckRestaurant.ReserveerLijst reserveer(TheFatDuckRestaurant.Menu menu, TheFatDuckRestaurant.ReserveerLijst reserveerLijst) => reserveerLijst;
 
-    public virtual string bekijkDailyRevenue()
-        {
-        return null;
-        }
+    public virtual string bekijkDailyRevenue() => null;
 
-        public virtual string bekijkClickStream()
-        {
-        return null;
-        }
+    public virtual string bekijkClickStream() => null;
 
         public virtual void bekijkReserveringen() { }
 
@@ -627,9 +613,6 @@ namespace TheFatDuckRestaurant
     {
         public Eigenaar(string naam, string wachtwoord, string adres, string woonplaats) : base(naam, wachtwoord, adres, woonplaats) { }
         public Eigenaar() { }
-
-
-
         public override char startScherm()
         {
             bool verkeerdeInput = false;
@@ -644,10 +627,11 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("4: Bezichtig het menu\x0a");
                 Console.WriteLine("5: Bezichtig reserveringen\x0a");
                 Console.WriteLine("6: Bezichtig de Clickstream\x0a");
+                Console.WriteLine("7: Bezichtig de dagelijkse opbrensten\n");
                 Console.WriteLine("0: Applicatie afsluiten\x0a");
 
                 if (verkeerdeInput)
-                    Console.WriteLine("Verkeerde input, probeer 1,2,3,4,5,6 of 0");
+                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3, 4, 5, 6, 7, of 0");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -662,9 +646,11 @@ namespace TheFatDuckRestaurant
                     case '4':
                         return '4';
                     case '5':
-                        return '5';
+                        return 'C';
                     case '6':
                         return '7';
+                    case '7':
+                     return '6';
                     case '0':
                         return '8';
                     default:
