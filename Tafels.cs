@@ -191,6 +191,8 @@ namespace TheFatDuckRestaurant
                         }
                         if (!alGereserveerd)
                         {
+                            if (gereserveerdeTafels == null)
+                                gereserveerdeTafels = new List<Tafel>();
                             Console.Clear();
                             Console.WriteLine(ASCIIART.TafelsArt());
                             gereserveerdeTafels.Add(tafel);
@@ -206,24 +208,30 @@ namespace TheFatDuckRestaurant
                 {
                     Console.Clear();
                     Console.WriteLine(ASCIIART.TafelsArt());
-                    Console.WriteLine($"{userInput} bestaat niet als tafel in het systeem! Klik op een toets om door te gaan");
+                    Console.WriteLine($"{userInput} is al gekoppeld voor deze tijd of bestaat niet als tafel in het systeem! Klik op een toets om door te gaan");
                     Console.ReadLine();
                 }
             }
         }
-        public List<Tafel> allesAutomatischOntkoppelen(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
+        public List<Tafel> allesAutomatischOntkoppelen(List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool klantCall = false) //klantCall is een variabele die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.
         {
             while (true)
             {
                 bool wrongInput = false;
+                char userInput = '6';
                 Console.Clear();
-                Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
-                Console.WriteLine($"alle tafels van de reservering worden automatisch ontkoppeld, weet u dit zeker?\n");
-                Console.WriteLine($"1: Ja\n");
-                Console.WriteLine($"0: Nee\n");
-                if (wrongInput)
-                    Console.WriteLine("Wrong Input! Probeer 1 of 0");
-                char userInput = Console.ReadKey().KeyChar;
+                if (klantCall)
+                    userInput = '1';
+                else
+                {
+                    Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
+                    Console.WriteLine($"alle tafels van de reservering worden automatisch ontkoppeld, weet u dit zeker?\n");
+                    Console.WriteLine($"1: Ja\n");
+                    Console.WriteLine($"0: Nee\n");
+                    if (wrongInput)
+                        Console.WriteLine("Wrong Input! Probeer 1 of 0");
+                    userInput = Console.ReadKey().KeyChar;
+                }
                 switch (userInput)
                 {
                     case '1':
@@ -240,11 +248,15 @@ namespace TheFatDuckRestaurant
                                 if(tafel.Gereserveerd[i] == tijdEnDatum)
                                 {
                                     tafel.Gereserveerd.Remove(tafel.Gereserveerd[i]);
-                                    Console.WriteLine($"Tafel {tafel.ID} is ontkoppeld van de reservering");
+                                    if (!klantCall) //Als een klant zijn reservering verwijderd hoeft deze print niet getoont te worden
+                                        Console.WriteLine($"Tafel {tafel.ID} is ontkoppeld van de reservering");
                                 }
                             }
                         }
+                        gereserveerdeTafels.Clear();
                         SaveTafels(this);
+                        if (klantCall)
+                            return gereserveerdeTafels;
                         Console.WriteLine("Toets op een knop om verder te gaan");
                         Console.ReadLine();
                         return gereserveerdeTafels;
@@ -268,19 +280,20 @@ namespace TheFatDuckRestaurant
                 if (userInput == "0")
                     return gereserveerdeTafels;
                 bool tafelSuccesvolOntkoppeld = false;
-                foreach(Tafel tafel in gereserveerdeTafels)
+                for(int j = 0; j < gereserveerdeTafels.Count; j++)
                 {
-                    if(tafel.ID == userInput)
+                    if(gereserveerdeTafels[j].ID == userInput)
                     {
-                        foreach(string datum in tafel.Gereserveerd)
+                        for (int i = 0; i < gereserveerdeTafels[j].Gereserveerd.Count; i++)
                         {
-                            if(datum == tijdEnDatum)
+                            if (gereserveerdeTafels[j].Gereserveerd[i] == tijdEnDatum)
                             {
-                                tafel.Gereserveerd.Remove(datum);
-                                tafelSuccesvolOntkoppeld = true;
                                 Console.Clear();
                                 Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
-                                Console.WriteLine($"{tafel.ID} succesvol ontkoppeld van de reservering\n\nKlik op een toets om door te gaan");
+                                Console.WriteLine($"{gereserveerdeTafels[j].ID} succesvol ontkoppeld van de reservering\n\nKlik op een toets om door te gaan");
+                                gereserveerdeTafels[j].Gereserveerd.Remove(tijdEnDatum);
+                                gereserveerdeTafels.Remove(gereserveerdeTafels[j]);
+                                tafelSuccesvolOntkoppeld = true;
                                 Console.ReadKey();
                                 break;
                             }

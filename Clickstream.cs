@@ -46,13 +46,9 @@ namespace TheFatDuckRestaurant
             foreach(char sym in Datum)
             {
                 if (Char.IsDigit(sym))
-                {
                     DigitCheck += sym;
-                }
                 if(Char.IsLetter(sym) && DigitCheck == "")
-                {
                     dag += sym;
-                }
             }
             addClicks(dag.ToLower(), tijd);
         }
@@ -61,16 +57,12 @@ namespace TheFatDuckRestaurant
             foreach(CSDag Dag in Dagen)
             {
                 if(Dag.Naam == dag)
-                {
                     Dag.Clicks++;
-                }
             }
             foreach(CSTijd Tijd in Tijden)
             {
                 if(tijd > Tijd.Naam - 70 && tijd <= Tijd.Naam + 30)
-                {
                     Tijd.Clicks++;
-                }
             }
         }
         public void bekijkClicks()
@@ -107,15 +99,12 @@ namespace TheFatDuckRestaurant
             foreach (CSDag Dag in Dagen)
             {
                 if (Dag.Clicks > 0)
-                {
                     Console.WriteLine(Dag.Naam + $": {Dag.Clicks} reserveringen\n");
-                }
-                else { NietAanwezig++; }
+                else
+                    NietAanwezig++;
             }
             if (NietAanwezig == Dagen.Length)
-            {
                 Console.WriteLine("Er zijn nog geen reserveringen gemaakt");
-            }
             Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
         }
@@ -127,15 +116,11 @@ namespace TheFatDuckRestaurant
             foreach (CSTijd Tijd in Tijden)
             {
                 if (Tijd.Clicks > 0)
-                {
                     Console.WriteLine(Tijd.Naam + $": {Tijd.Clicks} reserveringen\n");
-                }
                 else { NietAanwezig++; }
             }
             if(NietAanwezig == Tijden.Length)
-            {
                 Console.WriteLine("Er zijn nog geen reserveringen gemaakt");
-            }
             Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
         }

@@ -29,88 +29,131 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.ReserveringenArt());
-                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)\n\nEnter: Ga terug naar het vorige scherm");
+                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (Woensdag 2 juni 2021)\n\nEnter: Ga terug naar het vorige scherm");
                 string datum = Console.ReadLine();
+                datum.ToLower();
                 Console.Clear();
-                if(datum == "") { return this; }
-                string datumLower = "";
-                foreach (char sym in datum)
+                if(datum == "") 
+                    return this;
+                int AantalRelevanteReserveringen = BerekenRelevanteReserveringen(datum);
+                if (AantalRelevanteReserveringen <= 0)
                 {
-                    if (Char.IsLetter(sym))
-                        Char.ToLower(sym);
-                    datumLower += sym;
+                    Console.WriteLine(ASCIIART.ReserveringenArt());
+                    Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
+                    Console.WriteLine("Klik op een toets om terug te gaan");
+                    Console.ReadKey();
                 }
-                int Aantal = 0;
-                foreach (Reservering reservering in Reserveringen)
+                else
                 {
-                    if (reservering.Datum == datumLower)
-                        Aantal++;
-                }
-
-                if (Aantal > 0)
-                {
-                    int huidigePaginaNR = 0;
-                    Reservering[] RelevanteReserveringen = new Reservering[Aantal];
+                    Reservering[] RelevanteReserveringen = new Reservering[AantalRelevanteReserveringen];
                     int j = 0;
                     foreach (Reservering reservering in Reserveringen)
                     {
-                        if (reservering.Datum == datumLower)
+                        if (reservering.Datum == datum)
                             RelevanteReserveringen[j++] = reservering;
                     }
-                    while (true)
-                    {
-                        int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.ReserveringenArt());
-                        Console.WriteLine($"{datumLower}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
-                        for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
-                        {
-                            Console.WriteLine($"{i + 1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
-                        }
-                        Console.WriteLine();
-                        if (huidigePaginaNR + 1 < hoeveelheidPaginas)
-                            Console.WriteLine("8: Volgende pagina");
-                        if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                            Console.WriteLine("9: Vorige pagina");
-                        Console.WriteLine("0: Ga terug naar het startscherm");
-                        int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
-                        Console.Clear();
-                        if (Index == 0)
-                            return this;
-                        if (Index > 0 && Index < 8) //TO DO: Als er nog tafels gekoppeld moeten worden (Personen - tafelhoeveelheid is groter dan 0) toon optie voor tafels koppelen) Als er meer dan 1 tafel al is gekoppeld moet er een optie zijn om tafels te ontkoppelen
-                        {
-                            RelevanteReserveringen[Index - 1].Info();
-                            bool heeftTafelsNodig = RelevanteReserveringen[Index - 1].HeeftTafelsNodig();
-                            bool heeftTafels = RelevanteReserveringen[Index - 1].HeeftTafels();
-                            if (heeftTafelsNodig)
-                                Console.WriteLine("\nA: Tafels koppelen");
-                            if (heeftTafels)
-                                Console.WriteLine("\nB: Tafels ontkoppelen");
-                            char userInput = Console.ReadKey().KeyChar;
-                            if (userInput == 'A' && heeftTafelsNodig)
-                                RelevanteReserveringen[Index - 1].AddTafels(tafels);
-                            else if (userInput == 'B' && heeftTafels)
-                                RelevanteReserveringen[Index - 1].RemoveTafels(tafels);
-                        }
-                        else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
-                            huidigePaginaNR++;
-                        else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
-                            huidigePaginaNR--;
-                        else
-                        {
-                            Console.WriteLine("Dit is geen geldige input");
-                            Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
-                            Console.ReadKey();
-                        }
+                     BekijkSpecifiekePaginaMedewerker(RelevanteReserveringen, tafels, datum);
                     }
                 }
+            }
+
+        public void BekijkSpecifiekePaginaMedewerker(Reservering[] RelevanteReserveringen, TafelArray tafels, string datum)
+        {
+            int huidigePaginaNR = 0;
+            bool wrongInput = false;
+            while (true)
+            {
+                int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
+                Console.Clear();
                 Console.WriteLine(ASCIIART.ReserveringenArt());
-                Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
-                Console.WriteLine("Klik op een toets om terug te gaan");
-                Console.ReadKey();
+                Console.WriteLine($"{datum}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
+                for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
+                    Console.WriteLine($"{i + 1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
+                Console.WriteLine();
+                if (huidigePaginaNR + 1 < hoeveelheidPaginas)
+                    Console.WriteLine("8: Volgende pagina");
+                if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                    Console.WriteLine("9: Vorige pagina");
+                Console.WriteLine("0: Ga terug naar het startscherm");
+                if (wrongInput)
+                {
+                    Console.WriteLine("Verkeerde input!");
+                    wrongInput = false;
+                }
+                try
+                {
+                    int Index = Int32.Parse(Console.ReadKey().KeyChar.ToString());
+                    if (Index == 0)
+                        return;
+                    if (Index > 0 && Index < 8)
+                    {
+                        try
+                        {
+                            BekijkSpecifiekeReserveringMedewerker(RelevanteReserveringen[Index - 1], tafels);
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            wrongInput = true;
+                        }
+                    }
+                    else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
+                        huidigePaginaNR++;
+                    else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                        huidigePaginaNR--;
+                    else
+                    {
+                        Console.WriteLine("Dit is geen geldige input");
+                        Console.WriteLine("\x0a" + "Enter: Ga terug naar het vorige scherm");
+                        Console.ReadKey();
+                    }
+                }
+                catch (FormatException)
+                {
+                    wrongInput = true;
+                }
             }
         }
-        public void BekijkReserveringenKlant(string klantNaam)
+
+        public void BekijkSpecifiekeReserveringMedewerker(Reservering reservering, TafelArray tafels) //Laat een specifieke reservering zien, met de opties om tafels toe te voegen of te verwijderen, als dit mogelijk is.
+        {
+            bool wrongInput = false;
+            while (true)
+            {
+                Console.Clear();
+                reservering.Info();
+                bool heeftTafelsNodig = reservering.HeeftTafelsNodig();
+                bool heeftTafels = reservering.HeeftTafels();
+                if (heeftTafelsNodig)
+                    Console.WriteLine("\nA: Tafels koppelen");
+                if (heeftTafels)
+                    Console.WriteLine("\nB: Tafels ontkoppelen");
+                Console.WriteLine("0: Terug");
+                if (wrongInput)
+                    Console.WriteLine("Verkeerde Input!");
+                char userInput = Console.ReadKey().KeyChar;
+                if (userInput == '0')
+                    return;
+                else if (userInput == 'A' && heeftTafelsNodig)
+                    reservering.AddTafels(tafels);
+                else if (userInput == 'B' && heeftTafels)
+                    reservering.RemoveTafels(tafels);
+                else
+                    wrongInput = true;
+            }
+        }
+
+        public int BerekenRelevanteReserveringen(string datum) //Neemt als input een datum string en returnt de hoeveelheid gereserveringen die op die datum een reservering hebben.
+        {
+            int AantalRelevanteReserveringen = 0;
+            foreach (Reservering reservering in Reserveringen)
+            {
+                if (reservering.Datum == datum)
+                    AantalRelevanteReserveringen++;
+            }
+            return AantalRelevanteReserveringen;
+        }
+
+        public void BekijkReserveringenKlant(string klantNaam, TafelArray tafels)
         {
             if (Reserveringen == null)
                 Reserveringen = new Reservering[0];
@@ -118,6 +161,7 @@ namespace TheFatDuckRestaurant
             if (Reserveringen.Length == 0)
             {
                 Console.Clear();
+                Console.WriteLine(ASCIIART.ReserverenArt());
                 Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
                 Console.ReadKey();
                 return;
@@ -134,7 +178,8 @@ namespace TheFatDuckRestaurant
                 if (Aantal == 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "Enter: Ga terug naar het startscherm");
+                    Console.WriteLine(ASCIIART.ReserveringenArt());
+                    Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "0: Ga terug naar het startscherm");
                     Console.ReadKey();
                     return;
                 }
@@ -147,11 +192,11 @@ namespace TheFatDuckRestaurant
                 }
                 int hoeveelheidPaginas = (int)Math.Ceiling(KlantReserveringen.Length / 7.0);
                 Console.Clear();
+                Console.WriteLine(ASCIIART.ReserveringenArt());
                 Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                 for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < KlantReserveringen.Length; i++)
-                {
                     Console.WriteLine($"{i + 1}: {KlantReserveringen[i + huidigePaginaNR * 7].Datum} om {KlantReserveringen[i + huidigePaginaNR * 7].TijdString()} ({KlantReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
-                }
+
                 Console.WriteLine();
                 if (huidigePaginaNR + 1 < hoeveelheidPaginas)
                     Console.WriteLine("8: Volgende pagina");
@@ -163,7 +208,7 @@ namespace TheFatDuckRestaurant
                 if (Index == 0)
                     return;
                 if (Index < 7 && Index > 0)
-                    changeReservering(KlantReserveringen[Index - 1]); //TODO: Opties om reserveringen aan te passen die zijn gemaakt.
+                    changeReservering(KlantReserveringen[Index - 1], tafels); //TODO: Opties om reserveringen aan te passen die zijn gemaakt.
                 else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
                     huidigePaginaNR++;
                 else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
@@ -178,14 +223,48 @@ namespace TheFatDuckRestaurant
 
 
 
-        public void changeReservering(Reservering reservering)
+        public void changeReservering(Reservering reservering, TafelArray tafels)
         {
-            //removeReservering(reservering);
-            //GERECHTEN
+
+            while(true)
+            {
+                Console.Clear();
+                reservering.Info();
+                Console.WriteLine("\nR: Verwijder reservering\n0: Terug");
+                ConsoleKeyInfo toetsUser = Console.ReadKey();
+                char toetsUserChar = toetsUser.KeyChar;
+                if (toetsUserChar == '0')
+                    return;
+                if (toetsUserChar == 'R' || toetsUserChar == 'r')
+                {
+                    while(true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(ASCIIART.ReserverenArt());
+                        Console.WriteLine($"Weet u zeker dat u uw reservering voor {reservering.Datum} wil verwijderen?\n\nR: Verwijder reservering\n0: Terug");
+
+                        ConsoleKeyInfo toetsUserBevestig = Console.ReadKey();
+                        char toetsUserBevestigChar = toetsUserBevestig.KeyChar;
+
+                        if (toetsUserBevestigChar == '0')
+                            break;
+                        if (toetsUserBevestigChar == 'r' || toetsUserBevestigChar == 'R')
+                        {
+                            removeReservering(reservering, tafels);
+                            Console.Clear();
+                            Console.WriteLine(ASCIIART.ReserverenArt());
+                            Console.WriteLine("Uw reservering is succesvol verwijderd\n\n0: Terug");
+                            Console.ReadKey();
+                            return;
+                        }
+                    }
+                }
+            }
             //createReservering(reservering.Bezoeker, reservering.Tijd, reservering.Datum, reservering.Personen, null, "Verwijder");
         }
-        public void removeReservering(Reservering reservering)
+        public void removeReservering(Reservering reservering, TafelArray tafels)
         {
+            reservering.RemoveTafels(tafels, true);
             Reservering[] newReserveringen = new Reservering[this.Reserveringen.Length - 1];
             for (int i = 0, j = 0; i < this.Reserveringen.Length; i++)
             {
@@ -258,16 +337,14 @@ namespace TheFatDuckRestaurant
         }
         private bool AddReservering(Reservering reservering)
         {
-            if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling.Count != 0 && reservering.Bestelling != null))
+            if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling != null))
             {
                 Reservering[] newReserveringen;
                 if (this.Reserveringen != null)
                 {
                     newReserveringen = new Reservering[this.Reserveringen.Length + 1];
                     for (int i = 0; i < Reserveringen.Length; i++)
-                    {
                         newReserveringen[i] = Reserveringen[i];
-                    }
                     newReserveringen[Reserveringen.Length] = reservering;
                 }
                 else
@@ -448,11 +525,16 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void RemoveTafels(TafelArray tafels)
+        public void RemoveTafels(TafelArray tafels, bool klantCall = false) //klantCall is een variabele die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.
         {
             bool wrongInput = false;
             while (true)
             {
+                if (klantCall)
+                {
+                    this.Tafels = tafels.allesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}", true);
+                    return;
+                }
                 Console.Clear();
                 Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
                 Console.WriteLine("1: Alles ontkoppelen");
@@ -464,7 +546,7 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case '1':
-                        this.Tafels = tafels.allesAutomatischOntkoppelen(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}");
+                        this.Tafels = tafels.allesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}");
                         break;
                     case '2':
                         this.Tafels = tafels.ontKoppelenMetID(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}");
@@ -478,27 +560,7 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-
-                /* private void removeGerecht(Gerechten gerecht)
-                 {
-                     Gerechten[] nieuwegerechten = new Gerechten[this.Gerechten.Length - 1];
-                     bool Removed = false;
-                     int i = 0;
-                     foreach(Gerechten Gerecht in this.Gerechten)
-                     {
-                         if(gerecht != Gerecht || Removed)
-                         {
-                             nieuwegerechten[i++] = Gerecht;
-                         }
-                         else
-                         {
-                             Removed = true;
-                         }
-                     }
-                     this.Gerechten = nieuwegerechten;
-                 } */
-
-                public void Info()
+        public void Info()
         {
             Console.WriteLine(ASCIIART.ReserverenArt());
             Console.WriteLine("Klant:\t\t" + this.Bezoeker);
@@ -525,9 +587,7 @@ namespace TheFatDuckRestaurant
             if (this.Tafels == null)
                 return true;
             foreach(Tafel tafel in this.Tafels)
-            {
                 aantalPlekkenAlGekoppeld += tafel.Plekken;
-            }
             return aantalPlekkenAlGekoppeld >= this.Personen ?  false : true;
         }
 
@@ -536,9 +596,7 @@ namespace TheFatDuckRestaurant
             if (this.Tafels == null)
                 return false;
             foreach(Tafel tafel in this.Tafels)
-            {
                 return true;
-            }
             return false;
         }
         public char Create(string addition)
@@ -600,49 +658,6 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return 0;
         }
-        /*public string checkDatum(string Datum, bool reserveren = true)
-        {
-            string Dag = "";
-            string Maand = "";
-            string jaar = "";
-            foreach (char sym in Datum)
-            {
-                if (Char.IsDigit(sym) && Maand == "")
-                {
-                    Dag += sym;
-                }
-                else if (Char.IsDigit(sym) && Maand != "")
-                {
-                    jaar += sym;
-                }
-                else if (Char.IsLetter(sym) && Dag != "")
-                {
-                    Maand += sym;
-                }
-            }
-            int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
-            int.TryParse(jaar, out int Jaar);
-            if(Jaar <= 0) { Jaar = DateTime.Now.Year; }
-            if (CheckMaand(Maand.ToLower()) && DagInt > 0 && DagInt < 32)
-            {
-                if (reserveren)
-                {
-                    if (MaandInt(Maand.ToLower()) < DateTime.Now.Month || (MaandInt(Maand.ToLower()) == DateTime.Now.Month && DagInt < DateTime.Now.Day))
-                    {
-                        Jaar += 1;
-                    }
-                }
-                if (CheckDag(DagInt, Maand.ToLower(), Jaar))
-                {
-                    return $"{WeekDag(DagInt, Maand, Jaar, reserveren)} {Dag} {Maand} {Jaar}";
-                }
-            }
-            Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-            Console.WriteLine("Deze datum bestaat niet\x0a\x0a");
-            Console.WriteLine("Enter: Ga terug naar het vorige scherm");
-            Console.ReadKey();
-            return null;
-        }*/
         public string changeDatum()
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -651,64 +666,6 @@ namespace TheFatDuckRestaurant
             Console.Clear();
             return CheckDatum.checkDatum(NieuweDatum);
         }
-        /*private string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
-        {
-            int Maand = MaandInt(maand);
-            int HuidigeDag = DateTime.Now.Day;
-            int HuidigeMaand = DateTime.Now.Month;
-            DateTime date;
-            if ((Maand < HuidigeMaand || (Maand == HuidigeMaand && Dag < HuidigeDag)) && reserveren)
-            {
-                date = new DateTime(Jaar + 1, Maand, Dag);
-            }
-            else
-            {
-                date = new DateTime(Jaar, Maand, Dag);
-            }
-            string WeekDay = "" + date.DayOfWeek;
-            return DaytoDag(WeekDay.ToLower());
-        }
-        private string DaytoDag(string Day)
-        {
-            return Day == "monday" ? "Maandag" :
-                Day == "tuesday" ? "Dinsdag" :
-                Day == "wednesday" ? "Woensdag" :
-                Day == "thursday" ? "Donderdag" :
-                Day == "friday" ? "Vrijdag" :
-                Day == "saturday" ? "Zaterdag" : "Zondag";
-        }
-        private int MaandInt(string maand)
-        {
-            string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
-            for (int i = 0; i < Maanden.Length; i++)
-            {
-                if (maand == Maanden[i])
-                    return i + 1;
-            }
-            return 0;
-        }
-        private bool CheckMaand(string maand)
-        {
-            string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
-            for (int i = 0; i < Maanden.Length; i++)
-            {
-                if (maand == Maanden[i])
-                    return true;
-            }
-            return false;
-        }
-        private bool CheckDag(int Dag, string Maand, int Jaar)
-        {
-            if (Maand == "januari" || Maand == "maart" || Maand == "mei" || Maand == "juli" || Maand == "augustus" || Maand == "oktober" || Maand == "november")
-                return true;
-            if (Maand == "februari")
-            {
-                if (Jaar % 4 == 0 && (Jaar % 100 != 0 || Jaar % 400 == 0))
-                    return Dag < 30 ? true : false;
-                return Dag < 29 ? true : false;
-            }
-            return Dag < 31 ? true : false;
-        }*/
         public string TijdString()
         {
             string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;
@@ -721,9 +678,7 @@ namespace TheFatDuckRestaurant
 
             string returnString = "";
             foreach (Tafel tafel in Tafels)
-            {
                 returnString += tafel.ID + "\n";
-            }
             return returnString;
         }
     }
