@@ -423,6 +423,7 @@ namespace TheFatDuckRestaurant
                         else
                         {
                             int huidigePaginaNR = 0;
+                            Console.OutputEncoding = System.Text.Encoding.UTF8;
                             while (true)
                             {
                                 int hoeveelheidPaginas = (int)Math.Ceiling(this.Bestelling.Count / 7.0);
@@ -432,7 +433,9 @@ namespace TheFatDuckRestaurant
                                 Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                                 for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < this.Bestelling.Count; i++)
                                 {
-                                    Console.WriteLine($"{i + 1}: {this.Bestelling[i + huidigePaginaNR * 7].Naam}: {this.Bestelling[i + huidigePaginaNR * 7].Aantal}x, {this.Bestelling[i + huidigePaginaNR * 7].TotaalPrijs} euro");
+                                    string totaalprijs = "" + this.Bestelling[i + huidigePaginaNR * 7].TotaalPrijs;
+                                    totaalprijs += (!totaalprijs.Contains(',') ? ",-" : totaalprijs[totaalprijs.Length - 2] == ',' ? "0" : "");
+                                    Console.Out.WriteLine($"{i + 1}: {this.Bestelling[i + huidigePaginaNR * 7].Naam}: {this.Bestelling[i + huidigePaginaNR * 7].Aantal}x, €{totaalprijs}");
                                 }
                                 Console.WriteLine();
                                 if (huidigePaginaNR + 1 < hoeveelheidPaginas)
@@ -565,8 +568,13 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("Datum:\t\t" + this.Datum);
             Console.WriteLine("Personen:\t" + this.Personen);
             Console.WriteLine("Gerechten:");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             foreach (var bestellingItem in this.Bestelling)
-                Console.WriteLine($"- {bestellingItem.Naam}: ({bestellingItem.Aantal}x), {bestellingItem.TotaalPrijs} euro");
+            {
+                string totaalprijs = "" + bestellingItem.TotaalPrijs;
+                totaalprijs += (!totaalprijs.Contains(',') ? ",-" : totaalprijs[totaalprijs.Length - 2] == ',' ? "0" : "");
+                Console.Out.WriteLine($"- {bestellingItem.Naam}: ({bestellingItem.Aantal}x), €{totaalprijs}");
+            }
             Console.WriteLine("Tafels:");
             if (this.Tafels == null)
                 Console.WriteLine("Nog geen tafels gekoppeld aan deze reservering.");
