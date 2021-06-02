@@ -78,7 +78,8 @@ namespace TheFatDuckRestaurant
         {
             Func<Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>
            {
-               string Input = Console.ReadLine();
+               SecureString pass = VarComponents.MaskStringInput();
+               string Input = new System.Net.NetworkCredential(string.Empty, pass).Password;
                return Tuple.Create(Input == gebruikerObject.Wachtwoord || Input == "0", Input);
            };
             while (true)
@@ -180,22 +181,6 @@ namespace TheFatDuckRestaurant
             {
                 WriteIndented = true,
             };
-            // Lambda om te checken of het een geldig wachtwoord is. Gebruikt RegEx
-            //      1       2               3                   4                5      6
-            // @"   ^  (?=.+?[A-Z])    (?=.+?[0-9])    (?=.+?[^a-zA-Z0-9])     .{8,}    $"
-            // 1 is de start van de string (input)
-            // 2 is een check of er ergens in de string 1 of meer hoofdletters zijn.
-            // 3 is een check of er ergens in de string 1 of meer cijfers zijn.
-            // 4 is een check of er ergens in de string 1 of meer characters zijn dat geen kleine letter, hoofdletter of getal is
-            // 5 is een check of de string minimaal 8 tot meer characters heeft
-            // 6 is het einde van de string (input)
-
-            Func<string, bool> ValidatePassword = (input) =>
-            {
-                Regex regex = new Regex(@"^(?=.+?[A-Z])(?=.+?[0-9])(?=.+?[^a-zA-Z0-9_@.-]).{8,}$");
-                Match match = regex.Match(input);
-                return match.Success;
-            };
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
             Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
@@ -239,59 +224,47 @@ namespace TheFatDuckRestaurant
                         uniekeNaam = true;
                 }
             }
-                Console.Clear();
-                Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                SecureString pass1 = VarComponents.MaskStringInput();
-                string password = new System.Net.NetworkCredential(string.Empty, pass1).Password;
-                while (!VarComponents.IsPassword(password))
-                {
-                    Console.Clear();
-                    Console.WriteLine(ASCIIART.RegistrerenArt());
-                    Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-                    SecureString pass2 = VarComponents.MaskStringInput();
-                    password = new System.Net.NetworkCredential(string.Empty, pass2).Password;
-                }
-                /*if (naamInput == "0")
-                {
-                    Tuple<string, string, string, string> Tuple = null; //Als een persoon toch geen nieuw account wilt returnt de functie gewoon de oude standaard gebruiker account
-                    return Tuple;
-                }*/
 
-            /*Console.Clear();
+            Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
-            string password = Console.ReadLine();*/
-            while (!ValidatePassword(password))
+            Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+            SecureString pass1 = VarComponents.MaskStringInput();
+            string password = new System.Net.NetworkCredential(string.Empty, pass1).Password;
+            while (!VarComponents.IsPassword(password))
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw adres in:");
-                string adres = Console.ReadLine();
-                while (!VarComponents.IsAdres(adres))
-                {
-                    Console.Clear();
-                    Console.WriteLine(ASCIIART.RegistrerenArt());
-                    Console.WriteLine("Verkeerd adres\x0A\x0A\x0AVoer uw adres in (straatnaam en huisnummer):");
-                    adres = Console.ReadLine();
-                }
+                Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+                SecureString pass2 = VarComponents.MaskStringInput();
+                password = new System.Net.NetworkCredential(string.Empty, pass2).Password;
+            }
 
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer uw adres in (straatnaam en huisnummer):");
+            string adres = Console.ReadLine();
+            while (!VarComponents.IsAdres(adres))
+            {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.RegistrerenArt());
-                Console.WriteLine("Voer uw woonplaats in:");
-                string woonplaats = Console.ReadLine();
-                while (!VarComponents.IsWoonplaats(woonplaats))
-                {
-                    Console.Clear();
-                    Console.WriteLine(ASCIIART.RegistrerenArt());
-                    Console.WriteLine("Verkeerde woonplaats\x0A\x0A\x0Awoonplaats in:");
-                    woonplaats = Console.ReadLine();
-                }
-
-                Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
-                return returnTuple;
+                Console.WriteLine("Verkeerd adres\x0A\x0A\x0AVoer uw adres in (straatnaam en huisnummer):");
+                adres = Console.ReadLine();
             }
-            return null;
+
+            Console.Clear();
+            Console.WriteLine(ASCIIART.RegistrerenArt());
+            Console.WriteLine("Voer uw woonplaats in:");
+            string woonplaats = Console.ReadLine();
+            while (!VarComponents.IsWoonplaats(woonplaats))
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Verkeerde woonplaats\x0A\x0A\x0AVoer uw woonplaats in:");
+                woonplaats = Console.ReadLine();
+            }
+
+            Tuple<string, string, string, string> returnTuple = Tuple.Create(naamInput, password, adres, woonplaats);
+            return returnTuple;
         }
 
         public Gebruiker registreerKlant(Gebruiker gebruiker)
