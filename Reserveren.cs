@@ -179,10 +179,6 @@ namespace TheFatDuckRestaurant
                 }
                 if (Aantal == 0)
                 {
-                    Console.Clear();
-                    Console.WriteLine(ASCIIART.ReserveringenArt());
-                    Console.WriteLine("U heeft nog geen reserveringen gemaakt\x0a\x0a" + "0: Ga terug naar het startscherm");
-                    Console.ReadKey();
                     return;
                 }
                 TheFatDuckRestaurant.Reservering[] KlantReserveringen = new TheFatDuckRestaurant.Reservering[Aantal];
