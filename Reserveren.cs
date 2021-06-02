@@ -29,12 +29,13 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.ReserveringenArt());
-                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (Woensdag 2 juni 2021)\n\nEnter: Ga terug naar het vorige scherm");
+                Console.WriteLine("Voor welke datum wilt u de reserveringen bekijken? (21 juni)\n\nEnter: Ga terug naar het vorige scherm");
                 string datum = Console.ReadLine();
                 datum.ToLower();
                 Console.Clear();
                 if(datum == "") 
                     return this;
+                datum = CheckDatum.checkDatum(datum);
                 int AantalRelevanteReserveringen = BerekenRelevanteReserveringen(datum);
                 if (AantalRelevanteReserveringen <= 0)
                 {
