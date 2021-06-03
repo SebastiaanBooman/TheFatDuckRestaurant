@@ -23,7 +23,9 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 Console.WriteLine(ASCIIART.TafelsArt());
                 Console.WriteLine($"Vrije Tafels in The Fat Duck voor {checkDatum} om {checkTijd} uur. (+-2 uur extra voor lopende reserveringen)\n");
-                Console.WriteLine("ID:\tPlekken:\n");
+                string topString = "";
+                string tafelString = ""; //tafel string waar alle tafels aan worden toegevoegt
+                int counter = 1;
                 foreach (Tafel tafel in Tafels)
                 {
                     bool alGereserveerd = false;
@@ -39,9 +41,21 @@ namespace TheFatDuckRestaurant
                         }
                     }
                     if (alGereserveerd != true)
-                        Console.WriteLine($"{tafel.ID},\t {tafel.Plekken}\n");
+                        tafelString+=$"{tafel.ID},\t{tafel.Plekken}\t\t";
+                    if (counter % 3 == 0)
+                        tafelString += "\n"; //zorgt voor in totaal 3 tabellen van tafels
+                    counter++;
                 }
-                Console.WriteLine("0: Terug");
+                if(counter >= 3)
+                    topString += "ID:\tPlek:\t\tID:\tPlek:\t\tID:\tPlek:\t";
+                else if(counter == 2)
+                    topString += "ID:\tPlek:\t\tID:\tPlek:\t";
+                else
+                    topString += "ID:\tPlek:\t";
+
+                Console.WriteLine(topString);
+                Console.WriteLine(tafelString);
+                Console.WriteLine("\n\n0: Terug");
                 if (wrongInput)
                     Console.WriteLine("Verkeerde Input! Probeer 0");
                 char userInput = Console.ReadKey().KeyChar;
