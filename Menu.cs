@@ -239,11 +239,13 @@ namespace TheFatDuckRestaurant
 
         public void ShowItemStandaard(Gerechten gerecht) //Print informatie over een specifiek gerecht uit het menu
         {
-
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            string totaalprijs = "" + gerecht.prijs;
+            totaalprijs += (!totaalprijs.Contains(',') ? ",-" : totaalprijs[totaalprijs.Length - 2] == ',' ? "0" : "");
             Console.Clear();
             Console.WriteLine(ASCIIART.MenuArt());
             Console.WriteLine($"Gerecht: " + gerecht.naam + "\x0A");
-            Console.WriteLine($"Prijs: {gerecht.prijs} Euro\x0a");
+            Console.Out.WriteLine($"Prijs: €{totaalprijs}\x0a");
             Console.WriteLine($"Beschrijving: " + gerecht.beschrijving + "\x0a");
             Console.WriteLine($"Ingredienten: ");
             for (int i = 0; i < gerecht.ingredienten.Length; i++)
