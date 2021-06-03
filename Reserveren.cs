@@ -507,7 +507,6 @@ namespace TheFatDuckRestaurant
                 {
                     case '1':
                         tafels.BekijkVrijeTafels($"{this.Tijd}{this.Datum}");
-                        char specifiekeInput = Console.ReadKey().KeyChar;
                         break;
                     case '2':
                         this.Tafels = tafels.KoppelenDoorMedewerker(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}"); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.
