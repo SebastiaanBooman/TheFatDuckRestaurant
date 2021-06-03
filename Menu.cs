@@ -518,7 +518,7 @@ namespace TheFatDuckRestaurant
                 {
                     try
                     {
-                        var userInputPrijsConverted = double.Parse(userInputPrijs);
+                        var userInputPrijsConverted = double.Parse(userInputPrijs.Replace('.', ','));
                         return userInputPrijsConverted;
                     }
                     catch (System.FormatException)
