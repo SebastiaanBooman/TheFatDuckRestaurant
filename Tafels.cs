@@ -13,32 +13,44 @@ namespace TheFatDuckRestaurant
 
         public TafelArray() { } //Empty constructor for json deserializen
 
-        public void BekijkVrijeTafels(string tijdEnDatum) //Todo: tafels zijn ook niet vrij als ze een aantal uur voor de gegeven tijd bezet zijn.
+        public void BekijkVrijeTafels(string tijdEnDatum)
         {
             int checkTijd = tijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
             string checkDatum = tijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
-
-            Console.Clear();
-            Console.WriteLine($"Vrije Tafels in The Fat Duck voor {tijdEnDatum} (+-2 uur extra voor lopende reserveringen)\n");
-            Console.WriteLine("ID:\tPlekken:\n");
-            foreach (Tafel tafel in Tafels)
+            bool wrongInput = false;
+            while (true)
             {
-                bool alGereserveerd = false;
-                if (tafel.Gereserveerd != null)
+                Console.Clear();
+                Console.WriteLine(ASCIIART.TafelsArt());
+                Console.WriteLine($"Vrije Tafels in The Fat Duck voor {checkDatum} om {checkTijd} uur. (+-2 uur extra voor lopende reserveringen)\n");
+                Console.WriteLine("ID:\tPlekken:\n");
+                foreach (Tafel tafel in Tafels)
                 {
-                    foreach (string data in tafel.Gereserveerd)
+                    bool alGereserveerd = false;
+                    if (tafel.Gereserveerd != null)
                     {
-                        if (isEenTafelAlGereserveerd(data, checkDatum, checkTijd))
+                        foreach (string data in tafel.Gereserveerd)
                         {
-                            alGereserveerd = true;
-                            break;
+                            if (isEenTafelAlGereserveerd(data, checkDatum, checkTijd))
+                            {
+                                alGereserveerd = true;
+                                break;
+                            }
                         }
                     }
+                    if (alGereserveerd != true)
+                        Console.WriteLine($"{tafel.ID},\t {tafel.Plekken}\n");
                 }
-                if (alGereserveerd != true)
-                    Console.WriteLine($"{tafel.ID}, {tafel.Plekken}\n");
+                Console.WriteLine("0: Terug");
+                if (wrongInput)
+                    Console.WriteLine("Verkeerde Input! Probeer 0");
+                char userInput = Console.ReadKey().KeyChar;
+                if (userInput == '0')
+                    return;
+                wrongInput = true;
             }
         }
+
         public int tijdEnDatumNaarInt(string tijdEnDatum) => int.Parse(tijdEnDatum.Substring(0,4)); //returnt de eerste 4 characters van een tijd (1200)
         public string tijdEnDatumNaarDatum(string tijdEnDatum) => tijdEnDatum.Substring(4); //returnt de characters na de tijd (datum)
         public bool tijdCheck(int tafelTijd, int reserveringTijd, int uren) => ((tafelTijd + uren >= reserveringTijd) || ((reserveringTijd - uren) <= tafelTijd)) ? true : false; //return true Als tafeltijd + uren groter is dan reserveringtijd, of als reserveringstijd - uren kleiner of gelijk is aan tafeltijd.
@@ -191,6 +203,8 @@ namespace TheFatDuckRestaurant
                         }
                         if (!alGereserveerd)
                         {
+                            if (gereserveerdeTafels == null)
+                                gereserveerdeTafels = new List<Tafel>();
                             Console.Clear();
                             Console.WriteLine(ASCIIART.TafelsArt());
                             gereserveerdeTafels.Add(tafel);
@@ -206,7 +220,7 @@ namespace TheFatDuckRestaurant
                 {
                     Console.Clear();
                     Console.WriteLine(ASCIIART.TafelsArt());
-                    Console.WriteLine($"{userInput} bestaat niet als tafel in het systeem! Klik op een toets om door te gaan");
+                    Console.WriteLine($"{userInput} is al gekoppeld voor deze tijd of bestaat niet als tafel in het systeem! Klik op een toets om door te gaan");
                     Console.ReadLine();
                 }
             }
@@ -278,20 +292,20 @@ namespace TheFatDuckRestaurant
                 if (userInput == "0")
                     return gereserveerdeTafels;
                 bool tafelSuccesvolOntkoppeld = false;
-                foreach(Tafel tafel in gereserveerdeTafels)
+                for(int j = 0; j < gereserveerdeTafels.Count; j++)
                 {
-                    if(tafel.ID == userInput)
+                    if(gereserveerdeTafels[j].ID == userInput)
                     {
-                        foreach(string datum in tafel.Gereserveerd)
+                        for (int i = 0; i < gereserveerdeTafels[j].Gereserveerd.Count; i++)
                         {
-                            if(datum == tijdEnDatum)
+                            if (gereserveerdeTafels[j].Gereserveerd[i] == tijdEnDatum)
                             {
-                                tafel.Gereserveerd.Remove(datum);
-                                gereserveerdeTafels.Remove(tafel);
-                                tafelSuccesvolOntkoppeld = true;
                                 Console.Clear();
                                 Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
-                                Console.WriteLine($"{tafel.ID} succesvol ontkoppeld van de reservering\n\nKlik op een toets om door te gaan");
+                                Console.WriteLine($"{gereserveerdeTafels[j].ID} succesvol ontkoppeld van de reservering\n\nKlik op een toets om door te gaan");
+                                gereserveerdeTafels[j].Gereserveerd.Remove(tijdEnDatum);
+                                gereserveerdeTafels.Remove(gereserveerdeTafels[j]);
+                                tafelSuccesvolOntkoppeld = true;
                                 Console.ReadKey();
                                 break;
                             }
