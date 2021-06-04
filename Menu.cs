@@ -326,98 +326,98 @@ namespace TheFatDuckRestaurant
                 if (ingredienten_.Count != 0)
                 {
                     for (int i = 0; i < ingredienten_.Count; i++)
-                    {
                         Console.WriteLine($"- {ingredienten_[i]}");
                 }
                 else
                 {
                     Console.WriteLine("<Nog geen ingredienten>");
 
-                Console.WriteLine($"\n5: Item opslaan\xA0");
-                Console.WriteLine($"0: Terug");
-                if (nietAllesIngevuld)
-                {
-                    Console.WriteLine("\nERROR: Vul eerst alle velden in voordat u het item opslaat!");
-                    nietAllesIngevuld = false;
-                }
-                ConsoleKeyInfo toetsUser = Console.ReadKey();
-                char toetsUserChar = toetsUser.KeyChar;
-                switch (toetsUserChar)
-                {
-                    case '1':
-                        naam_ = ChangeItemName(naam_); //Input "1" roept de functie die een gerecht's naam laat veranderen.
-                        break;
-                    case '2':
-                        prijs_ = ChangeItemPrice(prijs_); //Input "2" roept de functie die een gerecht's prijs laat veranderen.
-                        break;
-                    case '3':
-                        beschrijving_ = ChangeItemDescription(beschrijving_); //Input "3" roept de functie die een gerecht's beschrijving laat veranderen.
-                        break;
-                    case '4': //TODO: Ingredienten aanpassen moet ook in een aparte functie komen. Momenteel moeilijk te implementeren omdat de ingredienten niet een field of property van een class is en je kan het dus moeilijk callen.
-                        while (!passedSpecifiek) //Dit gedeelte handelt het toevoegen van ingredienten aan het nieuwe gerecht
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.MenuArt());
-                            Console.WriteLine($"Ingredienten aanpassen:");
-                            if (ingredienten_.Count != 0)
+                    Console.WriteLine($"\n5: Item opslaan\xA0");
+                    Console.WriteLine($"0: Terug");
+                    if (nietAllesIngevuld)
+                    {
+                        Console.WriteLine("\nERROR: Vul eerst alle velden in voordat u het item opslaat!");
+                        nietAllesIngevuld = false;
+                    }
+                    ConsoleKeyInfo toetsUser = Console.ReadKey();
+                    char toetsUserChar = toetsUser.KeyChar;
+                    switch (toetsUserChar)
+                    {
+                        case '1':
+                            naam_ = ChangeItemName(naam_); //Input "1" roept de functie die een gerecht's naam laat veranderen.
+                            break;
+                        case '2':
+                            prijs_ = ChangeItemPrice(prijs_); //Input "2" roept de functie die een gerecht's prijs laat veranderen.
+                            break;
+                        case '3':
+                            beschrijving_ = ChangeItemDescription(beschrijving_); //Input "3" roept de functie die een gerecht's beschrijving laat veranderen.
+                            break;
+                        case '4': //TODO: Ingredienten aanpassen moet ook in een aparte functie komen. Momenteel moeilijk te implementeren omdat de ingredienten niet een field of property van een class is en je kan het dus moeilijk callen.
+                            while (!passedSpecifiek) //Dit gedeelte handelt het toevoegen van ingredienten aan het nieuwe gerecht
                             {
-                                Console.WriteLine("\nAls u een ingredient wil verwijderen toets dan de index in die ernaast staat\nDit zijn de huidige ingredienten:");
-                                for (int i = 0; i < ingredienten_.Count; i++)
+                                Console.Clear();
+                                Console.WriteLine(ASCIIART.MenuArt());
+                                Console.WriteLine($"Ingredienten aanpassen:");
+                                if (ingredienten_.Count != 0)
                                 {
-                                    Console.WriteLine($"{i+1} - {ingredienten_[i]}");
+                                    Console.WriteLine("\nAls u een ingredient wil verwijderen toets dan de index in die ernaast staat\nDit zijn de huidige ingredienten:");
+                                    for (int i = 0; i < ingredienten_.Count; i++)
+                                    {
+                                        Console.WriteLine($"{i + 1} - {ingredienten_[i]}");
+                                    }
+                                }
+                                else
+                                    Console.WriteLine("\n<Nog geen ingredienten>");
+                                Console.WriteLine("\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
+                                var userInputIngredienten = Console.ReadLine();
+
+                                try
+                                {
+                                    var removeIndex = Int32.Parse(userInputIngredienten) - 1;
+                                    ingredienten_.RemoveAt(removeIndex);
+                                }
+                                catch
+                                {
+                                    int tempInt;
+                                    if (userInputIngredienten == "0")
+                                        passedSpecifiek = true;
+                                    else if (userInputIngredienten != "" && int.TryParse(userInputIngredienten, out tempInt) != true)
+                                        ingredienten_.Add(userInputIngredienten);
+
                                 }
                             }
-                            else
-                                Console.WriteLine("\n<Nog geen ingredienten>");
-                            Console.WriteLine("\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
-                            var userInputIngredienten = Console.ReadLine();
-
-                            try
-                            {
-                                var removeIndex = Int32.Parse(userInputIngredienten) - 1;
-                                ingredienten_.RemoveAt(removeIndex);
-                            }
-                            catch 
-                            {
-                                int tempInt;
-                                if (userInputIngredienten == "0")
-                                    passedSpecifiek = true;
-                                else if (userInputIngredienten != "" && int.TryParse(userInputIngredienten, out tempInt) != true)
-                                    ingredienten_.Add(userInputIngredienten);
-
-                            }
-                        }
-                        break;
-                    case '5': //Indien item opgeslagen moet worden, wordt er gecheckt of daadwerkelijk alle velden zijn ingevuld, zodat er geen errors in het JSON bestand ontstaan.
-                        if(ingredienten_.Count != 0 || naam_ == "<Nog geen naam>" || beschrijving_ == "<Nog geen beschrijving>")
-                        {
-                            nietAllesIngevuld = true;
                             break;
-                        }
+                        case '5': //Indien item opgeslagen moet worden, wordt er gecheckt of daadwerkelijk alle velden zijn ingevuld, zodat er geen errors in het JSON bestand ontstaan.
+                            if (ingredienten_.Count != 0 || naam_ == "<Nog geen naam>" || beschrijving_ == "<Nog geen beschrijving>")
+                            {
+                                nietAllesIngevuld = true;
+                                break;
+                            }
 
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.MenuArt());
-                        Console.WriteLine($"Het item wordt toegevoegd aan het {typeGerechtNaam} menu, weet u dit zeker?\n\nA: Item bevestigen en toevoegen aan het menu\n0: Item annuleren");
-                        ConsoleKeyInfo userInputConfirmatie = Console.ReadKey();
-                        char userInputConfirmatieChar = userInputConfirmatie.KeyChar;
-                        if (userInputConfirmatieChar == 'A' || userInputConfirmatieChar == 'a') //Vraagt nog een keer bevestiging of het item daadwerkelijk moet worden toegevoegd aan het menu
-                        {
                             Console.Clear();
                             Console.WriteLine(ASCIIART.MenuArt());
-                            Console.WriteLine($"{naam_} is succesvol toegevoegd aan de {typeGerechtNaam}!\n\n0: Terug");
-                            Console.ReadKey();
-                            return new Gerechten(naam_, prijs_, beschrijving_, ingredienten_.ToArray());
-                        }
-                        break;
-                    case '0':
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.MenuArt());
-                        Console.WriteLine("U gaat terug naar het algemene menu en er worden verder geen gerechten toegevoegd aan het menu, weet u dit zeker?\n\nA: Verder werken aan menu item\n0: Item schrappen en terug gaan");
-                        ConsoleKeyInfo userInputFinale = Console.ReadKey();
-                        char userInputFinaleChar = userInputFinale.KeyChar;
-                        if (userInputFinaleChar == '0')
-                            return null;
-                        break;
+                            Console.WriteLine($"Het item wordt toegevoegd aan het {typeGerechtNaam} menu, weet u dit zeker?\n\nA: Item bevestigen en toevoegen aan het menu\n0: Item annuleren");
+                            ConsoleKeyInfo userInputConfirmatie = Console.ReadKey();
+                            char userInputConfirmatieChar = userInputConfirmatie.KeyChar;
+                            if (userInputConfirmatieChar == 'A' || userInputConfirmatieChar == 'a') //Vraagt nog een keer bevestiging of het item daadwerkelijk moet worden toegevoegd aan het menu
+                            {
+                                Console.Clear();
+                                Console.WriteLine(ASCIIART.MenuArt());
+                                Console.WriteLine($"{naam_} is succesvol toegevoegd aan de {typeGerechtNaam}!\n\n0: Terug");
+                                Console.ReadKey();
+                                return new Gerechten(naam_, prijs_, beschrijving_, ingredienten_.ToArray());
+                            }
+                            break;
+                        case '0':
+                            Console.Clear();
+                            Console.WriteLine(ASCIIART.MenuArt());
+                            Console.WriteLine("U gaat terug naar het algemene menu en er worden verder geen gerechten toegevoegd aan het menu, weet u dit zeker?\n\nA: Verder werken aan menu item\n0: Item schrappen en terug gaan");
+                            ConsoleKeyInfo userInputFinale = Console.ReadKey();
+                            char userInputFinaleChar = userInputFinale.KeyChar;
+                            if (userInputFinaleChar == '0')
+                                return null;
+                            break;
+                    }
                 }
             }
         }
