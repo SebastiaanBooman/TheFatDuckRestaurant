@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Globalization;
 
 namespace TheFatDuckRestaurant
 {
@@ -130,7 +131,7 @@ namespace TheFatDuckRestaurant
                 {
                     try
                     {
-                        var userInputPrijsConverted = double.Parse(userInputPrijs.Replace('.', ','));
+                        var userInputPrijsConverted = double.Parse(userInputPrijs.Replace(',', '.'), CultureInfo.InvariantCulture);
                         prijs = userInputPrijsConverted;
                         return;
                     }
