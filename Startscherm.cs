@@ -149,7 +149,7 @@ namespace TheFatDuckRestaurant
         {
             foreach(Reservering reservering in reserveerLijst.Reserveringen)
             {
-                if (DatumGeweest(reservering.Datum))
+                if (CheckDatum.DatumGeweest(reservering.Datum))
                 {
                     double totalRevenue = 0;
                     for(int i = 0; i < reservering.Bestelling.Count; i++)
@@ -162,48 +162,6 @@ namespace TheFatDuckRestaurant
             }
             SaveReserveerlijst(reserveerLijst);
             SaveDailyRevenues();
-        }
-        public static bool DatumGeweest(string Datum)
-        {
-            string Dag = "";
-            string Maand = "";
-            string Jaar = "";
-            foreach(char sym in Datum)
-            {
-                if(Char.IsDigit(sym) && Maand == "")
-                {
-                    Dag += sym;
-                }
-                else if (Char.IsDigit(sym))
-                {
-                    Jaar += sym;
-                }
-                else if (Char.IsLetter(sym) && Dag != "")
-                {
-                    Maand += sym;
-                }
-            }
-            if(Int32.Parse(Jaar) < DateTime.Now.Year)
-            {
-                return true;
-            }
-            string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
-            int Maandint = 0;
-            for(int i = 0; i < Maanden.Length; i++)
-            {
-                if(Maanden[i] == Maand)
-                {
-                    Maandint = i + 1;
-                }
-            }
-            if(Int32.Parse(Jaar) == DateTime.Now.Year)
-            {
-                if(Maandint < DateTime.Now.Month || (Maandint == DateTime.Now.Month && Int32.Parse(Dag) < DateTime.Now.Day))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
     }
