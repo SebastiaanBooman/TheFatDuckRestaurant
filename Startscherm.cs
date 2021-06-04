@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using static TheFatDuckRestaurant.Menu;
-//using static TheFatDuckRestaurant.Inloggen;
 using static TheFatDuckRestaurant.ReserveerLijst;
 using static TheFatDuckRestaurant.Clickstream;
 using System.Text.Json;
@@ -91,7 +90,6 @@ namespace TheFatDuckRestaurant
                         reserveerLijst.BekijkReserveringenMedewerker(tafels);
                         SaveReserveerlijst(this.reserveerLijst);
                         break;
-
                 }
             }
         }
