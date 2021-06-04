@@ -249,9 +249,7 @@ namespace TheFatDuckRestaurant
             Console.WriteLine($"Beschrijving: " + gerecht.beschrijving + "\x0a");
             Console.WriteLine($"Ingredienten: ");
             for (int i = 0; i < gerecht.ingredienten.Length; i++)
-            {
                 Console.WriteLine($"- {gerecht.ingredienten[i]}");
-            }
         }
 
         public Gerechten[] MenuAanpassenScherm(Gerechten[] typeGerecht) //Handelt het toevoegen van een item aan een specifiek menu.
@@ -303,7 +301,6 @@ namespace TheFatDuckRestaurant
                             return Hoofdgerechten;
                         else
                             return Nagerechten;
-                        //break;
                 }
             }
         }
@@ -329,9 +326,7 @@ namespace TheFatDuckRestaurant
                 if (ingredienten_ != null)
                 {
                     for (int i = 0; i < ingredienten_.Length; i++)
-                    {
                         Console.WriteLine($"- {ingredienten_[i]}");
-                    }
                 }
                 else
                 {
@@ -492,9 +487,7 @@ namespace TheFatDuckRestaurant
                 else if (userInputNaam.Any(char.IsDigit)) //Checkt of er een getal tussen de letters staat.
                     wrongInput = true;
                 else
-                {
                     return userInputNaam;
-                }
             }
         }
 
@@ -538,20 +531,14 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine($"Beschrijving aanpassen:\n\nDit is de huidige beschrijving: {oldDescription}\n\nToets de nieuwe beschrijving in en klik op enter\n\n0: Terug");
                 var userInputBeschrijving = Console.ReadLine();
                 if (userInputBeschrijving == "0")
-                {
                     return oldDescription;
-                }
-                else
-                {
-                    return userInputBeschrijving;
-                }
+                return userInputBeschrijving;
             }
         }
 
         public Gerechten[] removeItemScreen(Gerechten[] typeGerecht, string typeGerechtNaam) //Print de gerechten met de optie om die te verwijderen uit de lijst
         {
-            bool passed = false;
-            while (passed != true)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.MenuArt());
@@ -559,10 +546,7 @@ namespace TheFatDuckRestaurant
                 if (typeGerecht.Length > 0)
                 {
                     for (int i = 1; i < typeGerecht.Length + 1; i++)
-                    {
                         Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A");
-                    }
-
                 }
                 else
                     Console.WriteLine("<Er bestaan nog geen " + typeGerechtNaam + " in het menu>");
@@ -591,17 +575,13 @@ namespace TheFatDuckRestaurant
                         Console.ReadKey();
                         return typeGerecht;
                     }
-                    else
-                        passed = false;
                 }
                 catch
                 {
                     if (userInputChar == '0')
                         return typeGerecht;
                 }
-
             }
-            return null;
         }
 
         public Gerechten[] removeItemMenu(Gerechten[] typeGerecht, string typeGerechtNaam, int removeIndex) //Verwijderd een specifiek item bij een specifiek lijst met de correcte ID in de array.
