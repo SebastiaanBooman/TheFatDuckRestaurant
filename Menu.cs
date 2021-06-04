@@ -311,7 +311,7 @@ namespace TheFatDuckRestaurant
             var naam_ = "<Nog geen naam>";
             var prijs_ = 0.0;
             var beschrijving_ = "<Nog geen beschrijving>";
-            string[] ingredienten_ = null;
+            List<string> ingredienten_ = new List<string>();
 
             while (true)
             {
@@ -323,12 +323,14 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine($"2: Prijs \t\t{prijs_}");
                 Console.WriteLine($"3: Beschrijving \t{beschrijving_}");
                 Console.WriteLine("4: Ingredienten:");
-                if (ingredienten_ != null)
+                if (ingredienten_.Count != 0)
                 {
-                    for (int i = 0; i < ingredienten_.Length; i++)
+                    for (int i = 0; i < ingredienten_.Count; i++)
+                    {
                         Console.WriteLine($"- {ingredienten_[i]}");
                 }
                 else
+                {
                     Console.WriteLine("<Nog geen ingredienten>");
 
                 Console.WriteLine($"\n5: Item opslaan\xA0");
@@ -356,38 +358,38 @@ namespace TheFatDuckRestaurant
                         {
                             Console.Clear();
                             Console.WriteLine(ASCIIART.MenuArt());
-                            Console.WriteLine($"Ingredienten aanpassen:\n\nDit zijn de huidige ingredienten:");
-                            if (ingredienten_ != null)
+                            Console.WriteLine($"Ingredienten aanpassen:");
+                            if (ingredienten_.Count != 0)
                             {
-                                for (int i = 0; i < ingredienten_.Length; i++)
-                                    Console.WriteLine($"- {ingredienten_[i]}");
+                                Console.WriteLine("\nAls u een ingredient wil verwijderen toets dan de index in die ernaast staat\nDit zijn de huidige ingredienten:");
+                                for (int i = 0; i < ingredienten_.Count; i++)
+                                {
+                                    Console.WriteLine($"{i+1} - {ingredienten_[i]}");
+                                }
                             }
                             else
-                                Console.WriteLine("<Nog geen ingredienten.>");
+                                Console.WriteLine("\n<Nog geen ingredienten>");
                             Console.WriteLine("\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
                             var userInputIngredienten = Console.ReadLine();
-                            if (userInputIngredienten == "0")
-                                passedSpecifiek = true;
-                            else if (userInputIngredienten != "")
+
+                            try
                             {
-                                if (ingredienten_ != null)
-                                {
-                                    var tempIngredienten = new string[ingredienten_.Length + 1];
-                                    for (int i = 0; i < ingredienten_.Length; i++)
-                                        tempIngredienten[i] = ingredienten_[i];
-                                    tempIngredienten[tempIngredienten.Length - 1] = userInputIngredienten;
-                                    ingredienten_ = tempIngredienten;
-                                }
-                                else
-                                {
-                                    ingredienten_ = new string[1];
-                                    ingredienten_[0] = userInputIngredienten;
-                                }
+                                var removeIndex = Int32.Parse(userInputIngredienten) - 1;
+                                ingredienten_.RemoveAt(removeIndex);
+                            }
+                            catch 
+                            {
+                                int tempInt;
+                                if (userInputIngredienten == "0")
+                                    passedSpecifiek = true;
+                                else if (userInputIngredienten != "" && int.TryParse(userInputIngredienten, out tempInt) != true)
+                                    ingredienten_.Add(userInputIngredienten);
+
                             }
                         }
                         break;
                     case '5': //Indien item opgeslagen moet worden, wordt er gecheckt of daadwerkelijk alle velden zijn ingevuld, zodat er geen errors in het JSON bestand ontstaan.
-                        if (ingredienten_ == null || naam_ == "<Nog geen naam>" || beschrijving_ == "<Nog geen beschrijving>")
+                        if(ingredienten_.Count != 0 || naam_ == "<Nog geen naam>" || beschrijving_ == "<Nog geen beschrijving>")
                         {
                             nietAllesIngevuld = true;
                             break;
@@ -404,7 +406,7 @@ namespace TheFatDuckRestaurant
                             Console.WriteLine(ASCIIART.MenuArt());
                             Console.WriteLine($"{naam_} is succesvol toegevoegd aan de {typeGerechtNaam}!\n\n0: Terug");
                             Console.ReadKey();
-                            return new Gerechten(naam_, prijs_, beschrijving_, ingredienten_);
+                            return new Gerechten(naam_, prijs_, beschrijving_, ingredienten_.ToArray());
                         }
                         break;
                     case '0':
@@ -505,7 +507,7 @@ namespace TheFatDuckRestaurant
                 {
                     try
                     {
-                        var userInputPrijsConverted = double.Parse(userInputPrijs);
+                        var userInputPrijsConverted = double.Parse(userInputPrijs.Replace('.', ','));
                         return userInputPrijsConverted;
                     }
                     catch (System.FormatException)
