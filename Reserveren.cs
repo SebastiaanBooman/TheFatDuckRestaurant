@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using static TheFatDuckRestaurant.Gebruikers;
-using static TheFatDuckRestaurant.Menu;
 
 namespace TheFatDuckRestaurant
 {

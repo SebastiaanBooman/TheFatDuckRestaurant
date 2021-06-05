@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using static TheFatDuckRestaurant.MainClass;
-using static TheFatDuckRestaurant.ReserveerLijst;
-using static TheFatDuckRestaurant.ASCIIART;
-using static TheFatDuckRestaurant.Menu;
-using System.Text.RegularExpressions;
 using System.Security;
 
 namespace TheFatDuckRestaurant

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheFatDuckRestaurant
 {
-    class CheckDatum
+    static class CheckDatum
     {
         public static string checkDatum(string Datum, bool reserveren = true)
         {
