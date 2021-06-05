@@ -32,6 +32,7 @@ namespace TheFatDuckRestaurant
         public Bestelling laadSpecifiekMenu(Gerecht[] typeGerecht, string typeGebruiker) //Laad de gerechten van het type menu (Voorgerechten, Hoofdgerechten, Nagerechten etc).
         {
             int huidigePaginaNR = 0; //Bij de eerste keer laden van het menu zal de eerste 7 gerechten worden getoont.
+            bool verkeerdeInput = false;
             while (true)
             {
                 Console.Clear();
@@ -66,6 +67,11 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine("A: Menu aanpassen");
                 Console.WriteLine("0: Terug");
 
+                if (verkeerdeInput)
+                {
+                    Console.WriteLine("ERROR: Typ een geldig index in");
+                    verkeerdeInput = false;
+                }
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
 
@@ -83,7 +89,10 @@ namespace TheFatDuckRestaurant
                 else if (typeGebruiker == "Klant") //Indien er als klant is ingelogd, moet er bij het klikken op een gerecht de optie worden geprint om het item toe te kunnen voegen aan een reservering
                     return ShowItemReserveringHandler(typeGerecht, toetsUserChar, huidigePaginaNR);
                 else
-                    ShowItemHandler(typeGerecht, toetsUserChar, huidigePaginaNR);
+                {
+                    if (ShowItemHandler(typeGerecht, toetsUserChar, huidigePaginaNR) == false)
+                        verkeerdeInput = true;
+                }
             }
         }
 
@@ -96,7 +105,11 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 kiesMenuOpties(typeGebruiker);
                 if (verkeerdeInput)
+                {
                     Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of 0");
+                    verkeerdeInput = false;
+
+                }
 
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
                 char toetsUserChar = toetsUser.KeyChar;
@@ -190,15 +203,16 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void ShowItemHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
+        public bool ShowItemHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
         {
             try
             {
                 ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
                 Console.WriteLine($"\n\n0 : Terug");
                 Console.ReadKey();
+                return true;
             }
-            catch { return; }
+            catch { return false; }
         }
 
         public Bestelling ShowItemReserveringHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over specifiek gerecht en geeft optie om het item toe te voegen aan je reservering
