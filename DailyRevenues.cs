@@ -12,6 +12,7 @@ namespace TheFatDuckRestaurant
             while (Datum != "0")
             {
                 Console.Clear();
+                Console.WriteLine(ASCIIART.OpbrengstenArt());
                 Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)\n\n0: Ga terug naar het startscherm");
                 Datum = Console.ReadLine();
                 Console.Clear();
@@ -29,9 +30,7 @@ namespace TheFatDuckRestaurant
                                 if (Datum == reservering.Datum)
                                 {
                                     for (int i = 0; i < reservering.Bestelling.Count; i++)
-                                    {
                                         Revenue += reservering.Bestelling[i].Prijs * reservering.Bestelling[i].Aantal;
-                                    }
                                 }
                             }
                             string revenue = "" + Revenue;
@@ -39,6 +38,12 @@ namespace TheFatDuckRestaurant
                             Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
                             Console.ReadKey();
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine(ASCIIART.OpbrengstenArt());
+                        Console.WriteLine("Deze datum bestaat niet!\nKlik op een toets om terug te gaan");
+                        Console.ReadKey();
                     }
                 }
             }

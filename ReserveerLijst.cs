@@ -31,13 +31,14 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 if (datum == "")
                     return this;
+
                 datum = CheckDatum.checkDatum(datum);
                 int AantalRelevanteReserveringen = BerekenRelevanteReserveringen(datum);
                 if (AantalRelevanteReserveringen <= 0)
                 {
+                    Console.Clear();
                     Console.WriteLine(ASCIIART.ReserveringenArt());
-                    Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum\x0a");
-                    Console.WriteLine("Klik op een toets om terug te gaan");
+                    Console.WriteLine("Er zijn nog geen reserveringen gedaan voor deze datum of de datum is ongeldig. Klik op een toets om terug te gaan.\x0a");
                     Console.ReadKey();
                 }
                 else
@@ -282,6 +283,7 @@ namespace TheFatDuckRestaurant
                                 NieuweReservering.Datum = NieuweDatum;
                             else
                             {
+                                Console.Clear();
                                 Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                                 Console.WriteLine("Er zijn niet genoeg vrije plaatsen op deze dag op dit tijdstip\x0a\x0a" + "Enter: Ga terug naar het vorige scherm");
                                 Console.ReadKey();

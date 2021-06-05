@@ -176,7 +176,7 @@ namespace TheFatDuckRestaurant
             };
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw gebruikers naam in\n0: Terug");
+            Console.WriteLine("Voer een gebruikers naam in\n0: Terug");
             var naamInput = Console.ReadLine();
             bool uniekeNaam = false;
             while (!uniekeNaam)
@@ -220,7 +220,7 @@ namespace TheFatDuckRestaurant
 
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
+            Console.WriteLine("Voer een wachtwoord in van minimaal 8 tekens waarvan minimaal 1 Hoofdletter, 1 cijfer en 1 speciaal karakter:");
             SecureString pass1 = VarComponents.MaskStringInput();
             string password = new System.Net.NetworkCredential(string.Empty, pass1).Password;
             while (!VarComponents.IsPassword(password))
@@ -234,7 +234,7 @@ namespace TheFatDuckRestaurant
 
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw adres in (straatnaam en huisnummer):");
+            Console.WriteLine("Voer een adres in (straatnaam en huisnummer):");
             string adres = Console.ReadLine();
             while (!VarComponents.IsAdres(adres))
             {
@@ -246,7 +246,7 @@ namespace TheFatDuckRestaurant
 
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer uw woonplaats in:");
+            Console.WriteLine("Voer een woonplaats in:");
             string woonplaats = Console.ReadLine();
             while (!VarComponents.IsWoonplaats(woonplaats))
             {
