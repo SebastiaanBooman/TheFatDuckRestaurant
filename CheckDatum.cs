@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TheFatDuckRestaurant
 {
@@ -14,17 +12,11 @@ namespace TheFatDuckRestaurant
             foreach (char sym in Datum)
             {
                 if (Char.IsDigit(sym) && Maand == "")
-                {
                     Dag += sym;
-                }
                 else if (Char.IsDigit(sym) && Maand != "")
-                {
                     jaar += sym;
-                }
                 else if (Char.IsLetter(sym) && Dag != "")
-                {
                     Maand += sym;
-                }
             }
             int DagInt = Dag != "" ? Int32.Parse(Dag) : 0;
             int.TryParse(jaar, out int Jaar);
@@ -34,19 +26,11 @@ namespace TheFatDuckRestaurant
                 if (reserveren)
                 {
                     if (MaandInt(Maand.ToLower()) < DateTime.Now.Month || (MaandInt(Maand.ToLower()) == DateTime.Now.Month && DagInt < DateTime.Now.Day))
-                    {
                         Jaar += 1;
-                    }
                 }
                 if (CheckDag(DagInt, Maand.ToLower(), Jaar))
-                {
                     return $"{WeekDag(DagInt, Maand, Jaar, reserveren)} {Dag} {Maand} {Jaar}";
-                }
             }
-            Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-            Console.WriteLine("Deze datum bestaat niet\x0a\x0a");
-            Console.WriteLine("Enter: Ga terug naar het vorige scherm");
-            Console.ReadKey();
             return null;
         }
         private static string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
@@ -56,13 +40,9 @@ namespace TheFatDuckRestaurant
             int HuidigeMaand = DateTime.Now.Month;
             DateTime date;
             if ((Maand < HuidigeMaand || (Maand == HuidigeMaand && Dag < HuidigeDag)) && reserveren)
-            {
                 date = new DateTime(Jaar + 1, Maand, Dag);
-            }
             else
-            {
                 date = new DateTime(Jaar, Maand, Dag);
-            }
             string WeekDay = "" + date.DayOfWeek;
             return DaytoDag(WeekDay.ToLower());
         }
@@ -115,17 +95,11 @@ namespace TheFatDuckRestaurant
             foreach (char sym in Datum)
             {
                 if (Char.IsDigit(sym) && Maand == "")
-                {
                     Dag += sym;
-                }
                 else if (Char.IsDigit(sym))
-                {
                     Jaar += sym;
-                }
                 else if (Char.IsLetter(sym) && Dag != "")
-                {
                     Maand += sym;
-                }
             }
             if (Int32.Parse(Jaar) < DateTime.Now.Year)
             {
@@ -136,16 +110,12 @@ namespace TheFatDuckRestaurant
             for (int i = 0; i < Maanden.Length; i++)
             {
                 if (Maanden[i] == Maand)
-                {
                     Maandint = i + 1;
-                }
             }
             if (Int32.Parse(Jaar) == DateTime.Now.Year)
             {
                 if (Maandint < DateTime.Now.Month || (Maandint == DateTime.Now.Month && Int32.Parse(Dag) < DateTime.Now.Day))
-                {
                     return true;
-                }
             }
             return false;
         }

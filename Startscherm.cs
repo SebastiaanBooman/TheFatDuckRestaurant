@@ -95,7 +95,14 @@ namespace TheFatDuckRestaurant
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.InformatieArt());
-                Console.WriteLine("<Informatie over the Fat Duck>\n\n");
+                Console.WriteLine("The Fat Duck Restaurant\t\t\t\t\t\tAdres: Holland Amerikakade 104, 3072 MC Rotterdam");
+                Console.WriteLine("\t\t\t\t\t\t\t\tEmail: TheFatDuck@gmail.com");
+                Console.WriteLine("The Fat Duck Restaurant is opgericht in 2020 door\t\tTelefoon: 010 123 4567");
+                Console.WriteLine("eigenaar Jake Darcy. Met een totaal van 100 zitplaatsen\t\tOpeningstijden: 11:00 tot 23:00");
+                Console.WriteLine("heeft het restaurant twee verdiepingen, 50 per verdieping.\t");
+                Console.WriteLine("The Fat Duck Restaurant specialiseert zich in Zuid-Oost\t\t");
+                Console.WriteLine("Aziatische gerechten en adverteert zich op het gebruik\t\t");
+                Console.WriteLine("van alleen de verste producten.\n");
                 Console.WriteLine("0: Terug naar startscherm");
                 if (verkeerdeInput)
                     Console.WriteLine("VerkeerdeInput, probeer 0");
