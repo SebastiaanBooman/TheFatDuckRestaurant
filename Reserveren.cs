@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using static TheFatDuckRestaurant.Gebruikers;
-using static TheFatDuckRestaurant.Menu;
 
 namespace TheFatDuckRestaurant
 {
@@ -507,7 +503,6 @@ namespace TheFatDuckRestaurant
                 {
                     case '1':
                         tafels.BekijkVrijeTafels($"{this.Tijd}{this.Datum}");
-                        char specifiekeInput = Console.ReadKey().KeyChar;
                         break;
                     case '2':
                         this.Tafels = tafels.KoppelenDoorMedewerker(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}"); //Personen -> aantal personen, Tafels -> gereserveerde tafels die al gekoppeld zijn.

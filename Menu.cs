@@ -2,24 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-//using static TheFatDuckRestaurant.Startscherm;
 using static TheFatDuckRestaurant.ASCIIART;
-using System.Linq;
 
 namespace TheFatDuckRestaurant
 {
     public class Menu
     {
-        public Gerechten[] Voorgerechten { get; set; }
-        public Gerechten[] Hoofdgerechten { get; set; }
-        public Gerechten[] Nagerechten { get; set; }
+        public Gerecht[] Voorgerechten { get; set; }
+        public Gerecht[] Hoofdgerechten { get; set; }
+        public Gerecht[] Nagerechten { get; set; }
 
         public void kiesMenuOpties(string typeGebruiker) //Print de lijst met typen Gerechten
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.MenuArt());
-            if(typeGebruiker == "Klant")
+            if (typeGebruiker == "Klant")
                 Console.WriteLine("Kies het type gerecht wat u wilt toevoegen aan uw reservering:\x0A\x0A");
             else
                 Console.WriteLine("KIES HET TYPE GERECHT:\x0A\x0A");
@@ -29,7 +26,7 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("0: Terug");
         }
 
-        public Bestelling laadSpecifiekMenu(Gerechten[] typeGerecht, string typeGebruiker) //Laad de gerechten van het type menu (Voorgerechten, Hoofdgerechten, Nagerechten etc).
+        public Bestelling laadSpecifiekMenu(Gerecht[] typeGerecht, string typeGebruiker) //Laad de gerechten van het type menu (Voorgerechten, Hoofdgerechten, Nagerechten etc).
         {
             int huidigePaginaNR = 0; //Bij de eerste keer laden van het menu zal de eerste 7 gerechten worden getoont.
             while (true)
@@ -44,7 +41,7 @@ namespace TheFatDuckRestaurant
                     Console.WriteLine($"\nNagerechten\n");
 
                 int hoeveelheidPaginas = (int)Math.Ceiling(typeGerecht.Length / 7.0); //Berekent hoeveel pagina's van 7 gerechten er moeten zijn om alle gerechten te kunnen tonen (Bijv. 25 / 7 = 4 paginas)
-                Console.WriteLine($"Pagina {huidigePaginaNR +1}/{hoeveelheidPaginas}\n");
+                Console.WriteLine($"Pagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
                 for (int i = 1; i < 8; i++) //Laat 7 gerechten zien per slide
                 {
                     try
@@ -56,9 +53,9 @@ namespace TheFatDuckRestaurant
 
                     }
                 }
-                if (huidigePaginaNR+1 < hoeveelheidPaginas)
+                if (huidigePaginaNR + 1 < hoeveelheidPaginas)
                     Console.WriteLine("8: Volgende pagina");
-                if (huidigePaginaNR+1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
+                if (huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
                     Console.WriteLine("9: Vorige pagina");
 
 
@@ -91,7 +88,7 @@ namespace TheFatDuckRestaurant
         {
             bool verkeerdeInput = false;
 
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 kiesMenuOpties(typeGebruiker);
@@ -148,7 +145,7 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 BekijkSpecifiekMenu("Gebruiker");
                 return;
-        
+
             }
         }
 
@@ -164,13 +161,13 @@ namespace TheFatDuckRestaurant
                         bestelling = new List<Bestelling>();
 
                     bool addNewOne = true;
-                    foreach(var bestellingItem in bestelling)
+                    foreach (var bestellingItem in bestelling)
                     {
                         if (bestellingItem.Naam == bekijkMenu.Naam)
                         {
                             bestellingItem.Aantal += bekijkMenu.Aantal;
                             addNewOne = false;
-                        }                
+                        }
                     }
 
                     if (addNewOne)
@@ -190,23 +187,23 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void ShowItemHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
+        public void ShowItemHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
         {
             try
             {
-                ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString())-1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
+                ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
                 Console.WriteLine($"\n\n0 : Terug");
                 Console.ReadKey();
             }
-            catch{ return; }
+            catch { return; }
         }
 
-        public Bestelling ShowItemReserveringHandler(Gerechten[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over specifiek gerecht en geeft optie om het item toe te voegen aan je reservering
+        public Bestelling ShowItemReserveringHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over specifiek gerecht en geeft optie om het item toe te voegen aan je reservering
         {
             try
-            {  
+            {
                 bool specifiekPassed = false;
-                while(true)
+                while (true)
                 {
                     ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
                     Console.WriteLine("\nR: Toevoegen aan reservering");
@@ -215,7 +212,7 @@ namespace TheFatDuckRestaurant
                     char toetsUsrChar = toetsUsr.KeyChar;
 
                     if (toetsUsrChar == 'R' || toetsUsrChar == 'r') //Indien er op R wordt geklikt wordt het item toegevoegd aan de lijst met Bestellingen.
-                        while(specifiekPassed != true)
+                        while (specifiekPassed != true)
                         {
                             Console.Clear();
                             Console.WriteLine(ASCIIART.ReserverenArt()); //Vraagt hoeveel je van het item wil toevoegen aan je reservering, indien je 0 klikt ga je terug en voeg je het niet toe.
@@ -230,14 +227,14 @@ namespace TheFatDuckRestaurant
                             }
                             catch { };
                         }
-                    if(toetsUsrChar == '0')
+                    if (toetsUsrChar == '0')
                         return null;
                 }
             }
             catch { return null; }
         }
 
-        public void ShowItemStandaard(Gerechten gerecht) //Print informatie over een specifiek gerecht uit het menu
+        public void ShowItemStandaard(Gerecht gerecht) //Print informatie over een specifiek gerecht uit het menu
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             string totaalprijs = "" + gerecht.prijs;
@@ -248,19 +245,17 @@ namespace TheFatDuckRestaurant
             Console.Out.WriteLine($"Prijs: €{totaalprijs}\x0a");
             Console.WriteLine($"Beschrijving: " + gerecht.beschrijving + "\x0a");
             Console.WriteLine($"Ingredienten: ");
-            for (int i = 0; i < gerecht.ingredienten.Length; i++)
-            {
+            for (int i = 0; i < gerecht.ingredienten.Count; i++)
                 Console.WriteLine($"- {gerecht.ingredienten[i]}");
-            }
         }
 
-        public Gerechten[] MenuAanpassenScherm(Gerechten[] typeGerecht) //Handelt het toevoegen van een item aan een specifiek menu.
+        public Gerecht[] MenuAanpassenScherm(Gerecht[] typeGerecht) //Handelt het toevoegen van een item aan een specifiek menu.
         {
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.MenuArt());
-                if(typeGerecht == Voorgerechten)
+                if (typeGerecht == Voorgerechten)
                     Console.WriteLine("Voorgerechten menu aanpassen\n\n1: Item toevoegen\n\n2: Item verwijderen\n\n0: Terug");
                 else if (typeGerecht == Hoofdgerechten)
                     Console.WriteLine("Hoofdgerechten menu aanpassen\n\n1: Item toevoegen\n\n2: Item verwijderen\n\n0: Terug");
@@ -274,7 +269,7 @@ namespace TheFatDuckRestaurant
                     case '1':
                         if (typeGerecht == Voorgerechten)
                         {
-                            AddItemHandler("Voorgerechten"); 
+                            AddItemHandler("Voorgerechten");
                             typeGerecht = Voorgerechten;
                         }
                         else if (typeGerecht == Hoofdgerechten)
@@ -303,132 +298,16 @@ namespace TheFatDuckRestaurant
                             return Hoofdgerechten;
                         else
                             return Nagerechten;
-                        //break;
                 }
             }
         }
 
-        public Gerechten AddItemScherm(string typeGerechtNaam) //Print de opties om een item toe te voegen, en handeld correcte inputs.
+        public Gerecht AddItemScherm(string typeGerechtNaam) //Print de opties om een item toe te voegen, en handeld correcte inputs.
         {
-            var nietAllesIngevuld = false;
-            var naam_ = "<Nog geen naam>";
-            var prijs_ = 0.0;
-            var beschrijving_ = "<Nog geen beschrijving>";
-            string[] ingredienten_ = null; ;
-
-            while (true)
-            {
-                var passedSpecifiek = false;
-                Console.Clear();
-                Console.WriteLine(ASCIIART.MenuArt());
-                Console.WriteLine("Voeg een nieuw " + typeGerechtNaam + " item toe aan het menu \x0A");
-                Console.WriteLine($"1: Naam \t\t{naam_}");
-                Console.WriteLine($"2: Prijs \t\t{prijs_}");
-                Console.WriteLine($"3: Beschrijving \t{beschrijving_}");
-                Console.WriteLine("4: Ingredienten:");
-                if (ingredienten_ != null)
-                {
-                    for (int i = 0; i < ingredienten_.Length; i++)
-                    {
-                        Console.WriteLine($"- {ingredienten_[i]}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("<Nog geen ingredienten>");
-                }
-                Console.WriteLine($"\n5: Item opslaan\xA0");
-                Console.WriteLine($"0: Terug");
-                if(nietAllesIngevuld)
-                {
-                    Console.WriteLine("\nERROR: Vul eerst alle velden in voordat u het item opslaat!");
-                    nietAllesIngevuld = false;
-                }
-                ConsoleKeyInfo toetsUser = Console.ReadKey();
-                char toetsUserChar = toetsUser.KeyChar;
-                switch (toetsUserChar)
-                {
-                    case '1':
-                        naam_ = ChangeItemName(naam_); //Input "1" roept de functie die een gerecht's naam laat veranderen.
-                        break;
-                    case '2':
-                        prijs_ = ChangeItemPrice(prijs_); //Input "2" roept de functie die een gerecht's prijs laat veranderen.
-                        break;
-                    case '3':
-                        beschrijving_ = ChangeItemDescription(beschrijving_); //Input "3" roept de functie die een gerecht's beschrijving laat veranderen.
-                        break;
-                    case '4': //TODO: Ingredienten aanpassen moet ook in een aparte functie komen. Momenteel moeilijk te implementeren omdat de ingredienten niet een field of property van een class is en je kan het dus moeilijk callen.
-                        Console.Clear();
-                        while (!passedSpecifiek) //Dit gedeelte handelt het toevoegen van ingredienten aan het nieuwe gerecht
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.MenuArt());
-                            Console.WriteLine($"Ingredienten aanpassen:\n\nDit zijn de huidige ingredienten:");
-                            if (ingredienten_ != null)
-                            {
-                                for (int i = 0; i < ingredienten_.Length; i++)
-                                {
-                                    Console.WriteLine($"- {ingredienten_[i]}");
-                                }
-                            }
-                            else
-                                Console.WriteLine("<Nog geen ingredienten.>");
-                            Console.WriteLine("\nToets een nieuw ingredient in en klik op enter\n\n0: Terug");
-                            var userInputIngredienten = Console.ReadLine();
-                            if (userInputIngredienten == "0")
-                                passedSpecifiek = true;
-                            else if(userInputIngredienten != "")
-                            {
-                                if (ingredienten_ != null)
-                                {
-                                    var tempIngredienten = new string[ingredienten_.Length + 1];
-                                    for (int i = 0; i < ingredienten_.Length; i++)
-                                    {
-                                        tempIngredienten[i] = ingredienten_[i];
-                                    }
-                                    tempIngredienten[tempIngredienten.Length - 1] = userInputIngredienten;
-                                    ingredienten_ = tempIngredienten;
-                                }
-                                else
-                                {
-                                    ingredienten_ = new string[1];
-                                    ingredienten_[0] = userInputIngredienten;
-                                }
-                            }
-                        }
-                        break;
-                    case '5': //Indien item opgeslagen moet worden, wordt er gecheckt of daadwerkelijk alle velden zijn ingevuld, zodat er geen errors in het JSON bestand ontstaan.
-                        if(ingredienten_ == null || naam_ == "<Nog geen naam>" || beschrijving_ == "<Nog geen beschrijving>")
-                        {
-                            nietAllesIngevuld = true;
-                            break;
-                        }
-
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.MenuArt());
-                        Console.WriteLine($"Het item wordt toegevoegd aan het {typeGerechtNaam} menu, weet u dit zeker?\n\nA: Item bevestigen en toevoegen aan het menu\n0: Item annuleren");
-                        ConsoleKeyInfo userInputConfirmatie = Console.ReadKey();
-                        char userInputConfirmatieChar = userInputConfirmatie.KeyChar;
-                        if (userInputConfirmatieChar == 'A' || userInputConfirmatieChar == 'a') //Vraagt nog een keer bevestiging of het item daadwerkelijk moet worden toegevoegd aan het menu
-                        {
-                            Console.Clear();
-                            Console.WriteLine(ASCIIART.MenuArt());
-                            Console.WriteLine($"{naam_} is succesvol toegevoegd aan de {typeGerechtNaam}!\n\n0: Terug");
-                            Console.ReadKey();
-                            return new Gerechten(naam_, prijs_, beschrijving_, ingredienten_);
-                        }
-                        break;
-                    case '0':
-                        Console.Clear();
-                        Console.WriteLine(ASCIIART.MenuArt());
-                        Console.WriteLine("U gaat terug naar het algemene menu en er worden verder geen gerechten toegevoegd aan het menu, weet u dit zeker?\n\nA: Verder werken aan menu item\n0: Item schrappen en terug gaan");
-                        ConsoleKeyInfo userInputFinale = Console.ReadKey();
-                        char userInputFinaleChar = userInputFinale.KeyChar;
-                        if (userInputFinaleChar == '0')
-                            return null;
-                        break;
-                }
-            }
+            Gerecht nieuweGerecht = new Gerecht(typeGerechtNaam);
+            if (nieuweGerecht.naam != "Voer een naam in" && nieuweGerecht.beschrijving != "Voer een beschrijving in" && nieuweGerecht.ingredienten.Count != 0)
+                return nieuweGerecht;
+            return null;
         }
 
         public void AddItemHandler(string typeGerechtNaam)
@@ -439,21 +318,21 @@ namespace TheFatDuckRestaurant
             };
             var newGerecht = AddItemScherm(typeGerechtNaam);
 
-            if(newGerecht != null)
+            if (newGerecht != null)
             {
                 //Afhankelijk van het menu wat de mederwerker op heeft staan, wordt het juiste menu aangepast van het object Menu
                 if (typeGerechtNaam == "Voorgerechten")
                 {
-                    var newGerechten = new Gerechten[Voorgerechten.Length + 1];
+                    var newGerechten = new Gerecht[Voorgerechten.Length + 1];
                     for (int i = 0; i < Voorgerechten.Length; i++)
-                        newGerechten[i] = Voorgerechten[i];          
+                        newGerechten[i] = Voorgerechten[i];
                     newGerechten[Voorgerechten.Length] = newGerecht;
                     Voorgerechten = newGerechten;
                 }
 
                 if (typeGerechtNaam == "Hoofdgerechten")
                 {
-                    var newGerechten = new Gerechten[Hoofdgerechten.Length + 1];
+                    var newGerechten = new Gerecht[Hoofdgerechten.Length + 1];
                     for (int i = 0; i < Hoofdgerechten.Length; i++)
                         newGerechten[i] = Hoofdgerechten[i];
                     newGerechten[Hoofdgerechten.Length] = newGerecht;
@@ -461,7 +340,7 @@ namespace TheFatDuckRestaurant
                 }
                 if (typeGerechtNaam == "Nagerechten")
                 {
-                    var newGerechten = new Gerechten[Nagerechten.Length + 1];
+                    var newGerechten = new Gerecht[Nagerechten.Length + 1];
                     for (int i = 0; i < Nagerechten.Length; i++)
                         newGerechten[i] = Nagerechten[i];
                     newGerechten[Nagerechten.Length] = newGerecht;
@@ -473,85 +352,9 @@ namespace TheFatDuckRestaurant
             return;
         }
 
-        private static string ChangeItemName(string OldName) //Functie die gecalled kan worden om een specifiek menu item's naam te veranderen
-        {
-            bool wrongInput = false;
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine(ASCIIART.MenuArt());
-                Console.WriteLine($"Naam aanpassen:\n\nDit is de oude naam: {OldName}\n\nToets de nieuwe naam in en klik op enter\n\n0: Terug");
-                if (wrongInput)
-                {
-                    Console.WriteLine("Foutieve input!\nZorg ervoor dat de naam alleen letters bevat.");
-                    wrongInput = false;
-                }
-                string userInputNaam = Console.ReadLine();
-                if (userInputNaam == "0") //Als de input "0" is , return de oude naam (veranderd niets), anders loopt de code door een paar checks.
-                    return OldName;
-                else if (userInputNaam.Any(char.IsDigit)) //Checkt of er een getal tussen de letters staat.
-                    wrongInput = true;
-                else
-                {
-                    return userInputNaam;
-                }
-            }
-        }
-
-        private static double ChangeItemPrice(double OldPrice) //Functie die gecalled kan worden om een specifiek menu item's prijs te veranderen
-        {
-            bool wrongInput = false;
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine(ASCIIART.MenuArt());
-                Console.WriteLine($"Prijs aanpassen:\n\nDit is de huidige prijs: {OldPrice}\n\nToets de nieuwe prijs in en klik op enter\n\n0: Terug");
-                if (wrongInput)
-                {
-                    Console.WriteLine("Verkeerde Input! Voer een int (1) of double (1.x) in.");
-                    wrongInput = false;
-                }
-                var userInputPrijs = Console.ReadLine();
-                if (userInputPrijs == "0")
-                    return OldPrice;
-                else
-                {
-                    try
-                    {
-                        var userInputPrijsConverted = double.Parse(userInputPrijs);
-                        return userInputPrijsConverted;
-                    }
-                    catch (System.FormatException)
-                    {
-                        wrongInput = true;
-                    }
-                }
-            }
-        }
-
-        private static string ChangeItemDescription(string oldDescription) //Functie die gecalled kan worden om een specifiek menu item's beschrijving te veranderen
+        public Gerecht[] removeItemScreen(Gerecht[] typeGerecht, string typeGerechtNaam) //Print de gerechten met de optie om die te verwijderen uit de lijst
         {
             while (true)
-            {
-                Console.Clear();
-                Console.WriteLine(ASCIIART.MenuArt());
-                Console.WriteLine($"Beschrijving aanpassen:\n\nDit is de huidige beschrijving: {oldDescription}\n\nToets de nieuwe beschrijving in en klik op enter\n\n0: Terug");
-                var userInputBeschrijving = Console.ReadLine();
-                if (userInputBeschrijving == "0")
-                {
-                    return oldDescription;
-                }
-                else
-                {
-                    return userInputBeschrijving;
-                }
-            }
-        }
-
-        public Gerechten[] removeItemScreen(Gerechten[] typeGerecht, string typeGerechtNaam) //Print de gerechten met de optie om die te verwijderen uit de lijst
-        {
-            bool passed = false;
-            while (passed != true)
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.MenuArt());
@@ -559,10 +362,7 @@ namespace TheFatDuckRestaurant
                 if (typeGerecht.Length > 0)
                 {
                     for (int i = 1; i < typeGerecht.Length + 1; i++)
-                    {
                         Console.WriteLine(i + ": " + typeGerecht[i - 1].naam + "\x0A");
-                    }
-
                 }
                 else
                     Console.WriteLine("<Er bestaan nog geen " + typeGerechtNaam + " in het menu>");
@@ -578,7 +378,7 @@ namespace TheFatDuckRestaurant
                     var userInputConverted = Int32.Parse(userInputChar.ToString());
                     Console.Clear();
                     Console.WriteLine(ASCIIART.MenuArt());
-                    Console.WriteLine($"Weet u zeker dat u {typeGerecht[userInputConverted-1].naam} wil verwijderen uit het menu?\n\nA: Item definitief verwijderen\n0: Terug");
+                    Console.WriteLine($"Weet u zeker dat u {typeGerecht[userInputConverted - 1].naam} wil verwijderen uit het menu?\n\nA: Item definitief verwijderen\n0: Terug");
 
                     ConsoleKeyInfo confirmInput = Console.ReadKey();
                     char confirmInputChar = confirmInput.KeyChar;
@@ -591,20 +391,16 @@ namespace TheFatDuckRestaurant
                         Console.ReadKey();
                         return typeGerecht;
                     }
-                    else
-                        passed = false;
                 }
                 catch
                 {
                     if (userInputChar == '0')
                         return typeGerecht;
                 }
-
             }
-            return null;
         }
 
-        public Gerechten[] removeItemMenu(Gerechten[] typeGerecht, string typeGerechtNaam, int removeIndex) //Verwijderd een specifiek item bij een specifiek lijst met de correcte ID in de array.
+        public Gerecht[] removeItemMenu(Gerecht[] typeGerecht, string typeGerechtNaam, int removeIndex) //Verwijderd een specifiek item bij een specifiek lijst met de correcte ID in de array.
         {
 
             var JSONoptions = new JsonSerializerOptions
@@ -612,7 +408,7 @@ namespace TheFatDuckRestaurant
                 WriteIndented = true,
             };
 
-            Gerechten[] newGerechten = new Gerechten[typeGerecht.Length - 1];
+            Gerecht[] newGerechten = new Gerecht[typeGerecht.Length - 1];
             int j = 0;
             for (int i = 0; i < typeGerecht.Length; i++)
             {
@@ -629,7 +425,7 @@ namespace TheFatDuckRestaurant
                 Hoofdgerechten = newGerechten;
             if (typeGerechtNaam == "Nagerechten")
                 Nagerechten = newGerechten;
-            
+
             MenuOpslaan(); //Called functie die het JSON bestand update
             return newGerechten;
         }
@@ -643,23 +439,5 @@ namespace TheFatDuckRestaurant
             var jsonString = JsonSerializer.Serialize(this, JSONoptions);
             File.WriteAllText("menu.json", jsonString);
         }
-    }
-
-    public class Gerechten
-    {
-        public string naam { get; set; }
-        public double prijs { get; set; }
-        public string beschrijving { get; set; }
-        public string[] ingredienten { get; set; }
-
-        public Gerechten(string _naam, double _prijs, string _beschrijving, string[] _ingredienten)
-        {
-            this.naam = _naam;
-            this.prijs = _prijs;
-            this.beschrijving = _beschrijving;
-            this.ingredienten = _ingredienten;
-        }
-
-        public Gerechten() { }
     }
 }

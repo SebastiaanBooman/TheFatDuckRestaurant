@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using static TheFatDuckRestaurant.MainClass;
-using static TheFatDuckRestaurant.ReserveerLijst;
-using static TheFatDuckRestaurant.ASCIIART;
-using static TheFatDuckRestaurant.Menu;
-using System.Text.RegularExpressions;
 using System.Security;
 
 namespace TheFatDuckRestaurant
@@ -552,34 +545,6 @@ namespace TheFatDuckRestaurant
                 }
             }
     }
-    /*public void DailyRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst, string Datum)
-    {
-        string Datum = null;
-        TheFatDuckRestaurant.Reservering X = new TheFatDuckRestaurant.Reservering();
-        while (Datum == null)
-        {
-            Console.Clear();
-            Console.WriteLine("Voor welke dag wilt u de opbrengst bekijken? (21 juni 2021)");
-            Datum = X.checkDatum(Console.ReadLine(), false);
-        }
-        Console.Clear();
-        double Revenue = 0;
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
-        foreach (TheFatDuckRestaurant.Reservering reservering in reserveerlijst)
-        {
-            if (Datum == reservering.Datum)
-            {
-                for (int i = 0; i < reservering.Bestelling.Count; i++)
-                {
-                    Revenue += reservering.Bestelling[i].Prijs * reservering.Bestelling[i].Aantal;
-                }
-            }
-        }
-        string revenue = "" + Revenue;
-        revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
-        Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
-        Console.ReadKey();
-    }*/
 }
 
     public class Eigenaar : Medewerker

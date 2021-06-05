@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.IO;
 
 namespace TheFatDuckRestaurant
@@ -13,32 +11,58 @@ namespace TheFatDuckRestaurant
 
         public TafelArray() { } //Empty constructor for json deserializen
 
-        public void BekijkVrijeTafels(string tijdEnDatum) //Todo: tafels zijn ook niet vrij als ze een aantal uur voor de gegeven tijd bezet zijn.
+        public void BekijkVrijeTafels(string tijdEnDatum)
         {
             int checkTijd = tijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
             string checkDatum = tijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
-
-            Console.Clear();
-            Console.WriteLine($"Vrije Tafels in The Fat Duck voor {tijdEnDatum} (+-2 uur extra voor lopende reserveringen)\n");
-            Console.WriteLine("ID:\tPlekken:\n");
-            foreach (Tafel tafel in Tafels)
+            bool wrongInput = false;
+            while (true)
             {
-                bool alGereserveerd = false;
-                if (tafel.Gereserveerd != null)
+                Console.Clear();
+                Console.WriteLine(ASCIIART.TafelsArt());
+                Console.WriteLine($"Vrije Tafels in The Fat Duck voor {checkDatum} om {checkTijd} uur. (+-2 uur extra voor lopende reserveringen)\n");
+                string topString = "";
+                string tafelString = ""; //tafel string waar alle tafels aan worden toegevoegt
+                int counter = 1;
+                foreach (Tafel tafel in Tafels)
                 {
-                    foreach (string data in tafel.Gereserveerd)
+                    bool alGereserveerd = false;
+                    if (tafel.Gereserveerd != null)
                     {
-                        if (isEenTafelAlGereserveerd(data, checkDatum, checkTijd))
+                        foreach (string data in tafel.Gereserveerd)
                         {
-                            alGereserveerd = true;
-                            break;
+                            if (isEenTafelAlGereserveerd(data, checkDatum, checkTijd))
+                            {
+                                alGereserveerd = true;
+                                break;
+                            }
                         }
                     }
+                    if (alGereserveerd != true)
+                        tafelString+=$"{tafel.ID},\t{tafel.Plekken}\t\t";
+                    if (counter % 3 == 0)
+                        tafelString += "\n"; //zorgt voor in totaal 3 tabellen van tafels
+                    counter++;
                 }
-                if (alGereserveerd != true)
-                    Console.WriteLine($"{tafel.ID}, {tafel.Plekken}\n");
+                if(counter >= 3)
+                    topString += "ID:\tPlek:\t\tID:\tPlek:\t\tID:\tPlek:\t";
+                else if(counter == 2)
+                    topString += "ID:\tPlek:\t\tID:\tPlek:\t";
+                else
+                    topString += "ID:\tPlek:\t";
+
+                Console.WriteLine(topString);
+                Console.WriteLine(tafelString);
+                Console.WriteLine("\n\n0: Terug");
+                if (wrongInput)
+                    Console.WriteLine("Verkeerde Input! Probeer 0");
+                char userInput = Console.ReadKey().KeyChar;
+                if (userInput == '0')
+                    return;
+                wrongInput = true;
             }
         }
+
         public int tijdEnDatumNaarInt(string tijdEnDatum) => int.Parse(tijdEnDatum.Substring(0,4)); //returnt de eerste 4 characters van een tijd (1200)
         public string tijdEnDatumNaarDatum(string tijdEnDatum) => tijdEnDatum.Substring(4); //returnt de characters na de tijd (datum)
         public bool tijdCheck(int tafelTijd, int reserveringTijd, int uren) => ((tafelTijd + uren >= reserveringTijd) || ((reserveringTijd - uren) <= tafelTijd)) ? true : false; //return true Als tafeltijd + uren groter is dan reserveringtijd, of als reserveringstijd - uren kleiner of gelijk is aan tafeltijd.

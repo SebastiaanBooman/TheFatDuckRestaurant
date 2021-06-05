@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TheFatDuckRestaurant
+﻿namespace TheFatDuckRestaurant
 {
     public static class ASCIIART
     {
@@ -186,7 +182,6 @@ namespace TheFatDuckRestaurant
 
             string ASCIILogoAll = ASCIIKoppelenL1 + ASCIIDuckL1 + ASCIIKoppelenL2 + ASCIIDuckL2 + ASCIIKoppelenL3 + ASCIIDuckL3 + ASCIIKoppelenL4 + ASCIIDuckL4 + ASCIIKoppelenL5 + ASCIIDuckL5 + ASCIIKoppelenL6 + ASCIIDuckL6 + ASCIIKoppelenL7 + ASCIIKoppelenL8;
             return ASCIILogoAll;
-
         }
     }
 }
