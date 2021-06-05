@@ -339,7 +339,16 @@ namespace TheFatDuckRestaurant
 
 }
 
-    public class Gebruiker
+interface IGebruiker
+{
+    string Naam { get; set; }
+    string Wachtwoord { get; set; }
+    string Adres { get; set; }
+    string Woonplaats { get; set; }
+    TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu);
+    char startScherm();
+}
+    public class Gebruiker : IGebruiker
     {
         public string Naam { get; set; }
         public string Wachtwoord { get; set; }
