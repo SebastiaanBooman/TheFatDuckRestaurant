@@ -224,6 +224,8 @@ namespace TheFatDuckRestaurant
                     else
                         uniekeNaam = true;
                 }
+                else
+                    return null;
             }
 
             Console.Clear();
