@@ -35,6 +35,7 @@ namespace TheFatDuckRestaurant
                             }
                             string revenue = "" + Revenue;
                             revenue += (!revenue.Contains(',') ? ",-" : revenue[revenue.Length - 2] == ',' ? "0" : "");
+                            Console.WriteLine(ASCIIART.OpbrengstenArt());
                             Console.Out.WriteLine($"De opbrengst van {Datum} is €{revenue}\n\nEnter: Ga terug naar het vorige scherm");
                             Console.ReadKey();
                         }
