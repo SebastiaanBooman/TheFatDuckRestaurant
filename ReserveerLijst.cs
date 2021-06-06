@@ -215,8 +215,6 @@ namespace TheFatDuckRestaurant
             }
         }
 
-
-
         public void changeReservering(Reservering reservering, TafelArray tafels)
         {
 
@@ -267,15 +265,15 @@ namespace TheFatDuckRestaurant
             }
             this.Reserveringen = newReserveringen;
         }
-        public bool createReservering(string klant, Menu menu, int tijd = 0, string datum = "", int personen = 0, List<Bestelling> bestelling = null, string changeItem = "Annuleer")
+        public bool createReservering(string klant, Menu menu, int tijd = 0, string datum = "", int personen = 0, List<Bestelling> bestelling = null, string changeItem = "Annuleer") //creëert een nieuwe reservering
         {
             //GERECHTEN
             Reservering NieuweReservering = new Reservering(tijd, datum, personen, klant, bestelling);
             while (true)
             {
-                switch (NieuweReservering.Create(changeItem))
+                switch (NieuweReservering.Create(changeItem)) //lijst met opties
                 {
-                    case '1':
+                    case '1': //datum veranderen
                         string NieuweDatum = NieuweReservering.changeDatum();
                         if (NieuweDatum != null)
                         {
@@ -290,7 +288,7 @@ namespace TheFatDuckRestaurant
                             }
                         }
                         break;
-                    case '2':
+                    case '2': //tijd veranderen
                         int NieuweTijd = NieuweReservering.changeTijd();
                         if (NieuweTijd != 0)
                         {
@@ -304,18 +302,18 @@ namespace TheFatDuckRestaurant
                             }
                         }
                         break;
-                    case '3':
+                    case '3': //aantal personen veranderen
                         NieuweReservering.changePersonen(VrijePlaatsen(NieuweReservering.Tijd, NieuweReservering.Datum));
                         break;
-                    case '4':
+                    case '4': //gerechten veranderen
                         Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                         NieuweReservering.changeGerechten(menu);
                         break;
-                    case '5':
+                    case '5': //reservering bevestigen
                         if (AddReservering(NieuweReservering))
                             return true;
                         break;
-                    case '0':
+                    case '0': //reservering verwijderen/annuleren
                         Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
                         Console.WriteLine(changeItem == "Verwijder" ? "De reservering is verwijderd\x0a" : "De reservering is geannuleerd\x0a");
                         Console.WriteLine("Enter: Ga terug naar het startscherm");
@@ -330,7 +328,7 @@ namespace TheFatDuckRestaurant
             }
 
         }
-        private bool AddReservering(Reservering reservering)
+        private bool AddReservering(Reservering reservering) //checkt of een reservering gemaakt kan worden
         {
             if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling != null))
             {
@@ -360,7 +358,7 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return false;
         }
-        private int VrijePlaatsen(int tijd, string datum)
+        private int VrijePlaatsen(int tijd, string datum) //returnt het aantal vrije plaatsen
         {
             int MaxPersonen = 100;
             for (int i = 0; i < this.Reserveringen.Length; i++)

@@ -34,11 +34,11 @@ namespace TheFatDuckRestaurant
                 new CSTijd(2100,0)
             };
         }*/
-        public void addClickstream(string Datum, int tijd)
+        public void addClickstream(string Datum, int tijd) //voegt de clickstream toe wanneer een reservering gemaakt is
         {
             string DigitCheck = "";
             string dag = "";
-            foreach(char sym in Datum)
+            foreach(char sym in Datum) //haalt de dag van de week uit de datumstring
             {
                 if (Char.IsDigit(sym))
                     DigitCheck += sym;
@@ -47,7 +47,7 @@ namespace TheFatDuckRestaurant
             }
             addClicks(dag.ToLower(), tijd);
         }
-        public void addClicks(string dag, int tijd)
+        private void addClicks(string dag, int tijd) //verhoogt de juiste clickstream qua dag en tijd
         {
             foreach(CSDag Dag in Dagen)
             {
@@ -56,11 +56,11 @@ namespace TheFatDuckRestaurant
             }
             foreach(CSTijd Tijd in Tijden)
             {
-                if(tijd > Tijd.Naam - 70 && tijd <= Tijd.Naam + 30)
+                if(tijd > Tijd.Naam - 70 && tijd <= Tijd.Naam + 30) //voegt toe aan het dichtstbijzijnde uur
                     Tijd.Clicks++;
             }
         }
-        public void bekijkClicks()
+        public void bekijkClicks() //laat de clickstream per dag vd week of tijd zien
         {
             char Input = '1';
             while (Input != '0')
@@ -86,7 +86,7 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        private void bekijkClicksD()
+        private void bekijkClicksD() //laat de clickstream per dag van de week zien
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.ReserveringenArt());
@@ -103,7 +103,7 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
         }
-        private void bekijkClicksT()
+        private void bekijkClicksT() //laat de clickstream per uur zien
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.ReserveringenArt());

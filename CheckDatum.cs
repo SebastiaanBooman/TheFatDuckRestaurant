@@ -4,7 +4,7 @@ namespace TheFatDuckRestaurant
 {
     static class CheckDatum
     {
-        public static string checkDatum(string Datum, bool reserveren = true)
+        public static string checkDatum(string Datum, bool reserveren = true) //checkt of een datum bestaat en returnt een geldige datum string
         {
             string Dag = "";
             string Maand = "";
@@ -33,7 +33,7 @@ namespace TheFatDuckRestaurant
             }
             return null;
         }
-        private static string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
+        private static string WeekDag(int Dag, string maand, int Jaar, bool reserveren) //returnt de dag van de week (EN) als een string
         {
             int Maand = MaandInt(maand);
             int HuidigeDag = DateTime.Now.Day;
@@ -46,7 +46,7 @@ namespace TheFatDuckRestaurant
             string WeekDay = "" + date.DayOfWeek;
             return DaytoDag(WeekDay.ToLower());
         }
-        private static string DaytoDag(string Day)
+        private static string DaytoDag(string Day) //zet de Engelse dagnaam om naar de Nederlandse
         {
             return Day == "monday" ? "Maandag" :
                 Day == "tuesday" ? "Dinsdag" :
@@ -55,7 +55,7 @@ namespace TheFatDuckRestaurant
                 Day == "friday" ? "Vrijdag" :
                 Day == "saturday" ? "Zaterdag" : "Zondag";
         }
-        private static int MaandInt(string maand)
+        private static int MaandInt(string maand) //returnt de hoeveelste maand het is
         {
             string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
             for (int i = 0; i < Maanden.Length; i++)
@@ -65,7 +65,7 @@ namespace TheFatDuckRestaurant
             }
             return 0;
         }
-        private static bool CheckMaand(string maand)
+        private static bool CheckMaand(string maand) //checkt of de parameter een geldige maandnaam is
         {
             string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
             for (int i = 0; i < Maanden.Length; i++)
@@ -75,7 +75,7 @@ namespace TheFatDuckRestaurant
             }
             return false;
         }
-        private static bool CheckDag(int Dag, string Maand, int Jaar)
+        private static bool CheckDag(int Dag, string Maand, int Jaar) //checkt of de dag bestaat voor de gegeven maand en het gegeven jaar
         {
             if (Maand == "januari" || Maand == "maart" || Maand == "mei" || Maand == "juli" || Maand == "augustus" || Maand == "oktober" || Maand == "november")
                 return true;
@@ -87,7 +87,7 @@ namespace TheFatDuckRestaurant
             }
             return Dag < 31 ? true : false;
         }
-        public static bool DatumGeweest(string Datum)
+        public static bool DatumGeweest(string Datum) //checkt of een datum geweest is
         {
             string Dag = "";
             string Maand = "";
