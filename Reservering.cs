@@ -157,7 +157,7 @@ namespace TheFatDuckRestaurant
             {
                 if (klantCall)
                 {
-                    this.Tafels = tafels.allesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}", true);
+                    this.Tafels = tafels.AllesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}", true);
                     return;
                 }
                 Console.Clear();
@@ -171,10 +171,10 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case '1':
-                        this.Tafels = tafels.allesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}");
+                        this.Tafels = tafels.AllesAutomatischOntkoppelen(this.Tafels, $"{this.Tijd}{this.Datum}");
                         break;
                     case '2':
-                        this.Tafels = tafels.ontKoppelenMetID(this.Personen, this.Tafels, $"{this.Tijd}{this.Datum}");
+                        this.Tafels = tafels.OntKoppelenMetID(this.Tafels, $"{this.Tijd}{this.Datum}");
                         break;
                     case '0':
                         return;
