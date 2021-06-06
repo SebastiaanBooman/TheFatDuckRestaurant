@@ -103,6 +103,27 @@ namespace TheFatDuckRestaurant
             return match.Success;
         }
 
+        public static bool IsUsername(string username)
+        {
+            //      1       2               3                   4
+            // @"   ^     [A-Z']       ([A-Za-z\s']*)           $"
+            // 1 is de start van de string (input)
+            // 2 is een check of het eerste karakter een hoofdletter of een ' is.
+            // 3 is een check om te kijken of de opgegeven karakters hoofdletter, kleine letter, spatie of een ' is.
+            // 4 is het einde van de string (input)
+
+            // een nieuw Regex object aangemaakt met de regex die hierboven in uitgelegd.
+            Regex regex = new Regex(@"^([A-Za-z0-9]{1,})$");
+
+            // kijkt of de input (username) klopt met de opgegeven requirements van de regex.
+            Match match = regex.Match(username);
+
+            // returnt een bool van het resultaat van de regex.Match.
+            // true betekent dat de username overeen komt met de requirements van de regex
+            // false betekent dat de username niet overeen komt met de requirements van de regex
+            return match.Success;
+        }
+
         public static SecureString MaskStringInput()
         {
             SecureString password = new SecureString();

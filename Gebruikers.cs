@@ -176,8 +176,16 @@ namespace TheFatDuckRestaurant
             };
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer een gebruikers naam in\n0: Terug");
+            Console.WriteLine("Voer een gebruikers naam in die alleen cijfers en letters bevat:\n0: Terug");
             var naamInput = Console.ReadLine();
+            while (!VarComponents.IsUsername(naamInput))
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Verkeerde gebruikers naam\x0A\x0A\x0AVoer een gebruikers naam in die alleen cijfers en letters bevat:");
+                naamInput = Console.ReadLine();
+            }
+
             bool uniekeNaam = false;
             while (!uniekeNaam)
             {
@@ -210,7 +218,7 @@ namespace TheFatDuckRestaurant
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.RegistrerenArt());
-                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere\n0: Terug");
+                        Console.WriteLine("Deze naam bestaat al in het systeem!\x0A\x0A\x0AVoer een gebruikers naam in die alleen cijfers en letters bevat:\n0: Terug");
                         naamInput = Console.ReadLine();
                     }
                     else
