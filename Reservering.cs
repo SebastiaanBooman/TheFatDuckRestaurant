@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace TheFatDuckRestaurant
 {
-    public class Reservering //Nieuwe file
+    public class Reservering
     {
         public int Tijd { get; set; }
         public string Datum { get; set; }
@@ -327,10 +327,11 @@ namespace TheFatDuckRestaurant
             this.Aantal = aantal;
         }
 
+        private Func<int, Func<double, double>> CalculatePrice = x => y => x * y;
         [JsonIgnore]
         public double TotaalPrijs
         {
-            get => this.Prijs * this.Aantal;
+            get => CalculatePrice(this.Aantal)(this.Prijs);
         }
     }
 }

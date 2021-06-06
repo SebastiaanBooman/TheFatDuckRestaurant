@@ -102,9 +102,8 @@ namespace TheFatDuckRestaurant
                     Maand += sym;
             }
             if (Int32.Parse(Jaar) < DateTime.Now.Year)
-            {
                 return true;
-            }
+
             string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
             int Maandint = 0;
             for (int i = 0; i < Maanden.Length; i++)
