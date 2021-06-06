@@ -12,7 +12,7 @@ namespace TheFatDuckRestaurant
         public Gerecht[] Hoofdgerechten { get; set; }
         public Gerecht[] Nagerechten { get; set; }
 
-        public void kiesMenuOpties(string typeGebruiker) //Print de lijst met typen Gerechten
+        private void KiesMenuOpties(string typeGebruiker) //Print de lijst met typen Gerechten
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.MenuArt());
@@ -26,7 +26,7 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("0: Terug");
         }
 
-        public Bestelling laadSpecifiekMenu(Gerecht[] typeGerecht, string typeGebruiker) //Laad de gerechten van het type menu (Voorgerechten, Hoofdgerechten, Nagerechten etc).
+        private Bestelling LaadSpecifiekMenu(Gerecht[] typeGerecht, string typeGebruiker) //Laad de gerechten van het type menu (Voorgerechten, Hoofdgerechten, Nagerechten etc).
         {
             int huidigePaginaNR = 0; //Bij de eerste keer laden van het menu zal de eerste 7 gerechten worden getoont.
             bool verkeerdeInput = false;
@@ -97,7 +97,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
-                kiesMenuOpties(typeGebruiker);
+                KiesMenuOpties(typeGebruiker);
                 if (verkeerdeInput)
                 {
                     Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of 0");
@@ -109,20 +109,20 @@ namespace TheFatDuckRestaurant
                 switch (toetsUserChar)
                 {
                     case '1':
-                        var specifiekMenuVoorgerechten = laadSpecifiekMenu(Voorgerechten, typeGebruiker);
+                        var specifiekMenuVoorgerechten = LaadSpecifiekMenu(Voorgerechten, typeGebruiker);
                         if (specifiekMenuVoorgerechten != null)
                             return specifiekMenuVoorgerechten;
                         else
                             break;
 
                     case '2':
-                        var specifiekMenuHoofdgerechten = laadSpecifiekMenu(Hoofdgerechten, typeGebruiker);
+                        var specifiekMenuHoofdgerechten = LaadSpecifiekMenu(Hoofdgerechten, typeGebruiker);
                         if (specifiekMenuHoofdgerechten != null)
                             return specifiekMenuHoofdgerechten;
                         else
                             break;
                     case '3':
-                        var specifiekMenuNagerechten = laadSpecifiekMenu(Nagerechten, typeGebruiker);
+                        var specifiekMenuNagerechten = LaadSpecifiekMenu(Nagerechten, typeGebruiker);
                         if (specifiekMenuNagerechten != null)
                             return specifiekMenuNagerechten;
                         else
@@ -195,7 +195,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public bool ShowItemHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
+        private bool ShowItemHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
         {
             try
             {
@@ -207,7 +207,7 @@ namespace TheFatDuckRestaurant
             catch { return false; }
         }
 
-        public Bestelling ShowItemReserveringHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over specifiek gerecht en geeft optie om het item toe te voegen aan je reservering
+        private Bestelling ShowItemReserveringHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over specifiek gerecht en geeft optie om het item toe te voegen aan je reservering
         {
             try
             {
@@ -243,7 +243,7 @@ namespace TheFatDuckRestaurant
             catch { return null; }
         }
 
-        public void ShowItemStandaard(Gerecht gerecht) //Print informatie over een specifiek gerecht uit het menu
+        private void ShowItemStandaard(Gerecht gerecht) //Print informatie over een specifiek gerecht uit het menu
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             string totaalprijs = "" + gerecht.prijs;
@@ -258,7 +258,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine($"- {gerecht.ingredienten[i]}");
         }
 
-        public Gerecht[] MenuAanpassenScherm(Gerecht[] typeGerecht) //Handelt het toevoegen van een item aan een specifiek menu.
+        private Gerecht[] MenuAanpassenScherm(Gerecht[] typeGerecht) //Handelt het toevoegen van een item aan een specifiek menu.
         {
             while (true)
             {
@@ -311,7 +311,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public Gerecht AddItemScherm(string typeGerechtNaam) //Print de opties om een item toe te voegen, en handeld correcte inputs.
+        private Gerecht AddItemScherm(string typeGerechtNaam) //Print de opties om een item toe te voegen, en handeld correcte inputs.
         {
             Gerecht nieuweGerecht = new Gerecht(typeGerechtNaam);
             if (nieuweGerecht.naam != "Voer een naam in" && nieuweGerecht.beschrijving != "Voer een beschrijving in" && nieuweGerecht.ingredienten.Count != 0)
@@ -319,7 +319,7 @@ namespace TheFatDuckRestaurant
             return null;
         }
 
-        public void AddItemHandler(string typeGerechtNaam)
+        private void AddItemHandler(string typeGerechtNaam)
         {
             var JSONoptions = new JsonSerializerOptions
             {
@@ -360,7 +360,7 @@ namespace TheFatDuckRestaurant
             return;
         }
 
-        public Gerecht[] removeItemScreen(Gerecht[] typeGerecht, string typeGerechtNaam) //Print de gerechten met de optie om die te verwijderen uit de lijst
+        private Gerecht[] removeItemScreen(Gerecht[] typeGerecht, string typeGerechtNaam) //Print de gerechten met de optie om die te verwijderen uit de lijst
         {
             while (true)
             {
@@ -408,7 +408,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public Gerecht[] removeItemMenu(Gerecht[] typeGerecht, string typeGerechtNaam, int removeIndex) //Verwijderd een specifiek item bij een specifiek lijst met de correcte ID in de array.
+        private Gerecht[] removeItemMenu(Gerecht[] typeGerecht, string typeGerechtNaam, int removeIndex) //Verwijderd een specifiek item bij een specifiek lijst met de correcte ID in de array.
         {
 
             var JSONoptions = new JsonSerializerOptions

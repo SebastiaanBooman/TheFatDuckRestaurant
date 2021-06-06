@@ -13,8 +13,8 @@ namespace TheFatDuckRestaurant
 
         public void BekijkVrijeTafels(string tijdEnDatum)
         {
-            int checkTijd = tijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
-            string checkDatum = tijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
+            int checkTijd = TijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
+            string checkDatum = TijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
             bool wrongInput = false;
             while (true)
             {
@@ -63,11 +63,11 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public int tijdEnDatumNaarInt(string tijdEnDatum) => int.Parse(tijdEnDatum.Substring(0,4)); //returnt de eerste 4 characters van een tijd (1200)
-        public string tijdEnDatumNaarDatum(string tijdEnDatum) => tijdEnDatum.Substring(4); //returnt de characters na de tijd (datum)
-        public bool tijdCheck(int tafelTijd, int reserveringTijd, int uren) => ((tafelTijd + uren >= reserveringTijd) || ((reserveringTijd - uren) <= tafelTijd)) ? true : false; //return true Als tafeltijd + uren groter is dan reserveringtijd, of als reserveringstijd - uren kleiner of gelijk is aan tafeltijd.
+        private int TijdEnDatumNaarInt(string tijdEnDatum) => int.Parse(tijdEnDatum.Substring(0,4)); //returnt de eerste 4 characters van een tijd (1200)
+        private string TijdEnDatumNaarDatum(string tijdEnDatum) => tijdEnDatum.Substring(4); //returnt de characters na de tijd (datum)
+        private bool TijdCheck(int tafelTijd, int reserveringTijd, int uren) => ((tafelTijd + uren >= reserveringTijd) || ((reserveringTijd - uren) <= tafelTijd)) ? true : false; //return true Als tafeltijd + uren groter is dan reserveringtijd, of als reserveringstijd - uren kleiner of gelijk is aan tafeltijd.
 
-        public int BerekenTafelsDieNogGekoppeldMoetenWorden(int aantalMensen, List<Tafel> gereserveerdeTafels)
+        private int BerekenTafelsDieNogGekoppeldMoetenWorden(int aantalMensen, List<Tafel> gereserveerdeTafels)
         {
             int totaleGereserveerdePlekken = 0;
             if (gereserveerdeTafels == null)
@@ -83,12 +83,12 @@ namespace TheFatDuckRestaurant
 
         private bool isEenTafelAlGereserveerd(string tafelData, string checkDatum, int checkTijd)
         {
-            if ((tijdEnDatumNaarDatum(tafelData) == checkDatum) && (tijdCheck(checkTijd, tijdEnDatumNaarInt(tafelData), 200))) //Als het op dezelfde dag plaats vind dan checkt of de tafel al gereserveerd is ergens binnen 200 (2 uur) van tevoren of 2 uur daarna, zo ja, Is al gereserveerd.
+            if ((TijdEnDatumNaarDatum(tafelData) == checkDatum) && (TijdCheck(checkTijd, TijdEnDatumNaarInt(tafelData), 200))) //Als het op dezelfde dag plaats vind dan checkt of de tafel al gereserveerd is ergens binnen 200 (2 uur) van tevoren of 2 uur daarna, zo ja, Is al gereserveerd.
                 return true;
             return false;
         }
 
-        public List<Tafel> AutomatischKoppelen(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool tochKoppelen = false) //TODO: Aantal plekken zou berekend kunnen worden (voor iedere tafel in de lijst die al beschikbaar is - aantalMensen) zodat er niet dubbel gekoppeld kan worden.
+        public List<Tafel> AutomatischKoppelen(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool tochKoppelen = false)
         {
             while (true)
             {
@@ -114,8 +114,8 @@ namespace TheFatDuckRestaurant
                         Console.Clear();
                         Console.WriteLine(ASCIIART.TafelsKoppelenArt());
                         int plekkenDieNogMoetenWordenGekoppeld = BerekenTafelsDieNogGekoppeldMoetenWorden(aantalMensen, gereserveerdeTafels);
-                        int checkTijd = tijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
-                        string checkDatum = tijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
+                        int checkTijd = TijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
+                        string checkDatum = TijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
                         if (gereserveerdeTafels == null)
                             gereserveerdeTafels = new List<Tafel>();
                         foreach (Tafel tafel in Tafels)
@@ -143,7 +143,7 @@ namespace TheFatDuckRestaurant
                                     Console.WriteLine($"Tafel {tafel.ID} toegevoegd aan reservering, {tafel.Plekken} plekken");
                                     plekkenDieNogMoetenWordenGekoppeld -= tafel.Plekken;
                                     gereserveerdeTafels.Add(tafel);
-                                    tafel.Gereserveerd.Add($"{tijdEnDatumNaarInt(tijdEnDatum)}{tijdEnDatumNaarDatum(tijdEnDatum)}"); //1200Zaterdag 1 januari 2021
+                                    tafel.Gereserveerd.Add($"{TijdEnDatumNaarInt(tijdEnDatum)}{TijdEnDatumNaarDatum(tijdEnDatum)}"); //1200Zaterdag 1 januari 2021
                                 }
                             }
                         }
@@ -177,8 +177,8 @@ namespace TheFatDuckRestaurant
 
         public List<Tafel> KoppelenDoorMedewerker(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum) //Koppelen door medewerker heeft als input een int aantal mensen, en list van tafels die al gekoppeld zijn aan de reservering.
         {
-            int checkTijd = tijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
-            string checkDatum = tijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
+            int checkTijd = TijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
+            string checkDatum = TijdEnDatumNaarDatum(tijdEnDatum); //De gegeven datum in string (Zaterdag 1 januari 2021)
             while (true)
             {
                 Console.Clear();
@@ -187,7 +187,7 @@ namespace TheFatDuckRestaurant
                 {
                     Console.WriteLine("Er zijn genoeg tafels gekoppeld aan deze reservering. Klik op een toets om terug te gaan");
                     SaveTafels(this);
-                    ConsoleKeyInfo input = Console.ReadKey();
+                    Console.ReadKey();
                     return gereserveerdeTafels;
                 }
                 Console.WriteLine("Voer het ID van een tafel in om hem toe te voegen aan de reservering (bijv: 1A)\n\n0: Terug");
@@ -207,9 +207,9 @@ namespace TheFatDuckRestaurant
                     {
                         foreach (string data in tafel.Gereserveerd)
                         {
-                            if (tijdEnDatumNaarDatum(data) == checkDatum) //Als het op dezelfde dag plaats vind
+                            if (TijdEnDatumNaarDatum(data) == checkDatum) //Als het op dezelfde dag plaats vind
                             {
-                                if (tijdCheck(checkTijd, tijdEnDatumNaarInt(data), 200)) //checkt of de tafel al gereserveerd is ergens binnen 200 (2 uur) van tevoren of 2 uur daarna, zo ja, Is al gereserveerd.
+                                if (TijdCheck(checkTijd, TijdEnDatumNaarInt(data), 200)) //checkt of de tafel al gereserveerd is ergens binnen 200 (2 uur) van tevoren of 2 uur daarna, zo ja, Is al gereserveerd.
                                     alGereserveerd = true;
                             }
                         }
@@ -220,7 +220,7 @@ namespace TheFatDuckRestaurant
                             Console.Clear();
                             Console.WriteLine(ASCIIART.TafelsArt());
                             gereserveerdeTafels.Add(tafel);
-                            tafel.Gereserveerd.Add($"{tijdEnDatumNaarInt(tijdEnDatum)}{tijdEnDatumNaarDatum(tijdEnDatum)}"); //1200Zaterdag 1 januari 2021
+                            tafel.Gereserveerd.Add($"{TijdEnDatumNaarInt(tijdEnDatum)}{TijdEnDatumNaarDatum(tijdEnDatum)}"); //1200Zaterdag 1 januari 2021
                             succesvolGekoppeld = true;
                             Console.WriteLine($"{tafel.ID} toegevoegd aan de reservering!\n\nKlik op een toets en klik enter om verder te gaan");
                             Console.ReadLine();
@@ -237,7 +237,7 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        public List<Tafel> allesAutomatischOntkoppelen(List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool klantCall = false) //klantCall is een variabele die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.
+        public List<Tafel> AllesAutomatischOntkoppelen(List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool klantCall = false) //klantCall is een variabele die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.
         {
             while (true)
             {
@@ -293,7 +293,7 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public List<Tafel> ontKoppelenMetID(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum)
+        public List<Tafel> OntKoppelenMetID(List<Tafel> gereserveerdeTafels, string tijdEnDatum)
         {
             while (true)
             {
@@ -304,13 +304,13 @@ namespace TheFatDuckRestaurant
                 if (userInput == "0")
                     return gereserveerdeTafels;
                 bool tafelSuccesvolOntkoppeld = false;
-                for(int j = 0; j < gereserveerdeTafels.Count; j++)
+                for(int j = 0; j < gereserveerdeTafels.Count; j++) //voor elke tafel die in de gereserveerdeTafels staat van de klant
                 {
                     if(gereserveerdeTafels[j].ID == userInput)
                     {
-                        for (int i = 0; i < gereserveerdeTafels[j].Gereserveerd.Count; i++)
+                        for (int i = 0; i < gereserveerdeTafels[j].Gereserveerd.Count; i++) //voor elke datum die in Gereserveerd staat van de klant
                         {
-                            if (gereserveerdeTafels[j].Gereserveerd[i] == tijdEnDatum)
+                            if (gereserveerdeTafels[j].Gereserveerd[i] == tijdEnDatum) //Als de tafel daadwerkelijk is gekoppeld voor dezelfde tijd
                             {
                                 Console.Clear();
                                 Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());
@@ -324,7 +324,7 @@ namespace TheFatDuckRestaurant
                         }
                     }
                 }
-                if (!tafelSuccesvolOntkoppeld)
+                if (!tafelSuccesvolOntkoppeld) //Als de tafels niet succesvol zijn ontkoppeld
                 {
                     Console.Clear();
                     Console.WriteLine(ASCIIART.TafelsOntkoppelenArt());

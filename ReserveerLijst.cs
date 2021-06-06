@@ -55,17 +55,17 @@ namespace TheFatDuckRestaurant
             }
         }
 
-        public void BekijkSpecifiekePaginaMedewerker(Reservering[] RelevanteReserveringen, TafelArray tafels, string datum)
+        public void BekijkSpecifiekePaginaMedewerker(Reservering[] RelevanteReserveringen, TafelArray tafels, string datum) //Laat specifieke reserveringen zien op paginas
         {
             int huidigePaginaNR = 0;
             bool wrongInput = false;
             while (true)
             {
-                int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0);
+                int hoeveelheidPaginas = (int)Math.Ceiling(RelevanteReserveringen.Length / 7.0); //berekent het aantal paginas door het te delen door 7
                 Console.Clear();
                 Console.WriteLine(ASCIIART.ReserveringenArt());
                 Console.WriteLine($"{datum}\nPagina {huidigePaginaNR + 1}/{hoeveelheidPaginas}\n");
-                for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++)
+                for (int i = 0; i < 7 && i + huidigePaginaNR * 7 < RelevanteReserveringen.Length; i++) //laat de correcte reserveringen zien van een bepaalde tafel
                     Console.WriteLine($"{i + 1}: {RelevanteReserveringen[i + huidigePaginaNR * 7].TijdString()} {RelevanteReserveringen[i + huidigePaginaNR * 7].Bezoeker} ({RelevanteReserveringen[i + huidigePaginaNR * 7].Personen} personen)");
                 Console.WriteLine();
                 if (huidigePaginaNR + 1 < hoeveelheidPaginas)
@@ -153,10 +153,10 @@ namespace TheFatDuckRestaurant
 
         public void BekijkReserveringenKlant(string klantNaam, TafelArray tafels)
         {
-            if (Reserveringen == null)
+            if (Reserveringen == null) //als er geen reserveringen zijn nog, maakt een nieuwe reservering aan met 0. 
                 Reserveringen = new Reservering[0];
 
-            if (Reserveringen.Length == 0)
+            if (Reserveringen.Length == 0) //als er 0 reserveringen zijn voor de klant dan returnt de code
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.ReserverenArt());
@@ -177,7 +177,7 @@ namespace TheFatDuckRestaurant
                 {
                     return;
                 }
-                TheFatDuckRestaurant.Reservering[] KlantReserveringen = new TheFatDuckRestaurant.Reservering[Aantal];
+                Reservering[] KlantReserveringen = new Reservering[Aantal];
                 int j = 0;
                 for (int i = 0; i < Reserveringen.Length; i++)
                 {
@@ -202,7 +202,7 @@ namespace TheFatDuckRestaurant
                 if (Index == 0)
                     return;
                 if (Index < 7 && Index > 0)
-                    changeReservering(KlantReserveringen[Index - 1], tafels); //TODO: Opties om reserveringen aan te passen die zijn gemaakt.
+                    changeReservering(KlantReserveringen[Index - 1], tafels);
                 else if (Index == 8 && huidigePaginaNR + 1 < hoeveelheidPaginas)
                     huidigePaginaNR++;
                 else if (Index == 9 && huidigePaginaNR + 1 >= hoeveelheidPaginas && (hoeveelheidPaginas > 1))
@@ -252,7 +252,6 @@ namespace TheFatDuckRestaurant
                     }
                 }
             }
-            //createReservering(reservering.Bezoeker, reservering.Tijd, reservering.Datum, reservering.Personen, null, "Verwijder");
         }
         public void removeReservering(Reservering reservering, TafelArray tafels)
         {
