@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace TheFatDuckRestaurant
 {
-    public class Reservering //Nieuwe file
+    public class Reservering
     {
         public int Tijd { get; set; }
         public string Datum { get; set; }
