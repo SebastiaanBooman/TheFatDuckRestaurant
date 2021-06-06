@@ -12,12 +12,6 @@ namespace TheFatDuckRestaurant
         public Eigenaar Eigenaar { get; set; }
 
         public Gebruikers() { } //Empty constructor for json deserialisen.
-        public Gebruikers(Klant[] klanten, Medewerker[] medewerkers, Eigenaar eigenaar)
-        {
-            this.Klanten = klanten;
-            this.Medewerkers = medewerkers;
-            this.Eigenaar = eigenaar;
-        }
 
         public Gebruiker accountManager(Gebruiker gebruiker)
         {
@@ -176,8 +170,16 @@ namespace TheFatDuckRestaurant
             };
             Console.Clear();
             Console.WriteLine(ASCIIART.RegistrerenArt());
-            Console.WriteLine("Voer een gebruikers naam in\n0: Terug");
+            Console.WriteLine("Voer een gebruikers naam in die alleen cijfers en/of letters bevat:\n0: Terug");
             var naamInput = Console.ReadLine();
+            while (!VarComponents.IsUsername(naamInput))
+            {
+                Console.Clear();
+                Console.WriteLine(ASCIIART.RegistrerenArt());
+                Console.WriteLine("Verkeerde gebruikers naam\x0A\x0A\x0AVoer een gebruikers naam in die alleen cijfers en/of letters bevat:");
+                naamInput = Console.ReadLine();
+            }
+
             bool uniekeNaam = false;
             while (!uniekeNaam)
             {
@@ -210,12 +212,14 @@ namespace TheFatDuckRestaurant
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.RegistrerenArt());
-                        Console.WriteLine("Deze naam bestaat al in het systeem! Probeer een andere\n0: Terug");
+                        Console.WriteLine("Deze naam bestaat al in het systeem!\x0A\x0A\x0AVoer een gebruikers naam in die alleen cijfers en letters bevat:\n0: Terug");
                         naamInput = Console.ReadLine();
                     }
                     else
                         uniekeNaam = true;
                 }
+                else
+                    return null;
             }
 
             Console.Clear();

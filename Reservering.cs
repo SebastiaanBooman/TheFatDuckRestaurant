@@ -229,7 +229,7 @@ namespace TheFatDuckRestaurant
                 return true;
             return false;
         }
-        public char Create(string addition)
+        public char Create(string addition) //laat info over de reservering zien en geeft de mogelijke opties
         {
             Console.Clear();
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -242,7 +242,7 @@ namespace TheFatDuckRestaurant
             Console.Clear();
             return Input;
         }
-        public void changePersonen(int MaxPersonen)
+        public void changePersonen(int MaxPersonen) //verandert het aantal personen, mits deze groter is dan nul en kleiner dan de max
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine((this.Personen == 0 ? "Nog geen aantal personen" : $"({this.Personen})") + "\x0a" + $"Er zijn {MaxPersonen} plaatsen vrij\x0aVoor hoeveel personen wilt u reserveren?");
@@ -264,7 +264,7 @@ namespace TheFatDuckRestaurant
                 Console.ReadKey();
             }
         }
-        public int changeTijd()
+        public int changeTijd() //verandert de tijd, mits deze binnen de beschikbare uren valt
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine((Tijd == 0 ? "Nog geen tijd" : $"({TijdString()})") + "\x0aWelke tijd wilt u reserveren? (11:00 - 21:00)");
@@ -288,7 +288,7 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return 0;
         }
-        public string changeDatum()
+        public string changeDatum() //verandert de datum, mits het een geldige datum is
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine((this.Datum == "" ? "Nog geen datum" : $"({this.Datum})") + "\x0aWelke datum wilt u reserveren? (21 juni)");
@@ -296,7 +296,7 @@ namespace TheFatDuckRestaurant
             Console.Clear();
             return CheckDatum.checkDatum(NieuweDatum);
         }
-        public string TijdString()
+        public string TijdString() // zet tijd in int om naar tijd in string
         {
             string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;
             return tstring.Length < 5 ? tstring + "0" : tstring;

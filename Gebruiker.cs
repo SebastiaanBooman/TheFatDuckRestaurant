@@ -32,13 +32,6 @@ namespace TheFatDuckRestaurant
             menu.BekijkMenuGebruiker();
             return menu;
         }
-        public virtual ReserveerLijst reserveer(Menu menu, ReserveerLijst reserveerLijst) => reserveerLijst;
-
-        public virtual string bekijkDailyRevenue() => null;
-
-        public virtual string bekijkClickStream() => null;
-
-        public virtual void bekijkReserveringen() { }
 
         public virtual void bekijkAccount() { }
 
@@ -214,7 +207,7 @@ namespace TheFatDuckRestaurant
 
     public class Eigenaar : Medewerker
     {
-        public Eigenaar(string naam, string wachtwoord, string adres, string woonplaats) : base(naam, wachtwoord, adres, woonplaats) { }
+        //public Eigenaar(string naam, string wachtwoord, string adres, string woonplaats) : base(naam, wachtwoord, adres, woonplaats) { }
         public Eigenaar() { }
         public override char startScherm()
         {

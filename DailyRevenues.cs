@@ -6,7 +6,7 @@ namespace TheFatDuckRestaurant
     {
         public DailyRevenue[] Revenues { get; set; }
         public DailyRevenues() { }
-        public void bekijkRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst)
+        public void bekijkRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst) //laat de revenue voor de gegeven datum zien
         {
             string Datum = "";
             while (Datum != "0")
@@ -21,7 +21,7 @@ namespace TheFatDuckRestaurant
                     Datum = CheckDatum.checkDatum(Datum, false);
                     if (Datum != null)
                     {
-                        if (!oudeRevenue(Datum))
+                        if (!oudeRevenue(Datum)) //checkt of de datum al geweest is (zoja, dan wordt de informatie uit het json bestand gehaald)
                         {
                             double Revenue = 0;
                             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -48,7 +48,7 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        private bool oudeRevenue(string Datum)
+        private bool oudeRevenue(string Datum) //checkt of de datum al geweest is
         {
             if (Revenues != null)
             {
@@ -69,20 +69,20 @@ namespace TheFatDuckRestaurant
             }
             return false;
         }
-        public void Add(string Datum, double Revenue)
+        public void Add(string Datum, double Revenue) //voegt de daily revenue van een verlopen datum toe aan het json bestand
         {
             bool Exists = false;
             if(Revenues == null)
                 Revenues = new DailyRevenue[0];
             foreach(DailyRevenue dailyrevenue in Revenues)
             {
-                if(dailyrevenue.Datum == Datum && !Exists)
+                if(dailyrevenue.Datum == Datum && !Exists) //checkt of de datum al bestaat in het json bestand, in welk geval het bedrag daaraan wordt toegevoegd
                 {
                     Exists = true;
                     dailyrevenue.Revenue += Revenue;
                 }
             }
-            if (!Exists)
+            if (!Exists) //voegt een nieuwe datum aan het json bestand toe wanneer de datum nog niet bestaat
             {
                 DailyRevenue[] newRevenues = new DailyRevenue[Revenues.Length + 1];
                 for(int i = 0; i < Revenues.Length; i++)
