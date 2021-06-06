@@ -105,11 +105,11 @@ namespace TheFatDuckRestaurant
 
         public static bool IsUsername(string username)
         {
-            //      1       2               3                   4
-            // @"   ^     [A-Z']       ([A-Za-z\s']*)           $"
+            //      1         2               3                 4
+            // @"   ^   ([A-Za-z0-9]        {1,})               $"
             // 1 is de start van de string (input)
-            // 2 is een check of het eerste karakter een hoofdletter of een ' is.
-            // 3 is een check om te kijken of de opgegeven karakters hoofdletter, kleine letter, spatie of een ' is.
+            // 2 is een check om te kijken of de input alleen hoofdletters, kleineletters en cijfers bevat.
+            // 3 is een check om te kijken of er 1 of meer karakters zijn.
             // 4 is het einde van de string (input)
 
             // een nieuw Regex object aangemaakt met de regex die hierboven in uitgelegd.
