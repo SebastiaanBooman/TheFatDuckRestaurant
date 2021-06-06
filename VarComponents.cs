@@ -17,8 +17,15 @@ namespace TheFatDuckRestaurant
             // 5 is een check of de string minimaal 8 tot meer characters heeft
             // 6 is het einde van de string (input)
 
+            // een nieuw Regex object aangemaakt met de regex die hierboven in uitgelegd.
             Regex regex = new Regex(@"^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9]).{8,}$");
+
+            // kijkt of de input (password) klopt met de opgegeven requirements van de regex.
             Match match = regex.Match(password);
+
+            // returnt een bool van het resultaat van de regex.Match.
+            // true betekent dat het wachtwoord overeen komt met de requirements van de regex
+            // false betekent dat het wachtwoord niet overeen komt met de requirements van de regex
             return match.Success;
         }
 
@@ -37,8 +44,15 @@ namespace TheFatDuckRestaurant
             // 't Woonplaats
             // Woon 't Plaats
 
+            // een nieuw Regex object aangemaakt met de regex die hierboven in uitgelegd.
             Regex regex = new Regex(@"^([A-Z'])([A-Za-z\s'.]+)$");
+
+            // kijkt of de input (woonplaats) klopt met de opgegeven requirements van de regex.
             Match match = regex.Match(woonplaats);
+
+            // returnt een bool van het resultaat van de regex.Match.
+            // true betekent dat de woonplaats overeen komt met de requirements van de regex
+            // false betekent dat de woonplaats niet overeen komt met de requirements van de regex
             return match.Success;
         }
 
@@ -77,8 +91,15 @@ namespace TheFatDuckRestaurant
             // 5-F 4
             // 113B Bis A
 
+            // een nieuw Regex object aangemaakt met de regex die hierboven in uitgelegd.
             Regex regex = new Regex(@"^[A-Z']([A-Za-z\s'.]+)([1-9]\d{0,4})(([\s-]{0,1})([A-Za-z]{1,2})([\s-]{0,1}))?([1-9]\d{0,4})?(([\s]{1})(\bbis\b)?(\bBis\b)?([\s]{1}[A-Za-z]{1,2}))?$");
+
+            // kijkt of de input (adres) klopt met de opgegeven requirements van de regex.
             Match match = regex.Match(adres);
+
+            // returnt een bool van het resultaat van de regex.Match.
+            // true betekent dat het adres overeen komt met de requirements van de regex
+            // false betekent dat het adres niet overeen komt met de requirements van de regex
             return match.Success;
         }
 
@@ -87,20 +108,29 @@ namespace TheFatDuckRestaurant
             SecureString password = new SecureString();
             ConsoleKeyInfo keyInfo;
 
+            // voert de "do" uit zolang de while statement true is
             do
             {
                 keyInfo = Console.ReadKey(true);
+
+                // kijkt naar het karakter dat in ingeklikt en kijkt of dat karakter geen spatie of control karakter(ctrl, esc, alt, etc..) is.
                 if (!char.IsControl(keyInfo.KeyChar) && keyInfo.Key != ConsoleKey.Spacebar)
                 {
+                    // voegt het ingetoetste karakter achteraan de secure string password.
                     password.AppendChar(keyInfo.KeyChar);
+                    // voegt een "*" toe aan het eind van de line in de console.
                     Console.Write("*");
                 }
+                // kijkt of het ingevoerde karakter een backspace is en of de lengte van de string hoger is dan 0
                 else if (keyInfo.Key == ConsoleKey.Backspace && password.Length > 0)
                 {
+                    // verwijderd het karakter dat aan het eind van de string staat.
                     password.RemoveAt(password.Length - 1);
+                    // verwijderd de "*" dat aan het eind staat in de console
                     Console.Write("\b \b");
                 }
             }
+            // voert de "while" uit als de while statement false is
             while (keyInfo.Key != ConsoleKey.Enter);
             {
                 Console.Write("\n");
