@@ -25,7 +25,6 @@
         }
         public static string MenuArt()
         {
-            //ASCII Art voor het Menu
             string ASCIIMenuL1 = "  __  __                  ";
             string ASCIIMenuL2 = " |  \\/  |                 ";
             string ASCIIMenuL3 = " | \\  / | ___ _ __  _   _ ";

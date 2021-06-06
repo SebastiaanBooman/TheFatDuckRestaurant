@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TheFatDuckRestaurant
 {
@@ -10,7 +8,7 @@ namespace TheFatDuckRestaurant
         string Wachtwoord { get; set; }
         string Adres { get; set; }
         string Woonplaats { get; set; }
-        TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu);
+        Menu bekijkMenu(Menu menu);
         char startScherm();
     }
     public class Gebruiker : IGebruiker
@@ -29,12 +27,12 @@ namespace TheFatDuckRestaurant
         }
         public Gebruiker() { }
 
-        public virtual TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
+        public virtual Menu bekijkMenu(Menu menu)
         {
             menu.BekijkMenuGebruiker();
             return menu;
         }
-        public virtual TheFatDuckRestaurant.ReserveerLijst reserveer(TheFatDuckRestaurant.Menu menu, TheFatDuckRestaurant.ReserveerLijst reserveerLijst) => reserveerLijst;
+        public virtual ReserveerLijst reserveer(Menu menu, ReserveerLijst reserveerLijst) => reserveerLijst;
 
         public virtual string bekijkDailyRevenue() => null;
 
@@ -57,7 +55,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("3: Bezichtig het menu\x0a");
 
                 if (verkeerdeInput)
-                    Console.WriteLine("Verkeerde input, probeer 1,2,3");
+                    Console.WriteLine("Verkeerde input, probeer 1, 2, of 3");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -82,12 +80,9 @@ namespace TheFatDuckRestaurant
         public Klant(string naam, string wachtwoord, string adres, string woonplaats) : base(naam, wachtwoord, adres, woonplaats) { }
         public Klant() { }
 
-        public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
+        public override Menu bekijkMenu(Menu menu)
         {
             menu.BekijkMenuGebruiker();
-            //menu.Bekijkmenu -> Gebruiker
-            //menu.ReserveerMenu -> Klant
-            //menu.PasAanMenu -> Medewerker
             return menu;
         }
         public override char startScherm()
@@ -96,7 +91,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
+                Console.WriteLine(ASCIIART.GeneralArt());
                 Console.WriteLine($"STATUS: Ingelogd als klant, welkom {Naam}\x0a");
                 Console.WriteLine("1: Restaurant informatie\x0a");
                 Console.WriteLine("2: Account informatie\n");
@@ -106,7 +101,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("6: Bezichtig uw reserveringen");
 
                 if (verkeerdeInput)
-                    Console.WriteLine("Verkeerde input, probeer 1,2,3,4 of 5");
+                    Console.WriteLine("Verkeerde input, probeer 1,2,3,4 of 5 of 6.");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -137,19 +132,18 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.AccountArt());
-                Console.WriteLine($"Account Naam: {Naam}\x0a");
-                Console.WriteLine($"Account Type: Klant\x0a");
-                Console.WriteLine($"1: Account Reserveringen\x0a");
-                Console.WriteLine("0: Return");
+                Console.WriteLine(ASCIIART.AccountArt());
+                Console.WriteLine($"Naam: {Naam}\x0a");
+                Console.WriteLine($"Adres: {Adres}\x0a");
+                Console.WriteLine($"Woonplaats: {Woonplaats}\x0a");
+                Console.WriteLine($"Account Type: Klant\x0a\n");;
+                Console.WriteLine("0: Terug");
                 if (verkeerdeInput)
-                    Console.WriteLine("Verkeerde Input! Probeer 1 of 0");
+                    Console.WriteLine("Verkeerde Input! Probeer 0");
 
                 char userInput = Console.ReadKey().KeyChar;
                 switch (userInput)
                 {
-                    case '1':
-                    //call to account reserveringen.
                     case '0':
                         return;
                     default:
@@ -168,12 +162,9 @@ namespace TheFatDuckRestaurant
         public Medewerker() { }
 
 
-        public override TheFatDuckRestaurant.Menu bekijkMenu(TheFatDuckRestaurant.Menu menu)
+        public override Menu bekijkMenu(Menu menu)
         {
             menu.BekijkMenuMedewerker();
-            //menu.Bekijkmenu -> Gebruiker
-            //menu.ReserveerMenu -> Klant
-            //menu.PasAanMenu -> Medewerker
             return menu;
         }
         public override char startScherm()
@@ -182,7 +173,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
+                Console.WriteLine(ASCIIART.GeneralArt());
                 Console.WriteLine("STATUS: Ingelogd als medewerker\x0a");
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Logout\n");
@@ -193,7 +184,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine("0: Applicatie afsluiten\x0a");
 
                 if (verkeerdeInput)
-                    Console.WriteLine("Verkeerde input, probeer 1,2,3,4,5,6 of 0");
+                    Console.WriteLine("Verkeerde input, probeer 1, 2, 3, 4, 5, 6 of 0");
 
                 ConsoleKeyInfo userInput = Console.ReadKey();
                 char userInputChar = userInput.KeyChar;
@@ -231,7 +222,7 @@ namespace TheFatDuckRestaurant
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(TheFatDuckRestaurant.ASCIIART.GeneralArt());
+                Console.WriteLine(ASCIIART.GeneralArt());
                 Console.WriteLine("STATUS: Ingelogd als eigenaar\x0a");
                 Console.WriteLine("1: Informatie\x0a");
                 Console.WriteLine("2: Logout\n");

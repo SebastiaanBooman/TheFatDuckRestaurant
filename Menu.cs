@@ -49,10 +49,7 @@ namespace TheFatDuckRestaurant
                     {
                         Console.WriteLine(i + ": " + typeGerecht[(i - 1) + (7 * huidigePaginaNR)].naam + "\x0A"); //1 : "GerechtNaam" (etc), laat alleen de gerechten zien voor de juiste pagina nr
                     }
-                    catch (IndexOutOfRangeException) //Omdat de gerechten per 7 worden laten zien, zal er bij 5 gerechten op een pagina een error komen omdat het programma niet bestaande gerechten 6 en 7 ook probeert te tonen.
-                    {
-
-                    }
+                    catch (IndexOutOfRangeException) { } //Omdat de gerechten per 7 worden laten zien, zal er bij 5 gerechten op een pagina een error komen omdat het programma niet bestaande gerechten 6 en 7 ook probeert te tonen.
                 }
                 if (huidigePaginaNR + 1 < hoeveelheidPaginas)
                     Console.WriteLine("8: Volgende pagina");
@@ -66,7 +63,7 @@ namespace TheFatDuckRestaurant
 
                 if (verkeerdeInput)
                 {
-                    Console.WriteLine("ERROR: Typ een geldig index in");
+                    Console.WriteLine("ERROR: Toets een geldig index in");
                     verkeerdeInput = false;
                 }
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
@@ -105,7 +102,6 @@ namespace TheFatDuckRestaurant
                 {
                     Console.WriteLine("Verkeerde input, probeer 1, 2, 3 of 0");
                     verkeerdeInput = false;
-
                 }
 
                 ConsoleKeyInfo toetsUser = Console.ReadKey();
@@ -158,7 +154,6 @@ namespace TheFatDuckRestaurant
                 Console.Clear();
                 BekijkSpecifiekMenu("Gebruiker");
                 return;
-
             }
         }
 
@@ -361,7 +356,6 @@ namespace TheFatDuckRestaurant
                     Nagerechten = newGerechten;
                 }
             }
-
             MenuOpslaan(); //Called functie die het JSON bestand update
             return;
         }
@@ -432,7 +426,6 @@ namespace TheFatDuckRestaurant
                     j++;
                 }
             }
-
             if (typeGerechtNaam == "Voorgerechten")
                 Voorgerechten = newGerechten;
             if (typeGerechtNaam == "Hoofdgerechten")

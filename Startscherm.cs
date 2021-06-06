@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace TheFatDuckRestaurant
 {
-    public static class MainClass
+    public static class MainClass //MainClass bestaat om het restaurant object aan te maken in de Main, en de startfunctie van het restaurant te roepen
     {
         static void Main(string[] args)
         {
@@ -15,19 +15,14 @@ namespace TheFatDuckRestaurant
 
     public class Restaurant
     {
-        public static string jsonString = File.ReadAllText("gebruikers.json");
-        public static string MenujsonString = File.ReadAllText("menu.json");
-        public static string TafelsjsonString = File.ReadAllText("Tafels.json");
-
-        public Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(jsonString);
+        public Gebruikers gebruikers = JsonSerializer.Deserialize<Gebruikers>(File.ReadAllText("gebruikers.json"));    //Alle json bestanden worden aan het begin van de class restaurant geladen vanuit de files. zodat het systeem bij de startup weer up to date is.
         public ReserveerLijst reserveerLijst = JsonSerializer.Deserialize<ReserveerLijst>(File.ReadAllText("reserveringen.json"));
-        public Menu menu = JsonSerializer.Deserialize<Menu>(MenujsonString);
-        public TafelArray tafels = JsonSerializer.Deserialize<TafelArray>(TafelsjsonString);
+        public Menu menu = JsonSerializer.Deserialize<Menu>(File.ReadAllText("menu.json"));
+        public TafelArray tafels = JsonSerializer.Deserialize<TafelArray>(File.ReadAllText("Tafels.json"));
         public Clickstream clickstream = JsonSerializer.Deserialize<Clickstream>(File.ReadAllText("ClickStream.json"));
-
         public DailyRevenues dailyRevenues = JsonSerializer.Deserialize<DailyRevenues>(File.ReadAllText("DailyRevenues.json"));
 
-        public Gebruiker gebruiker = new Gebruiker("", "", "", "");
+        public Gebruiker gebruiker = new Gebruiker("", "", "", ""); //Aan het begin wordt een nieuwe gebruiker aangemaakt zonder attributen. Dit is een uitgelogde gebruiker
 
         public void StartFunctie()
         {
@@ -35,53 +30,51 @@ namespace TheFatDuckRestaurant
             UpdateReserveringen();
             while (!shutOff)
             {
-                char gebruikerInput = gebruiker.startScherm(); // ALL possible input: 1: Fat duck informatie, 2: Login/registratie, 3: Logout, 4: Menu bekijken/aanpassen, 5: Reserveer als klant, 6: daily revenue bekijken, 7: clickstream van klanten bekijken, 8: Applicatie afsluiten, 9: Eigen reserveringen inkijken als klant, A: Account bekijken van een gebruiker, B: Medewerker toevoegen als eigenaar
+                char gebruikerInput = gebruiker.startScherm(); //Liggend aan het type dat gebruiker is, zal een ander startScherm worden gecalled. (Gebruiker, Klant, Medewerker of Eigenaar). Ieder van deze classes heeft zijn eigen functionaliteit en zal ook andere of soms dezelfde characters returnen voor een bepaalde functie
 
                 switch (gebruikerInput)
                 {
-                    case '1':
+                    case '1': //Informatie over Fat Duck (kan door alle gebruiker types gecalled worden)
                         this.theFatDuckInformatie();
                         break;
-                    case '2':
-                        gebruiker = gebruikers.accountManager(gebruiker); //Veranderd de gebruiker als er wordt ingelogd of een nieuw account wordt aangemaakt
+                    case '2': //Inloggen als Klant, Medewerker of Eigenaar, of een nieuw account registreren als Klant. Al deze veranderingen zal de gebruiker aanpassen (het wordt implicit gecast)
+                        gebruiker = gebruikers.accountManager(gebruiker);
                         break;
-                    case '3':
+                    case '3': //Uitloggen als Klant, Medewerker of Eigenaar. Dit zal de gebruiker variable weer implicit casten als een Gebruiker type. Waardoor het basis startScherm() zal worden getoont 
                         gebruiker = gebruikers.logOut();
                         break;
-                    case '4':
-                        menu = gebruiker.bekijkMenu(menu); //Veranderd menu als er iets veranderd wordt (bijvoorbeeld door een medewerker)
+                    case '4': //Menu bekijken als Klant, Medewerker of Eigenaar. Veranderd het menu als er iets wordt aangepast.
+                        menu = gebruiker.bekijkMenu(menu);
                         break;
-                    case '5':
+                    case '5': //Reserveren als klant. Veranderd de reserveerlijst, clickstream en gebruikers informatie als er wordt gereserveerd.
                         if (reserveerLijst.createReservering(gebruiker.Naam, menu))
                         {
                             clickstream.addClickstream(reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length - 1].Datum, reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length - 1].Tijd);
                             SaveGebruikers(this.gebruikers);
                             SaveReserveerlijst(this.reserveerLijst);
                             SaveClickstream(this.clickstream);
-                            //clickstream.bekijkClicks(1100);
                         }
                         break;
-                    case '6':
+                    case '6': //Daily revenues bekijken als Medewerker of Eigenaar.
                         dailyRevenues.bekijkRevenue(reserveerLijst.Reserveringen);
                         break;
-                    case '7':
+                    case '7': //Clickstream bekijken als Medewerker of Eigenaar.
                         clickstream.bekijkClicks();
-                        //clickstream van klanten
                         break;
-                    case '8':
-                        shutOff= true; // Applicatie afsluiten als eigenaar
+                    case '8': //Applicatie afsluiten als Eigenaar of Medewerker.
+                        shutOff = true;
                         break;
-                    case '9': //Reserveringen bekijken als klant
+                    case '9': //Eigen reserveringen bekijken als Klant.
                         reserveerLijst.BekijkReserveringenKlant(gebruiker.Naam, tafels);
                         SaveReserveerlijst(this.reserveerLijst);
                         break;
-                    case 'A':
+                    case 'A': //Eigen account bekijken als Klant.
                         gebruiker.bekijkAccount();
                         break;
-                    case 'B':
+                    case 'B': //Medewerker account toevoegen als Eigenaar.
                         gebruikers.registreerMedewerker();
                         break;
-                    case 'C': // tafels koppelen als medewerker
+                    case 'C': // tafels koppelen als Medewerker
                         reserveerLijst.BekijkReserveringenMedewerker(tafels);
                         SaveReserveerlijst(this.reserveerLijst);
                         break;

@@ -12,20 +12,19 @@ namespace TheFatDuckRestaurant
         public string beschrijving { get; set; }
         public List<string> ingredienten { get; set; }
 
-        public Gerecht(string type)
+        public Gerecht(string type) //Bij Gerecht constructor met 1 parameter wordt het type gerecht doorgegeven en het gerecht aangemaakt.
         {
             this.naam = "Voer een naam in";
             this.prijs = 0.0;
             this.beschrijving = "Voer een beschrijving in";
             this.ingredienten = new List<string>();
 
-            ItemAanMaakScherm(type); //misschien boolean van maken die true of false doorstuurt of het item daadwerkelijk moet worden toegevoegd
+            ItemAanMaakScherm(type);
         }
 
         public Gerecht() { } //Lege constructor voor json serialisen
 
-
-        private void ItemAanMaakScherm(string type)
+        private void ItemAanMaakScherm(string type) //ItemAanMaakScherm is de plek waar alle attributen worden aangepast van een gerecht, voordat deze vanuit de constructor weer wordt toegevoegd. Als het gerecht toch niet hoeft worden toegevoegd dan returnt de code gewoon een gerecht met de basis attributen.
         {
             bool nogNietAllesIngevuldBijOpslaan = false;
             bool wrongInput = false;
@@ -38,7 +37,7 @@ namespace TheFatDuckRestaurant
                 Console.WriteLine($"2: Prijs \t\t{prijs}");
                 Console.WriteLine($"3: Beschrijving \t{beschrijving}");
                 Console.WriteLine("4: Ingredienten:");
-                if (ingredienten.Count != 0)
+                if (ingredienten.Count != 0) //als de ingredienten list meer dan 0 strings bezit, worden ze getoont.
                 {
                     for (int i = 0; i < ingredienten.Count; i++)
                         Console.WriteLine($"- {ingredienten[i]}");
@@ -59,7 +58,7 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case '0':
-                        if (ConfirmatieSchermAnnuleren())
+                        if (ConfirmatieAnnuleren())
                             return;
                         break;
                     case '1':
@@ -82,7 +81,7 @@ namespace TheFatDuckRestaurant
                             nogNietAllesIngevuldBijOpslaan = true;
                             break;
                         }
-                        ConfirmatieSchermToevoegen();
+                        ConfirmatieToevoegen();
                         return;
                 }
             }
@@ -101,7 +100,7 @@ namespace TheFatDuckRestaurant
                     wrongInput = false;
                 }
                 string userInputNaam = Console.ReadLine();
-                if (userInputNaam == "0") //Als de input "0" is , veranderd de attribuut naam niet, anders loopt de code door een paar checks.
+                if (userInputNaam == "0") //Als de input "0" is , veranderd de attribuut naam niet.
                     return;
                 else if (userInputNaam.Any(char.IsDigit)) //Checkt of er een getal tussen de letters staat.
                     wrongInput = true;
@@ -154,7 +153,7 @@ namespace TheFatDuckRestaurant
         }
         private void VeranderGerechtIngredienten()
         {
-            while (true) //Dit gedeelte handelt het toevoegen van ingredienten aan het nieuwe gerecht
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine(ASCIIART.MenuArt());
@@ -191,7 +190,7 @@ namespace TheFatDuckRestaurant
                 return true;
             return false;
         }
-        private bool ConfirmatieSchermAnnuleren()
+        private bool ConfirmatieAnnuleren()
         {
             bool wrongInput = false;
             while (true)
@@ -205,6 +204,7 @@ namespace TheFatDuckRestaurant
                 switch (userInput)
                 {
                     case '1':
+                        naam = "Voer een naam in"; //als het item niet hoeft worden toegevoegd en de gebruiker terug wilt, wordt de naam op de standard string gezet. Dit wordt gedaan om er zeker van te zijn dat het gerecht niet toch wordt toegevoegd (wat zou gebeuren als alle attributen correct waren aangepast voor het annuleren)
                         return true;
                     case '0':
                         return false;
@@ -214,7 +214,7 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        private bool ConfirmatieSchermToevoegen()
+        private bool ConfirmatieToevoegen()
         {
             bool wrongInput = false;
             while (true)

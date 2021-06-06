@@ -73,9 +73,7 @@ namespace TheFatDuckRestaurant
         {
             bool Exists = false;
             if(Revenues == null)
-            {
                 Revenues = new DailyRevenue[0];
-            }
             foreach(DailyRevenue dailyrevenue in Revenues)
             {
                 if(dailyrevenue.Datum == Datum && !Exists)
@@ -88,9 +86,7 @@ namespace TheFatDuckRestaurant
             {
                 DailyRevenue[] newRevenues = new DailyRevenue[Revenues.Length + 1];
                 for(int i = 0; i < Revenues.Length; i++)
-                {
                     newRevenues[i] = Revenues[i];
-                }
                 newRevenues[Revenues.Length] = new DailyRevenue(Datum, Revenue);
                 Revenues = newRevenues;
             }
