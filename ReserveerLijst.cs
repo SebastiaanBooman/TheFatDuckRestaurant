@@ -267,7 +267,6 @@ namespace TheFatDuckRestaurant
         }
         public bool createReservering(string klant, Menu menu, int tijd = 0, string datum = "", int personen = 0, List<Bestelling> bestelling = null, string changeItem = "Annuleer") //creëert een nieuwe reservering
         {
-            //GERECHTEN
             Reservering NieuweReservering = new Reservering(tijd, datum, personen, klant, bestelling);
             while (true)
             {

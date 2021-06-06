@@ -7,33 +7,6 @@ namespace TheFatDuckRestaurant
         public CSDag[] Dagen { get; set; }
         public CSTijd[] Tijden { get; set; }
         public Clickstream() { }
-        /*public Clickstream()//1 keer doen om het json bestand te schrijven
-        {
-            Dagen = new CSDag[]
-            {
-                new CSDag("maandag",0),
-                new CSDag("dinsdag",0),
-                new CSDag("woensdag",0),
-                new CSDag("donderdag",0),
-                new CSDag("vrijdag",0),
-                new CSDag("zaterdag",0),
-                new CSDag("zondag",0)
-            };
-            Tijden = new CSTijd[]
-            {
-                new CSTijd(1100,0),
-                new CSTijd(1200,0),
-                new CSTijd(1300,0),
-                new CSTijd(1400,0),
-                new CSTijd(1500,0),
-                new CSTijd(1600,0),
-                new CSTijd(1700,0),
-                new CSTijd(1800,0),
-                new CSTijd(1900,0),
-                new CSTijd(2000,0),
-                new CSTijd(2100,0)
-            };
-        }*/
         public void addClickstream(string Datum, int tijd) //voegt de clickstream toe wanneer een reservering gemaakt is
         {
             string DigitCheck = "";
@@ -126,21 +99,11 @@ namespace TheFatDuckRestaurant
         public string Naam { get; set; }
         public int Clicks { get; set; }
         public CSDag() { }
-        public CSDag(string naam, int clicks)
-        {
-            Naam = naam;
-            Clicks = clicks;
-        }
     }
     public class CSTijd
     {
         public int Naam { get; set; }
         public int Clicks { get; set; }
         public CSTijd() { }
-        public CSTijd(int naam, int clicks)
-        {
-            Naam = naam;
-            Clicks = clicks;
-        }
     }
 }

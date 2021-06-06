@@ -12,12 +12,6 @@ namespace TheFatDuckRestaurant
         public Eigenaar Eigenaar { get; set; }
 
         public Gebruikers() { } //Empty constructor for json deserialisen.
-        public Gebruikers(Klant[] klanten, Medewerker[] medewerkers, Eigenaar eigenaar)
-        {
-            this.Klanten = klanten;
-            this.Medewerkers = medewerkers;
-            this.Eigenaar = eigenaar;
-        }
 
         public Gebruiker accountManager(Gebruiker gebruiker)
         {

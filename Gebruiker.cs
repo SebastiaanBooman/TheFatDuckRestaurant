@@ -32,13 +32,6 @@ namespace TheFatDuckRestaurant
             menu.BekijkMenuGebruiker();
             return menu;
         }
-        public virtual ReserveerLijst reserveer(Menu menu, ReserveerLijst reserveerLijst) => reserveerLijst;
-
-        /*public virtual string bekijkDailyRevenue() => null;
-
-        public virtual string bekijkClickStream() => null;
-
-        public virtual void bekijkReserveringen() { }*/
 
         public virtual void bekijkAccount() { }
 
