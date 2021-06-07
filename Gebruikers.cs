@@ -71,7 +71,6 @@ namespace TheFatDuckRestaurant
            };
             while (true)
             {
-                //returnt een tuple die aangeeft of de input het juiste wachtwoord of 'terug' is en de input als een string
                 bool NaamBestaat = false;
                 Klant klantObject = null;
                 Medewerker medewerkerObject = null;
@@ -127,17 +126,17 @@ namespace TheFatDuckRestaurant
                         Password = CheckWachtwoord(medewerkerObject);
                     else
                         Password = CheckWachtwoord(eigenaarObject);
-                    while (!Password.Item1) //blijft om het wachtwoord vragen totdat het juiste wachtwoord voor de gebruikersnaam wordt gegeven of er 'terug' wordt getypt
+                    while (!Password.Item1)
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
                         Console.WriteLine("Verkeerd wachtwoord\x0A\x0A\x0AVoer uw wachtwoord in:\x0A\x0A" + "0: Terug");
-                        if (klantObject != null) //Als klantObject geen null is, betekent dat de gebruiker in wilt loggen als klant
+                        if (klantObject != null)
                             Password = CheckWachtwoord(klantObject);
                         else
                             Password = CheckWachtwoord(medewerkerObject);
                     }
-                    if (Password.Item2 != "0") //sluit het inlogscherm af wanneer 'terug' was getypt
+                    if (Password.Item2 != "0")
                     {
                         Console.Clear();
                         Console.WriteLine(ASCIIART.LoginArt());
@@ -151,7 +150,7 @@ namespace TheFatDuckRestaurant
                             return eigenaarObject;
                     }
                 }
-                else //reset het inlogscherm wanneer een nog niet geregistreerde gebruikersnaam wordt gegeven of sluit het inlogscherm af wanneer '0' is ingevoerd
+                else
                 {
                     Console.Clear();
                     Console.WriteLine(ASCIIART.LoginArt());
