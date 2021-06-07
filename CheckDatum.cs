@@ -4,7 +4,13 @@ namespace TheFatDuckRestaurant
 {
     static class CheckDatum
     {
-        public static string checkDatum(string Datum, bool reserveren = true) //checkt of een datum bestaat en returnt een geldige datum string
+        /// <summary>
+        /// Checkt of de gegeven datum bestaat en voegt de weekdag en eventueel het jaar toe aan de string
+        /// </summary>
+        /// <param name="Datum">Datum die gecheckt moet worden</param>
+        /// <param name="reserveren">Geeft aan of het voor een reservering gebeurt of niet</param>
+        /// <returns>null als de datum ongeldig is, anders een geldige datum-string voor deze applicatie</returns>
+        public static string checkDatum(string Datum, bool reserveren = true)
         {
             string Dag = "";
             string Maand = "";
@@ -33,7 +39,15 @@ namespace TheFatDuckRestaurant
             }
             return null;
         }
-        private static string WeekDag(int Dag, string maand, int Jaar, bool reserveren) //returnt de dag van de week (EN) als een string
+        /// <summary>
+        /// Verkrijgt mbv de dag, maand en het jaar de dag van de week
+        /// </summary>
+        /// <param name="Dag">Dag van de maand</param>
+        /// <param name="maand">Maand</param>
+        /// <param name="Jaar">Jaar</param>
+        /// <param name="reserveren">Geeft aan of het voor een reservering gebeurt of niet</param>
+        /// <returns>De dag van de week als string</returns>
+        private static string WeekDag(int Dag, string maand, int Jaar, bool reserveren)
         {
             int Maand = MaandInt(maand);
             int HuidigeDag = DateTime.Now.Day;
@@ -46,7 +60,12 @@ namespace TheFatDuckRestaurant
             string WeekDay = "" + date.DayOfWeek;
             return DaytoDag(WeekDay.ToLower());
         }
-        private static string DaytoDag(string Day) //zet de Engelse dagnaam om naar de Nederlandse
+        /// <summary>
+        /// Zet de Engelse naam van de dag van de week om naar de Nederlandse
+        /// </summary>
+        /// <param name="Day">Engelse dag van de week</param>
+        /// <returns>Nederlandse dag van de week</returns>
+        private static string DaytoDag(string Day)
         {
             return Day == "monday" ? "Maandag" :
                 Day == "tuesday" ? "Dinsdag" :
@@ -55,7 +74,12 @@ namespace TheFatDuckRestaurant
                 Day == "friday" ? "Vrijdag" :
                 Day == "saturday" ? "Zaterdag" : "Zondag";
         }
-        private static int MaandInt(string maand) //returnt de hoeveelste maand het is
+        /// <summary>
+        /// Zoekt op de hoeveelste maand de parameter is
+        /// </summary>
+        /// <param name="maand">Naam van de maand</param>
+        /// <returns>De hoeveelste maand het is</returns>
+        private static int MaandInt(string maand)
         {
             string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
             for (int i = 0; i < Maanden.Length; i++)
@@ -65,7 +89,12 @@ namespace TheFatDuckRestaurant
             }
             return 0;
         }
-        private static bool CheckMaand(string maand) //checkt of de parameter een geldige maandnaam is
+        /// <summary>
+        /// Checkt of de gegeven maand een geldige maand is
+        /// </summary>
+        /// <param name="maand">Naam van de maand</param>
+        /// <returns>true als het een geldige maand is, anders false</returns>
+        private static bool CheckMaand(string maand)
         {
             string[] Maanden = new string[] { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
             for (int i = 0; i < Maanden.Length; i++)
@@ -75,7 +104,14 @@ namespace TheFatDuckRestaurant
             }
             return false;
         }
-        private static bool CheckDag(int Dag, string Maand, int Jaar) //checkt of de dag bestaat voor de gegeven maand en het gegeven jaar
+        /// <summary>
+        /// Checkt of de gegeven dag bestaat voor de gegeven maand en het gegeven jaar
+        /// </summary>
+        /// <param name="Dag">Dag van de maand</param>
+        /// <param name="Maand">Naam van de maand</param>
+        /// <param name="Jaar">Jaar</param>
+        /// <returns>true als als de dag bestaat, anders false</returns>
+        private static bool CheckDag(int Dag, string Maand, int Jaar)
         {
             if (Maand == "januari" || Maand == "maart" || Maand == "mei" || Maand == "juli" || Maand == "augustus" || Maand == "oktober" || Maand == "november")
                 return true;
@@ -87,6 +123,11 @@ namespace TheFatDuckRestaurant
             }
             return Dag < 31 ? true : false;
         }
+        /// <summary>
+        /// Checkt of de gegeven datum al geweest is
+        /// </summary>
+        /// <param name="Datum">Datum die gecheckt moet worden</param>
+        /// <returns>true als de datum al geweest is, anders false</returns>
         public static bool DatumGeweest(string Datum) //checkt of een datum geweest is
         {
             string Dag = "";

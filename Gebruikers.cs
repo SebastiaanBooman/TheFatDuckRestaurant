@@ -61,6 +61,13 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
+        /// <summary>
+        /// Checkt of de gegeven gebruikersnaam bestaat voor de gegeven gebruikerType
+        /// Checkt of het wachtwoord bij de gebruikersnaam hoort
+        /// Logt de gebruiker in
+        /// </summary>
+        /// <param name="gebruikerType">Welk soort gebruiker (klant,medewerker,eigenaar)</param>
+        /// <returns>De ingelogde gebruiker</returns>
         public Gebruiker logIn(string gebruikerType)
         {
             Func<Gebruiker, Tuple<bool, string>> CheckWachtwoord = (gebruikerObject) =>

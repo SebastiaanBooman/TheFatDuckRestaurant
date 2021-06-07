@@ -7,11 +7,16 @@ namespace TheFatDuckRestaurant
         public CSDag[] Dagen { get; set; }
         public CSTijd[] Tijden { get; set; }
         public Clickstream() { }
-        public void addClickstream(string Datum, int tijd) //voegt de clickstream toe wanneer een reservering gemaakt is
+        /// <summary>
+        /// Haalt de dag van de week uit de datum-string en voegt de clicks toe aan de juiste clickstream
+        /// </summary>
+        /// <param name="Datum">Datum van de reservering</param>
+        /// <param name="tijd">Tijd van de reservering</param>
+        public void addClickstream(string Datum, int tijd)
         {
             string DigitCheck = "";
             string dag = "";
-            foreach(char sym in Datum) //haalt de dag van de week uit de datumstring
+            foreach(char sym in Datum)
             {
                 if (Char.IsDigit(sym))
                     DigitCheck += sym;
@@ -20,7 +25,13 @@ namespace TheFatDuckRestaurant
             }
             addClicks(dag.ToLower(), tijd);
         }
-        private void addClicks(string dag, int tijd) //verhoogt de juiste clickstream qua dag en tijd
+        /// <summary>
+        /// Voegt de clicks toe aan de juiste clickstream
+        /// Voor tijd wordt het aan het dichtstbijzijnde uur toegevoegd
+        /// </summary>
+        /// <param name="dag">Dag van de week van de reservering</param>
+        /// <param name="tijd">Tijd van de reservering</param>
+        private void addClicks(string dag, int tijd)
         {
             foreach(CSDag Dag in Dagen)
             {
@@ -33,7 +44,10 @@ namespace TheFatDuckRestaurant
                     Tijd.Clicks++;
             }
         }
-        public void bekijkClicks() //laat de clickstream per dag vd week of tijd zien
+        /// <summary>
+        /// Laat de clickstream per dag van de week of per uur zien
+        /// </summary>
+        public void bekijkClicks()
         {
             char Input = '1';
             while (Input != '0')
@@ -59,7 +73,10 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        private void bekijkClicksD() //laat de clickstream per dag van de week zien
+        /// <summary>
+        /// Laat de clickstream per dag van de week zien
+        /// </summary>
+        private void bekijkClicksD()
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.ReserveringenArt());
@@ -76,7 +93,10 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("\nEnter: Ga terug naar het vorige scherm");
             Console.ReadKey();
         }
-        private void bekijkClicksT() //laat de clickstream per uur zien
+        /// <summary>
+        /// Laat de clickstream per uur zien
+        /// </summary>
+        private void bekijkClicksT()
         {
             Console.Clear();
             Console.WriteLine(ASCIIART.ReserveringenArt());
