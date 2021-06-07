@@ -11,6 +11,10 @@ namespace TheFatDuckRestaurant
 
         public TafelArray() { } //Empty constructor for json deserializen
 
+        /// <summary>
+        /// Laat alle vrije tafels van een bepaalde datum + tijd zien verdeeld onder maximaal 3 kolommen.
+        /// </summary>
+        /// <param name="tijdEnDatum">De tijd en datum die wordt gechecked in string format</param>
         public void BekijkVrijeTafels(string tijdEnDatum)
         {
             int checkTijd = TijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
@@ -67,6 +71,12 @@ namespace TheFatDuckRestaurant
         private string TijdEnDatumNaarDatum(string tijdEnDatum) => tijdEnDatum.Substring(4); //returnt de characters na de tijd (datum)
         private bool TijdCheck(int tafelTijd, int reserveringTijd, int uren) => ((tafelTijd + uren >= reserveringTijd) || ((reserveringTijd - uren) <= tafelTijd)) ? true : false; //return true Als tafeltijd + uren groter is dan reserveringtijd, of als reserveringstijd - uren kleiner of gelijk is aan tafeltijd.
 
+        /// <summary>
+        /// Berekent de tafels die nog aan een reservering moeten gekoppeld worden.
+        /// </summary>
+        /// <param name="aantalMensen">De hoeveelheid mensen van de reservering</param>
+        /// <param name="gereserveerdeTafels">Alle tafels die al zijn gekoppeld aan de reservering</param>
+        /// <returns>returnt het getal van de hoeveelheid die nog moet worden gekoppeld, of -1 als alles al is gekoppeld</returns>
         private int BerekenTafelsDieNogGekoppeldMoetenWorden(int aantalMensen, List<Tafel> gereserveerdeTafels)
         {
             int totaleGereserveerdePlekken = 0;
@@ -81,6 +91,13 @@ namespace TheFatDuckRestaurant
             return aantalMensen - totaleGereserveerdePlekken; // returns de hoeveelheid plekken die nog gekkopeled moeten worden.
         }
 
+        /// <summary>
+        /// Checkt of een tafel al is gereserveerd of niet. 
+        /// </summary>
+        /// <param name="tafelData">string tafeldatum (tijd+dag)</param>
+        /// <param name="checkDatum">string datum (dag)</param>
+        /// <param name="checkTijd">string tijd (tijd)</param>
+        /// <returns>return true als de tafelData overeenkomt met de checks. (+-200 uur voor lopende reserveringen). </returns>
         private bool isEenTafelAlGereserveerd(string tafelData, string checkDatum, int checkTijd)
         {
             if ((TijdEnDatumNaarDatum(tafelData) == checkDatum) && (TijdCheck(checkTijd, TijdEnDatumNaarInt(tafelData), 200))) //Als het op dezelfde dag plaats vind dan checkt of de tafel al gereserveerd is ergens binnen 200 (2 uur) van tevoren of 2 uur daarna, zo ja, Is al gereserveerd.
@@ -88,6 +105,14 @@ namespace TheFatDuckRestaurant
             return false;
         }
 
+        /// <summary>
+        /// Koppelt automatisch tafels aan een reservering
+        /// </summary>
+        /// <param name="aantalMensen">Hoeveelheid mensen die bij de reservering aanwezig zullen zijn</param>
+        /// <param name="gereserveerdeTafels">Lijst met de tafels die al zijn gekoppeld aan de reservering</param>
+        /// <param name="tijdEnDatum">De tijd en datum waarop de reservering plaatsvindt (string format)</param>
+        /// <param name="tochKoppelen">Boolean die op true wordt gezet wanneer er toch een inefficiente tafel gekoppeld moet worden (tafel van 4 voor mensen met minder dan 3)</param>
+        /// <returns>Returns de vernieuwde lijst voor de reservering (als deze is aangepast)</returns>
         public List<Tafel> AutomatischKoppelen(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool tochKoppelen = false)
         {
             while (true)
@@ -174,7 +199,13 @@ namespace TheFatDuckRestaurant
             }
         }
 
-
+        /// <summary>
+        /// Koppelen van Tafels met ID
+        /// </summary>
+        /// <param name="aantalMensen">Hoeveelheid mensen die bij de reservering aanwezig zullen zijn</param>
+        /// <param name="gereserveerdeTafels">Lijst met de tafels die al zijn gekoppeld aan de reservering</param>
+        /// <param name="tijdEnDatum">De tijd en datum waarop de reservering plaatsvindt (string format)</param>
+        /// <returns>Returns de vernieuwde lijst voor de reservering (als deze is aangepast)</returns>
         public List<Tafel> KoppelenDoorMedewerker(int aantalMensen, List<Tafel> gereserveerdeTafels, string tijdEnDatum) //Koppelen door medewerker heeft als input een int aantal mensen, en list van tafels die al gekoppeld zijn aan de reservering.
         {
             int checkTijd = TijdEnDatumNaarInt(tijdEnDatum); //De gegeven tijd in int (1200)
@@ -237,6 +268,14 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
+
+        /// <summary>
+        /// Ontkoppeld automatisch tafels van een reservering
+        /// </summary>
+        /// <param name="gereserveerdeTafels">Lijst met de tafels die al zijn gekoppeld aan de reservering</param>
+        /// <param name="tijdEnDatum">De tijd en datum waarop de reservering plaatsvindt (string format)</param>
+        /// <param name="klantCall">Boolean die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.</param>
+        /// <returns>Returns de vernieuwde lijst voor de reservering</returns>
         public List<Tafel> AllesAutomatischOntkoppelen(List<Tafel> gereserveerdeTafels, string tijdEnDatum, bool klantCall = false) //klantCall is een variabele die op true wordt gezet als er vanuit een klant een reservering wordt verwijderd.
         {
             while (true)
@@ -293,6 +332,12 @@ namespace TheFatDuckRestaurant
             }
         }
 
+        /// <summary>
+        /// Ontkoppelen van Tafels met ID
+        /// </summary>
+        /// <param name="gereserveerdeTafels">Lijst met de tafels die al zijn gekoppeld aan de reservering</param>
+        /// <param name="tijdEnDatum">De tijd en datum waarop de reservering plaatsvindt (string format)</param>
+        /// <returns>Returns de vernieuwde lijst voor de reservering (als deze is aangepast)</returns>
         public List<Tafel> OntKoppelenMetID(List<Tafel> gereserveerdeTafels, string tijdEnDatum)
         {
             while (true)
