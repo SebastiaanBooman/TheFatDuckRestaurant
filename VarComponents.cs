@@ -6,6 +6,11 @@ namespace TheFatDuckRestaurant
 {
     public static class VarComponents
     {
+        /// <summary>
+        /// Een check om te kijken of de parameter voldoet aan de verwachtingen van de regex.
+        /// </summary>
+        /// <param name="password">De input van de gebruiker</param>
+        /// <returns>True als het voldoet aan de verwachtingen, False als het niet voldoet aan de verwachtingen</returns>
         public static bool IsPassword(string password)
         {
             //      1       2               3                   4                5      6
@@ -29,6 +34,11 @@ namespace TheFatDuckRestaurant
             return match.Success;
         }
 
+        /// <summary>
+        /// Een check om te kijken of de parameter voldoet aan de verwachtingen van de regex.
+        /// </summary>
+        /// <param name="woonplaats">De input van de gebruiker</param>
+        /// <returns>True als het voldoet aan de verwachtingen, False als het niet voldoet aan de verwachtingen</returns>
         public static bool IsWoonplaats(string woonplaats)
         {
             //      1       2               3                   4
@@ -56,6 +66,11 @@ namespace TheFatDuckRestaurant
             return match.Success;
         }
 
+        /// <summary>
+        /// Een check om te kijken of de parameter voldoet aan de verwachtingen van de regex.
+        /// </summary>
+        /// <param name="adres">De input van de gebruiker</param>
+        /// <returns>True als het voldoet aan de verwachtingen, False als het niet voldoet aan de verwachtingen</returns>
         public static bool IsAdres(string adres)
         {
             //      1       2               3                    4                 5                6                   7                    8              9          10           11         12              13           14
@@ -103,6 +118,11 @@ namespace TheFatDuckRestaurant
             return match.Success;
         }
 
+        /// <summary>
+        /// Een check om te kijken of de parameter voldoet aan de verwachtingen van de regex.
+        /// </summary>
+        /// <param name="username">De input van de gebruiker</param>
+        /// <returns>True als het voldoet aan de verwachtingen, False als het niet voldoet aan de verwachtingen</returns>
         public static bool IsUsername(string username)
         {
             //      1         2               3                 4
@@ -124,6 +144,10 @@ namespace TheFatDuckRestaurant
             return match.Success;
         }
 
+        /// <summary>
+        /// Deze functie veranderd de input van de gebruiker naar een string van "*".
+        /// </summary>
+        /// <returns>Een string met een * per karakter dat is ingevoerd door de gebruiker</returns>
         public static SecureString MaskStringInput()
         {
             SecureString password = new SecureString();
