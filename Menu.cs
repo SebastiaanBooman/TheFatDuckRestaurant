@@ -12,6 +12,10 @@ namespace TheFatDuckRestaurant
         public Gerecht[] Hoofdgerechten { get; set; }
         public Gerecht[] Nagerechten { get; set; }
 
+        /// <summary>
+        /// Print de lijst met verschillende typen gerechten
+        /// </summary>
+        /// <param name="typeGebruiker">Type gebruiker die de lijst probeert te bekijken. Bijv: Medewerker</param>
         private void KiesMenuOpties(string typeGebruiker) //Print de lijst met typen Gerechten
         {
             Console.Clear();
@@ -26,6 +30,12 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("0: Terug");
         }
 
+        /// <summary>
+        /// Laad alle gerechten die mee zijn gestuurd in de typeGerecht parameter, en print ook de optie om de gerechten aan te passen indien de gebruiker een eigenaar of medewerker is.
+        /// </summary>
+        /// <param name="typeGerecht">Array met de typen gerechten die worden geladen. Bijv: Voorgerechten</param>
+        /// <param name="typeGebruiker">String die de type gebruiker meestuurd. Bijv: Medewerker</param>
+        /// <returns></returns>
         private Bestelling LaadSpecifiekMenu(Gerecht[] typeGerecht, string typeGebruiker) //Laad de gerechten van het type menu (Voorgerechten, Hoofdgerechten, Nagerechten etc).
         {
             int huidigePaginaNR = 0; //Bij de eerste keer laden van het menu zal de eerste 7 gerechten worden getoont.
@@ -136,7 +146,9 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-
+        /// <summary>
+        /// Bekijkt menu als medewerker
+        /// </summary>
         public void BekijkMenuMedewerker() //Opent het menu met de opties voor een medewerker
         {
             while (true)
@@ -146,7 +158,9 @@ namespace TheFatDuckRestaurant
                 return;
             }
         }
-
+        /// <summary>
+        /// Bekijkt menu als uitgelogde gebruiker of klant die het menu opent
+        /// </summary>
         public void BekijkMenuGebruiker() //Opent het menu met de opties voor een Gebruiker (niet ingelogd) of klant die niet wil reserveren.
         {
             while (true)
@@ -156,7 +170,11 @@ namespace TheFatDuckRestaurant
                 return;
             }
         }
-
+        /// <summary>
+        /// Bekijkt menu als klant die een gerecht wil toevoegen aan een reservering
+        /// </summary>
+        /// <param name="bestelling">Lijst met bestellingen die worden meegestuurd</param>
+        /// <returns></returns>
         public List<Bestelling> BekijkMenuKlant(List<Bestelling> bestelling = null) //Opent het menu met de opties voor een klant die een item wil toevoegen aan hun reservering
         {
             while (true)
@@ -194,7 +212,13 @@ namespace TheFatDuckRestaurant
                     return bestelling;
             }
         }
-
+        /// <summary>
+        /// Functie die ShowItemStandaard called om vervolgens informatie over een specifiek gerecht te bekijken
+        /// </summary>
+        /// <param name="geladenMenu">Array met het type gerecht</param>
+        /// <param name="toetsUserChar">Index van het type gerecht</param>
+        /// <param name="paginaNR">Index van op welke pagina het gerecht zich bevindt</param>
+        /// <returns></returns>
         private bool ShowItemHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over een specifiek gerecht uit het menu
         {
             try
@@ -206,7 +230,13 @@ namespace TheFatDuckRestaurant
             }
             catch { return false; }
         }
-
+        /// <summary>
+        /// Doet he tzelfde als ShowItemHandler maar geeft ook de optie om het gerecht toe te voegen aan een reservering
+        /// </summary>
+        /// <param name="geladenMenu">Array met het type gerecht</param>
+        /// <param name="toetsUserChar">Index van het type gerecht</param>
+        /// <param name="paginaNR">Index van op welke pagina het gerecht zich bevindt</param>
+        /// <returns></returns>
         private Bestelling ShowItemReserveringHandler(Gerecht[] geladenMenu, char toetsUserChar, int paginaNR) //Toont informatie over specifiek gerecht en geeft optie om het item toe te voegen aan je reservering
         {
             try
@@ -242,7 +272,10 @@ namespace TheFatDuckRestaurant
             }
             catch { return null; }
         }
-
+        /// <summary>
+        /// Functie die naam, beschrijving prijs en ingredienten van een gerecht print.
+        /// </summary>
+        /// <param name="gerecht">Gerecht object waarvan de informatie geladen moet worden</param>
         private void ShowItemStandaard(Gerecht gerecht) //Print informatie over een specifiek gerecht uit het menu
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -257,7 +290,11 @@ namespace TheFatDuckRestaurant
             for (int i = 0; i < gerecht.ingredienten.Count; i++)
                 Console.WriteLine($"- {gerecht.ingredienten[i]}");
         }
-
+        /// <summary>
+        /// Scherm waar de medewerker/eigenaar het menu kan aanpassen
+        /// </summary>
+        /// <param name="typeGerecht">Array met het type gerecht array wat moet worden aangepast. Bijv: Voorgerechten</param>
+        /// <returns></returns>
         private Gerecht[] MenuAanpassenScherm(Gerecht[] typeGerecht) //Handelt het toevoegen van een item aan een specifiek menu.
         {
             while (true)
@@ -310,7 +347,11 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-
+        /// <summary>
+        /// Scherm vanaf waar er gekozen kan worden om een nieuw item toe te voegen
+        /// </summary>
+        /// <param name="typeGerechtNaam">Type gerecht: Bijv: Voorgerechten</param>
+        /// <returns></returns>
         private Gerecht AddItemScherm(string typeGerechtNaam) //Print de opties om een item toe te voegen, en handeld correcte inputs.
         {
             Gerecht nieuweGerecht = new Gerecht(typeGerechtNaam);
@@ -359,7 +400,12 @@ namespace TheFatDuckRestaurant
             MenuOpslaan(); //Called functie die het JSON bestand update
             return;
         }
-
+        /// <summary>
+        /// Scherm vanaf waar de medewerker/eigenaar items kan verwijderen uit het menu
+        /// </summary>
+        /// <param name="typeGerecht">Array met de type gerechten van waar een item weg moet.</param>
+        /// <param name="typeGerechtNaam">Naam van de array. Bijv: Voorgerechten</param>
+        /// <returns></returns>
         private Gerecht[] removeItemScreen(Gerecht[] typeGerecht, string typeGerechtNaam) //Print de gerechten met de optie om die te verwijderen uit de lijst
         {
             while (true)
@@ -436,7 +482,9 @@ namespace TheFatDuckRestaurant
             MenuOpslaan(); //Called functie die het JSON bestand update
             return newGerechten;
         }
-
+        /// <summary>
+        /// Slaat het menu op in het JSON bestand
+        /// </summary>
         public void MenuOpslaan() //Veranderd het huidige menu.json met de geupdate versie door het huidige menu object te serializen.
         {
             var JSONoptions = new JsonSerializerOptions
