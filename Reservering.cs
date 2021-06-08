@@ -185,6 +185,9 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
+        /// <summary>
+        /// Laat de gegevens van de reservering zien
+        /// </summary>
         public void Info()
         {
             Console.WriteLine(ASCIIART.ReserverenArt());
@@ -229,7 +232,11 @@ namespace TheFatDuckRestaurant
                 return true;
             return false;
         }
-        public char Create(string addition) //laat info over de reservering zien en geeft de mogelijke opties
+        /// <summary>
+        /// Laat info over de reservering zien en geeft de mogelijke opties weer
+        /// </summary>
+        /// <returns>De keuze van de klant</returns>
+        public char Create()
         {
             Console.Clear();
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
@@ -237,12 +244,16 @@ namespace TheFatDuckRestaurant
             Console.WriteLine("2: Tijd\t\t\t" + (this.Tijd == 0 ? "U heeft nog geen tijd gekozen" : $"({TijdString()})"));
             Console.WriteLine("3: Aantal personen\t" + (this.Personen == 0 ? "U heeft nog niet het aantal personen aangegeven" : $"({this.Personen} personen)"));
             Console.WriteLine("4: Gerechten\t\t" + ((this.Bestelling == null || this.Bestelling.Count == 0) ? "U heeft nog geen gerechten gekozen" : (this.Bestelling.Count == 1) ? $"({this.Bestelling.Count} gerecht)" : $"({this.Bestelling.Count} verschillende gerechten)"));
-            Console.WriteLine($"\n5: Bevestig de reservering\n0: {addition} de reservering");
+            Console.WriteLine($"\n5: Bevestig de reservering\n0: Annuleer de reservering");
             char Input = Console.ReadKey().KeyChar;
             Console.Clear();
             return Input;
         }
-        public void changePersonen(int MaxPersonen) //verandert het aantal personen, mits deze groter is dan nul en kleiner dan de max
+        /// <summary>
+        /// Verandert het aantal personen, mits deze groter is dan nul en kleiner dan de max
+        /// </summary>
+        /// <param name="MaxPersonen">Maximale aantal personen</param>
+        public void changePersonen(int MaxPersonen)
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine((this.Personen == 0 ? "Nog geen aantal personen" : $"({this.Personen})") + "\x0a" + $"Er zijn {MaxPersonen} plaatsen vrij\x0aVoor hoeveel personen wilt u reserveren?");
@@ -264,7 +275,11 @@ namespace TheFatDuckRestaurant
                 Console.ReadKey();
             }
         }
-        public int changeTijd() //verandert de tijd, mits deze binnen de beschikbare uren valt
+        /// <summary>
+        /// Verandert de tijd, mits deze binnen de beschikbare uren valt
+        /// </summary>
+        /// <returns>0 als de tijd buiten de uren valt, anders de gegeven tijd</returns>
+        public int changeTijd()
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine((Tijd == 0 ? "Nog geen tijd" : $"({TijdString()})") + "\x0aWelke tijd wilt u reserveren? (11:00 - 21:00)");
@@ -288,7 +303,11 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return 0;
         }
-        public string changeDatum() //verandert de datum, mits het een geldige datum is
+        /// <summary>
+        /// Verandert de datum, mits het een geldige datum is
+        /// </summary>
+        /// <returns>De nieuwe datum-string</returns>
+        public string changeDatum()
         {
             Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
             Console.WriteLine((this.Datum == "" ? "Nog geen datum" : $"({this.Datum})") + "\x0aWelke datum wilt u reserveren? (21 juni)");
@@ -296,6 +315,10 @@ namespace TheFatDuckRestaurant
             Console.Clear();
             return CheckDatum.checkDatum(NieuweDatum);
         }
+        /// <summary>
+        /// Zet tijd om van string naar int
+        /// </summary>
+        /// <returns>De tijd in int</returns>
         public string TijdString() // zet tijd in int om naar tijd in string
         {
             string tstring = this.Tijd / 100 + ":" + this.Tijd % 100;

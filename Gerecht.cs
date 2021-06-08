@@ -24,6 +24,10 @@ namespace TheFatDuckRestaurant
 
         public Gerecht() { } //Lege constructor voor json serialisen
 
+        /// <summary>
+        /// Controller functie, vanuit hier kan ieder attribuut van een gerecht aangepast worden
+        /// </summary>
+        /// <param name="type">String, voorgerecht, hoofdgerecht of nagerecht</param>
         private void ItemAanMaakScherm(string type) //ItemAanMaakScherm is de plek waar alle attributen worden aangepast van een gerecht, voordat deze vanuit de constructor weer wordt toegevoegd. Als het gerecht toch niet hoeft worden toegevoegd dan returnt de code gewoon een gerecht met de basis attributen.
         {
             bool nogNietAllesIngevuldBijOpslaan = false;

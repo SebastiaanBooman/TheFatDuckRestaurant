@@ -50,9 +50,9 @@ namespace TheFatDuckRestaurant
                         if (reserveerLijst.createReservering(gebruiker.Naam, menu))
                         {
                             clickstream.addClickstream(reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length - 1].Datum, reserveerLijst.Reserveringen[reserveerLijst.Reserveringen.Length - 1].Tijd);
-                            SaveGebruikers(this.gebruikers);
-                            SaveReserveerlijst(this.reserveerLijst);
-                            SaveClickstream(this.clickstream);
+                            SaveGebruikers();
+                            SaveReserveerlijst();
+                            SaveClickstream();
                         }
                         break;
                     case '6': //Daily revenues bekijken als Medewerker of Eigenaar.
@@ -66,7 +66,7 @@ namespace TheFatDuckRestaurant
                         break;
                     case '9': //Eigen reserveringen bekijken als Klant.
                         reserveerLijst.BekijkReserveringenKlant(gebruiker.Naam, tafels);
-                        SaveReserveerlijst(this.reserveerLijst);
+                        SaveReserveerlijst();
                         break;
                     case 'A': //Eigen account bekijken als Klant.
                         gebruiker.bekijkAccount();
@@ -76,7 +76,7 @@ namespace TheFatDuckRestaurant
                         break;
                     case 'C': // tafels koppelen als Medewerker
                         reserveerLijst.BekijkReserveringenMedewerker(tafels);
-                        SaveReserveerlijst(this.reserveerLijst);
+                        SaveReserveerlijst();
                         break;
                 }
             }
@@ -106,30 +106,42 @@ namespace TheFatDuckRestaurant
                 verkeerdeInput = true;
             }
         }
-        public void SaveReserveerlijst(ReserveerLijst reserveerlijst)
+        /// <summary>
+        /// Slaat de reserveerlijst op in een JSON-bestand
+        /// </summary>
+        public void SaveReserveerlijst()
         {
             var JSONoptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
-            File.WriteAllText("reserveringen.json", JsonSerializer.Serialize(reserveerlijst, JSONoptions));
+            File.WriteAllText("reserveringen.json", JsonSerializer.Serialize(this.reserveerLijst, JSONoptions));
         }
-        private void SaveGebruikers(Gebruikers gebruikers)
+        /// <summary>
+        /// Slaat de gebruikerslijst op in een JSON-bestand
+        /// </summary>
+        private void SaveGebruikers()
         {
             var JSONoptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
-            File.WriteAllText("gebruikers.json", JsonSerializer.Serialize(gebruikers, JSONoptions));
+            File.WriteAllText("gebruikers.json", JsonSerializer.Serialize(this.gebruikers, JSONoptions));
         }
-        private void SaveClickstream(Clickstream clickstream)
+        /// <summary>
+        /// Slaat de clickstream op in een JSON-bestand
+        /// </summary>
+        private void SaveClickstream()
         {
             var JSONoptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
-            File.WriteAllText("ClickStream.json", JsonSerializer.Serialize(clickstream, JSONoptions));
+            File.WriteAllText("ClickStream.json", JsonSerializer.Serialize(this.clickstream, JSONoptions));
         }
+        /// <summary>
+        /// Slaat de Daily Revenues op in een JSON-bestand
+        /// </summary>
         private void SaveDailyRevenues()
         {
             var JSONoptions = new JsonSerializerOptions
@@ -138,6 +150,10 @@ namespace TheFatDuckRestaurant
             };
             File.WriteAllText("DailyRevenues.json", JsonSerializer.Serialize(dailyRevenues, JSONoptions));
         }
+        /// <summary>
+        /// Voegt de bendodigde gegevens van de verlopen reservering toe aan het DailyRevenues JSON-bestand
+        /// Verwijdert de verlopen reservering
+        /// </summary>
         private void UpdateReserveringen()
         {
             foreach(Reservering reservering in reserveerLijst.Reserveringen)
@@ -153,7 +169,7 @@ namespace TheFatDuckRestaurant
                     reserveerLijst.removeReservering(reservering, tafels);
                 }
             }
-            SaveReserveerlijst(reserveerLijst);
+            SaveReserveerlijst();
             SaveDailyRevenues();
         }
 

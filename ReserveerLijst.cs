@@ -264,12 +264,18 @@ namespace TheFatDuckRestaurant
             }
             this.Reserveringen = newReserveringen;
         }
-        public bool createReservering(string klant, Menu menu, int tijd = 0, string datum = "", int personen = 0, List<Bestelling> bestelling = null, string changeItem = "Annuleer") //creëert een nieuwe reservering
+        /// <summary>
+        /// creëert een nieuwe reservering
+        /// </summary>
+        /// <param name="klant">Gebruikersnaam van de klant</param>
+        /// <param name="menu">Het menu</param>
+        /// <returns>false als de reservering geannuleerd wordt, anders true</returns>
+        public bool createReservering(string klant, Menu menu)
         {
-            Reservering NieuweReservering = new Reservering(tijd, datum, personen, klant, bestelling);
+            Reservering NieuweReservering = new Reservering(0, "", 0, klant, null);
             while (true)
             {
-                switch (NieuweReservering.Create(changeItem)) //lijst met opties
+                switch (NieuweReservering.Create())
                 {
                     case '1': //datum veranderen
                         string NieuweDatum = NieuweReservering.changeDatum();
@@ -313,7 +319,7 @@ namespace TheFatDuckRestaurant
                         break;
                     case '0': //reservering verwijderen/annuleren
                         Console.WriteLine(TheFatDuckRestaurant.ASCIIART.ReserverenArt());
-                        Console.WriteLine(changeItem == "Verwijder" ? "De reservering is verwijderd\x0a" : "De reservering is geannuleerd\x0a");
+                        Console.WriteLine("De reservering is geannuleerd\x0a");
                         Console.WriteLine("Enter: Ga terug naar het startscherm");
                         Console.ReadKey();
                         return false;
@@ -324,8 +330,12 @@ namespace TheFatDuckRestaurant
                         break;
                 }
             }
-
         }
+        /// <summary>
+        /// Checkt of alle velden voor een reservering ingevuld zijn
+        /// </summary>
+        /// <param name="reservering">De reservering die gecheckt moet worden</param>
+        /// <returns>true als alle velden ingevuld zijn, anders false</returns>
         private bool AddReservering(Reservering reservering) //checkt of een reservering gemaakt kan worden
         {
             if (reservering.Tijd != 0 && reservering.Datum != "" && reservering.Personen != 0 && (reservering.Bestelling != null))
@@ -356,7 +366,13 @@ namespace TheFatDuckRestaurant
             Console.ReadKey();
             return false;
         }
-        private int VrijePlaatsen(int tijd, string datum) //returnt het aantal vrije plaatsen
+        /// <summary>
+        /// Checkt hoeveel vrije plaatsen er zijn voor de gegeven datum en tijd
+        /// </summary>
+        /// <param name="tijd">Tijd van de reservering</param>
+        /// <param name="datum">Datum van de reservering</param>
+        /// <returns>Het aantal vrije plaatsen</returns>
+        private int VrijePlaatsen(int tijd, string datum)
         {
             int MaxPersonen = 100;
             for (int i = 0; i < this.Reserveringen.Length; i++)

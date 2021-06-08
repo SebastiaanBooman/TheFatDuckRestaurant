@@ -6,7 +6,11 @@ namespace TheFatDuckRestaurant
     {
         public DailyRevenue[] Revenues { get; set; }
         public DailyRevenues() { }
-        public void bekijkRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst) //laat de revenue voor de gegeven datum zien
+        /// <summary>
+        /// Laat de opbrengst van een gegeven datum zien
+        /// </summary>
+        /// <param name="reserveerlijst">Array van reserveringen</param>
+        public void bekijkRevenue(TheFatDuckRestaurant.Reservering[] reserveerlijst)
         {
             string Datum = "";
             while (Datum != "0")
@@ -21,7 +25,7 @@ namespace TheFatDuckRestaurant
                     Datum = CheckDatum.checkDatum(Datum, false);
                     if (Datum != null)
                     {
-                        if (!oudeRevenue(Datum)) //checkt of de datum al geweest is (zoja, dan wordt de informatie uit het json bestand gehaald)
+                        if (!oudeRevenue(Datum))
                         {
                             double Revenue = 0;
                             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -49,7 +53,13 @@ namespace TheFatDuckRestaurant
                 }
             }
         }
-        private bool oudeRevenue(string Datum) //checkt of de datum al geweest is
+        /// <summary>
+        /// Checkt of de datum in het JSON-bestand staat
+        /// Zoja, dan wordt de opbrengst van deze dag getoond
+        /// </summary>
+        /// <param name="Datum"></param>
+        /// <returns>true als de datum bestaat in het JSON-bestand, anders false</returns>
+        private bool oudeRevenue(string Datum)
         {
             if (Revenues != null)
             {
@@ -70,20 +80,26 @@ namespace TheFatDuckRestaurant
             }
             return false;
         }
-        public void Add(string Datum, double Revenue) //voegt de daily revenue van een verlopen datum toe aan het json bestand
+        /// <summary>
+        /// Voegt de opbrengst van de reservering toe aan het JSON-bestand
+        /// Verhoogt het bedrag als de datum al in het bestand staat, anders wordt een nieuw item aangemaakt voor het bestand
+        /// </summary>
+        /// <param name="Datum">Datum van de reservering</param>
+        /// <param name="Revenue">Totale opbrengst van de reservering</param>
+        public void Add(string Datum, double Revenue)
         {
             bool Exists = false;
             if(Revenues == null)
                 Revenues = new DailyRevenue[0];
             foreach(DailyRevenue dailyrevenue in Revenues)
             {
-                if(dailyrevenue.Datum == Datum && !Exists) //checkt of de datum al bestaat in het json bestand, in welk geval het bedrag daaraan wordt toegevoegd
+                if(dailyrevenue.Datum == Datum && !Exists)
                 {
                     Exists = true;
                     dailyrevenue.Revenue += Revenue;
                 }
             }
-            if (!Exists) //voegt een nieuwe datum aan het json bestand toe wanneer de datum nog niet bestaat
+            if (!Exists)
             {
                 DailyRevenue[] newRevenues = new DailyRevenue[Revenues.Length + 1];
                 for(int i = 0; i < Revenues.Length; i++)
