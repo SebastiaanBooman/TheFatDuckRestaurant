@@ -223,10 +223,15 @@ namespace TheFatDuckRestaurant
         {
             try
             {
-                ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
-                Console.WriteLine($"\n\n0 : Terug");
-                Console.ReadKey();
-                return true;
+                while(true)
+                {
+                    ShowItemStandaard(geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)]); //7 * paginaNR zorgt ervoor dat het juiste item wordt laten zien
+                    Console.WriteLine($"\n\n0 : Terug");
+                    var toetsUser = Console.ReadKey().KeyChar;
+                    if(toetsUser == '0')
+                        return true;
+
+                }
             }
             catch { return false; }
         }
