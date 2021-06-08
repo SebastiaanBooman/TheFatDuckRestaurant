@@ -262,7 +262,8 @@ namespace TheFatDuckRestaurant
                             try
                             {
                                 int amount = Int32.Parse(amountStr); //Als er wel gereserveerd is wordt het item aan de lijst met Bestellingen toegevoegd.
-                                return new Bestelling(geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)].naam, geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)].prijs, amount);
+                                if(amount < 100)
+                                    return new Bestelling(geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)].naam, geladenMenu[(Int32.Parse(toetsUserChar.ToString()) - 1) + (7 * paginaNR)].prijs, amount);
                             }
                             catch { };
                         }
