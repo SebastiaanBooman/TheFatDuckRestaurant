@@ -2,43 +2,30 @@
   "Klanten": [
     {
       "AantalReserveringen": 0,
-      "Naam": "Rafael",
-      "Wachtwoord": "rafael",
-      "Adres": null,
-      "Woonplaats": null
-    },
-    {
-      "AantalReserveringen": 1,
-      "Naam": "Tom",
-      "Wachtwoord": "tom",
-      "Adres": null,
-      "Woonplaats": null
+      "Naam": "ThomasvanIersel",
+      "Wachtwoord": "Test!1Test",
+      "Adres": "Wijnhaven 99",
+      "Woonplaats": "Rotterdam"
     }
   ],
   "Medewerkers": [
     {
-      "Naam": "Jake",
-      "Wachtwoord": "Darcy",
-      "Adres": null,
-      "Woonplaats": null
+      "Naam": "ArtBrown",
+      "Wachtwoord": "Test!1Test",
+      "Adres": "Holland Amerikakade 104",
+      "Woonplaats": "Rotterdam"
     },
     {
-      "Naam": "Art",
-      "Wachtwoord": "Brown",
-      "Adres": null,
-      "Woonplaats": null
-    },
-    {
-      "Naam": "Sally",
-      "Wachtwoord": "Buns",
-      "Adres": null,
-      "Woonplaats": null
+      "Naam": "SallyBuns",
+      "Wachtwoord": "Test!1Test",
+      "Adres": "Holland Amerikakade 104",
+      "Woonplaats": "Rotterdam"
     }
   ],
   "Eigenaar": {
-    "Naam": "Jake Darcy",
-    "Wachtwoord": "JD",
-    "Adres": "TheFatDuckRestaurant",
-    "Woonplaats": "Test"
+    "Naam": "JakeDarcy",
+    "Wachtwoord": "Test!1Test",
+    "Adres": "Holland Amerikakade 104",
+    "Woonplaats": "Rotterdam"
   }
 }
